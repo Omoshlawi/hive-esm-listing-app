@@ -3,4 +3,5 @@ import ListingsPage from "./ListingsPage";
 
 export const Listings = withUserAccess(ListingsPage, {
   isAuthenticated: (session) => session.isAuthenticated,
+  requiresAuth: true,
 });

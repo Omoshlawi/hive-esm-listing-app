@@ -2,10 +2,96 @@ import { PiletApi } from "@hive/esm-shell-app";
 import { ColumnDef } from "@tanstack/react-table";
 import React, { FC } from "react";
 import { Listing } from "../types";
+import { useListings } from "../hooks";
+import { StateFullDataTable, TablerIcon } from "@hive/esm-core-components";
+import { ListingForm } from "../forms";
+import { openConfirmModal } from "@mantine/modals";
+import { ActionIcon, Group, Text } from "@mantine/core";
 
 type ListingsPageProps = Pick<PiletApi, "launchWorkspace">;
 const ListingsPage: FC<ListingsPageProps> = ({ launchWorkspace }) => {
-  return <div>ListingsPage</div>;
+  const asyncListing = useListings();
+  const handleAddOrupdate = (listing?: Listing) => {
+    const dispose = launchWorkspace(
+      <ListingForm
+        listing={listing}
+        onSuccess={() => dispose()}
+        onCloseWorkspace={() => dispose()}
+      />,
+      {
+        title: listing ? "Update Listing" : "Add Listing",
+        width: "wide",
+        expandable: true,
+      }
+    );
+  };
+  const handleDelete = (listing: Listing) => {
+    openConfirmModal({
+      title: "Delete listing",
+      children: (
+        <Text>
+          Are you sure you want to delete this role.This action is destructive
+          and will delete all data related to role
+        </Text>
+      ),
+      labels: { confirm: "Delete Listing", cancel: "No don't delete it" },
+      confirmProps: { color: "red" },
+      centered: true,
+      onConfirm() {
+        // TODO Implement delete
+      },
+    });
+  };
+
+  return (
+    <StateFullDataTable
+      title="Property Listings"
+      onAdd={() => handleAddOrupdate()}
+      columns={[
+        ...columns,
+        {
+          id: "actions",
+          header: "Actions",
+          cell({ row }) {
+            const listing = row.original;
+            return (
+              <Group>
+                <Group>
+                  <ActionIcon
+                    variant="outline"
+                    aria-label="Settings"
+                    color="green"
+                    onClick={() => handleAddOrupdate(listing)}
+                  >
+                    <TablerIcon
+                      name="edit"
+                      style={{ width: "70%", height: "70%" }}
+                      stroke={1.5}
+                    />
+                  </ActionIcon>
+                  <ActionIcon
+                    variant="outline"
+                    aria-label="Settings"
+                    color="red"
+                    onClick={() => handleDelete(listing)}
+                  >
+                    <TablerIcon
+                      name="trash"
+                      style={{ width: "70%", height: "70%" }}
+                      stroke={1.5}
+                    />
+                  </ActionIcon>
+                </Group>
+              </Group>
+            );
+          },
+        },
+      ]}
+      {...asyncListing}
+      data={asyncListing.listings}
+      withColumnViewOptions
+    />
+  );
 };
 
 export default ListingsPage;
