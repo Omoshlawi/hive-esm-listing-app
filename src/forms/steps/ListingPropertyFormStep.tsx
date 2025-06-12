@@ -9,15 +9,24 @@ import {
 } from "@mantine/core";
 import React, { FC } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import { useSearchProperties } from "../../hooks";
-import { ListingFormData } from "../../types";
+import { ListingFormData, Property } from "../../types";
 type Props = {
   onNext?: () => void;
   onPrev?: () => void;
+  propertiesSearchresults?: Array<Property>;
+  isLoadingProperties?: boolean;
+  propertySearchValue?: string;
+  onPropertySearchChange?: (search: string) => void;
 };
 
-const ListingPropertyFormStep: FC<Props> = ({ onPrev, onNext }) => {
-  const { properties, isLoading, setSearch, search } = useSearchProperties();
+const ListingPropertyFormStep: FC<Props> = ({
+  onPrev,
+  onNext,
+  isLoadingProperties,
+  onPropertySearchChange,
+  propertySearchValue,
+  propertiesSearchresults = [],
+}) => {
   const form = useFormContext<ListingFormData>();
   return (
     <Stack h={"100%"} justify="space-between">
@@ -31,14 +40,17 @@ const ListingPropertyFormStep: FC<Props> = ({ onPrev, onNext }) => {
           render={({ field, fieldState: { error } }) => (
             <Select
               {...field}
-              data={properties.map((p) => ({ label: p.name, value: p.id }))}
+              data={propertiesSearchresults.map((p) => ({
+                label: p.name,
+                value: p.id,
+              }))}
               placeholder="Select property to list"
               limit={10}
-              rightSection={isLoading && <Loader size={"xs"} />}
+              rightSection={isLoadingProperties && <Loader size={"xs"} />}
               label="Property"
               searchable
-              searchValue={search}
-              onSearchChange={setSearch}
+              searchValue={propertySearchValue}
+              onSearchChange={onPropertySearchChange}
               error={error?.message}
               nothingFoundMessage="Nothing found..."
               clearable

@@ -1,29 +1,36 @@
 import { handleApiErrors, mutate } from "@hive/esm-core-api";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Group, Paper, Stack, Stepper } from "@mantine/core";
+import { Paper, Stepper } from "@mantine/core";
+import { FileWithPath } from "@mantine/dropzone";
 import { showNotification } from "@mantine/notifications";
 import React, { FC, useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import { useListingApi } from "../hooks";
+import { useListingApi, useSearchProperties } from "../hooks";
 import { Listing, ListingFormData } from "../types";
 import { ListingSchema } from "../utils/validation";
 import ListingBasicDetailsFormSection from "./steps/ListingBasicDetailsFormSection";
 import ListingMediaUploadsFormStep from "./steps/ListingMediaUploadsFormStep";
-import { FileWithPath } from "@mantine/dropzone";
 import ListingPropertyFormStep from "./steps/ListingPropertyFormStep";
+import RentalListingFormStep from "./steps/RentalListingFormStep";
+import SalesListingFormStep from "./steps/SalesListingFormStep";
+import AuctionListingFormStep from "./steps/AuctionListingFormStep";
+import LeaseListingFormStep from "./steps/LeaseListingFormStep";
 
 type ListingFormProps = {
   listing?: Listing;
   onSuccess?: (listing: Listing) => void;
   onCloseWorkspace?: () => void;
 };
-const STEPS = 4;
 const ListingForm: FC<ListingFormProps> = ({
   onCloseWorkspace,
   listing,
   onSuccess,
 }) => {
   const { addListing, updateListing, searchProperty } = useListingApi();
+  //   decleared here at the root instead of the step component to retain search result
+  //  for the propery important in displaying when user move back to the step from another
+  const { properties, isLoading, setSearch, search } = useSearchProperties();
+
   const [files, setFiles] = useState<FileWithPath[]>([]);
   const [galaryImages, setGalarayImages] = useState<FileWithPath[]>([]);
   const form = useForm<ListingFormData>({
@@ -39,10 +46,11 @@ const ListingForm: FC<ListingFormProps> = ({
     },
     resolver: zodResolver(ListingSchema),
   });
-  const [active, setActive] = useState(2);
+  const ltypesObservable = form.watch("types");
+
+  const [active, setActive] = useState(0);
   const nextStep = () => setActive((current) => current + 1);
   const prevStep = () => setActive((current) => current - 1);
-  const ltypesObservable = form.watch("types");
   const onSubmit: SubmitHandler<ListingFormData> = async (data) => {
     try {
       const res = listing
@@ -108,8 +116,35 @@ const ListingForm: FC<ListingFormProps> = ({
               />
             </Stepper.Step>
             <Stepper.Step label="Property" description="Listing property">
-              <ListingPropertyFormStep onNext={nextStep} onPrev={prevStep} />
+              <ListingPropertyFormStep
+                onNext={nextStep}
+                onPrev={prevStep}
+                isLoadingProperties={isLoading}
+                onPropertySearchChange={setSearch}
+                propertiesSearchresults={properties}
+                propertySearchValue={search}
+              />
             </Stepper.Step>
+            {ltypesObservable.includes("rent") && (
+              <Stepper.Step label="Rentals" description="Rental information">
+                <RentalListingFormStep onNext={nextStep} onPrev={prevStep} />
+              </Stepper.Step>
+            )}
+            {ltypesObservable.includes("sale") && (
+              <Stepper.Step label="Sales" description="Sales information">
+                <SalesListingFormStep onNext={nextStep} onPrev={prevStep} />
+              </Stepper.Step>
+            )}
+            {ltypesObservable.includes("auction") && (
+              <Stepper.Step label="Action" description="Auction information">
+                <AuctionListingFormStep onNext={nextStep} onPrev={prevStep} />
+              </Stepper.Step>
+            )}
+            {ltypesObservable.includes("lease") && (
+              <Stepper.Step label="Lease" description="Lease information">
+                <LeaseListingFormStep onNext={nextStep} onPrev={prevStep} />
+              </Stepper.Step>
+            )}
             <Stepper.Step label="Submit" description="Submit and save">
               Step 3 content: Get full access
             </Stepper.Step>
