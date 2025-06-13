@@ -30,7 +30,7 @@ export const SaleListingSchema = z.object({
 
 export const RentalListingSchema = z.object({
   rentPeriod: z.enum(["Monthly", "Weekly", "Daily", "Yearly"]),
-  minimStay: z.number({ coerce: true }).nonnegative(),
+  minimumStay: z.number({ coerce: true }).nonnegative(),
   securityDeposit: z.number({ coerce: true }).nonnegative(),
   furnished: z.boolean().optional(),
   utilities: z.array(z.string().min(1, "Required")).optional(),

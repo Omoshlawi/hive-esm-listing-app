@@ -38,7 +38,7 @@ const RentalListingFormStep: FC<Props> = ({ onNext, onPrev }) => {
         />
         <Controller
           control={form.control}
-          name="rentalDetails.minimStay"
+          name="rentalDetails.minimumStay"
           render={({ field, fieldState }) => (
             <NumberInput
               {...field}
