@@ -85,18 +85,6 @@ const ListingBasicDetailsFormSection: FC<Props> = ({ onCancel, onNext }) => {
         />
         <Controller
           control={form.control}
-          name="price"
-          render={({ field, fieldState }) => (
-            <NumberInput
-              {...field}
-              label="Price"
-              error={fieldState.error?.message}
-              placeholder="Price in Ksh."
-            />
-          )}
-        />
-        <Controller
-          control={form.control}
           name="expiryDate"
           render={({ field, fieldState }) => (
             <DateInput

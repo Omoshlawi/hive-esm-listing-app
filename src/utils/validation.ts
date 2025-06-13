@@ -30,9 +30,8 @@ export const SaleListingSchema = z.object({
 
 export const RentalListingSchema = z.object({
   rentPeriod: z.enum(["Monthly", "Weekly", "Daily", "Yearly"]),
-  minimumRentalPeriod: z.number({ coerce: true }).nonnegative(),
+  minimStay: z.number({ coerce: true }).nonnegative(),
   securityDeposit: z.number({ coerce: true }).nonnegative(),
-  petsAllowed: z.boolean().optional(),
   furnished: z.boolean().optional(),
   utilities: z.array(z.string().min(1, "Required")).optional(),
   availableFrom: z.date({ coerce: true }),
@@ -42,7 +41,6 @@ export const RentalListingSchema = z.object({
 export const LeaseListingSchema = z.object({
   leaseTerm: z.number({ coerce: true }).nonnegative(),
   securityDeposit: z.number({ coerce: true }).nonnegative(),
-  maintenanceTerms: z.string().optional(),
   renewalOptions: z
     .object({
       renewalAllowed: z.boolean(),
@@ -50,6 +48,7 @@ export const LeaseListingSchema = z.object({
       maxRenewals: z.number({ coerce: true }).optional().nullable(),
     })
     .optional(),
+  renewalAllowed: z.boolean(),
   allowedUses: z.array(z.string()).optional(),
   isCommercial: z.boolean().optional(),
   buildOutAllowance: z.number({ coerce: true }).nonnegative().optional(),

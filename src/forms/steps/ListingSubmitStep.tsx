@@ -2,12 +2,14 @@ import { Button, Group, Stack, Title } from "@mantine/core";
 import React, { FC } from "react";
 import { useFormContext } from "react-hook-form";
 import { ListingFormData } from "../../types";
+
 type Props = {
-  onNext?: () => void;
   onPrev?: () => void;
 };
-const AuctionListingFormStep: FC<Props> = ({ onNext, onPrev }) => {
+
+const ListingSubmitStep: FC<Props> = ({ onPrev }) => {
   const form = useFormContext<ListingFormData>();
+
   return (
     <Stack h={"100%"} justify="space-between">
       <Stack gap={"md"}>
@@ -23,17 +25,16 @@ const AuctionListingFormStep: FC<Props> = ({ onNext, onPrev }) => {
           radius={0}
           flex={1}
           fullWidth
-          type={"button"}
+          type={"submit"}
           variant="filled"
           loading={form.formState.isSubmitting}
           disabled={form.formState.isSubmitting}
-          onClick={onNext}
         >
-          Next
+          Submit
         </Button>
       </Group>
     </Stack>
   );
 };
 
-export default AuctionListingFormStep;
+export default ListingSubmitStep;

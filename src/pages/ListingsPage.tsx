@@ -20,7 +20,7 @@ const ListingsPage: FC<ListingsPageProps> = ({ launchWorkspace }) => {
       />,
       {
         title: listing ? "Update Listing" : "Add Listing",
-        width: "wide",
+        width: "extra-wide",
         expandable: true,
       }
     );

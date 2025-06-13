@@ -72,7 +72,7 @@ const ListingPropertyFormStep: FC<Props> = ({
       </Stack>
       <Group gap={1}>
         <Button flex={1} variant="default" radius={0} onClick={onPrev}>
-          Cancel
+          Previous
         </Button>
         <Button
           radius={0}
