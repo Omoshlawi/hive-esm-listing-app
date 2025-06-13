@@ -17,6 +17,7 @@ import ListingPropertyFormStep from "./steps/ListingPropertyFormStep";
 import RentalListingFormStep from "./steps/RentalListingFormStep";
 import SalesListingFormStep from "./steps/SalesListingFormStep";
 import ListingSubmitStep from "./steps/ListingSubmitStep";
+import { useSearchUser } from "../hooks/useUsers";
 
 type ListingFormProps = {
   listing?: Listing;
@@ -84,7 +85,18 @@ const ListingForm: FC<ListingFormProps> = ({
   onSuccess,
 }) => {
   const { addListing, updateListing } = useListingApi();
-  const { properties, isLoading, setSearch, search } = useSearchProperties();
+  const {
+    properties,
+    isLoading: isLoadingProperties,
+    searchProperty,
+    search,
+  } = useSearchProperties();
+  const {
+    users,
+    isLoading: isLoadingUsers,
+    searchUser,
+    searchValue: userSearchValue,
+  } = useSearchUser();
 
   const [files, setFiles] = useState<FileWithPath[]>([]);
   const [galaryImages, setGalarayImages] = useState<FileWithPath[]>([]);
@@ -199,10 +211,14 @@ const ListingForm: FC<ListingFormProps> = ({
       <ListingPropertyFormStep
         onNext={navigateToNext}
         onPrev={navigateToPrev}
-        isLoadingProperties={isLoading}
-        onPropertySearchChange={setSearch}
+        isLoadingProperties={isLoadingProperties}
+        onPropertySearchChange={searchProperty}
         propertiesSearchresults={properties}
         propertySearchValue={search}
+        isLoadingUsers={isLoadingUsers}
+        onUserSearchChange={searchUser}
+        userSearchValue={userSearchValue}
+        userSearchresults={users}
       />
     ),
     rent: (

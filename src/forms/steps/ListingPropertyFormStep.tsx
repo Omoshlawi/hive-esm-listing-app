@@ -10,6 +10,7 @@ import {
 import React, { FC } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { ListingFormData, Property } from "../../types";
+import { User } from "@hive/esm-core-api";
 type Props = {
   onNext?: () => void;
   onPrev?: () => void;
@@ -17,6 +18,10 @@ type Props = {
   isLoadingProperties?: boolean;
   propertySearchValue?: string;
   onPropertySearchChange?: (search: string) => void;
+  userSearchresults?: Array<User>;
+  isLoadingUsers?: boolean;
+  userSearchValue?: string;
+  onUserSearchChange?: (search: string) => void;
 };
 
 const ListingPropertyFormStep: FC<Props> = ({
@@ -26,6 +31,10 @@ const ListingPropertyFormStep: FC<Props> = ({
   onPropertySearchChange,
   propertySearchValue,
   propertiesSearchresults = [],
+  isLoadingUsers,
+  onUserSearchChange,
+  userSearchValue,
+  userSearchresults = [],
 }) => {
   const form = useFormContext<ListingFormData>();
   return (
@@ -51,6 +60,29 @@ const ListingPropertyFormStep: FC<Props> = ({
               searchable
               searchValue={propertySearchValue}
               onSearchChange={onPropertySearchChange}
+              error={error?.message}
+              nothingFoundMessage="Nothing found..."
+              clearable
+            />
+          )}
+        />
+        <Controller
+          control={form.control}
+          name="contactPersonId"
+          render={({ field, fieldState: { error } }) => (
+            <Select
+              {...field}
+              data={userSearchresults.map((u) => ({
+                label: u.username,
+                value: u.id,
+              }))}
+              rightSection={isLoadingUsers && <Loader size={"xs"} />}
+              searchValue={userSearchValue}
+              onSearchChange={onUserSearchChange}
+              placeholder="search user"
+              limit={10}
+              label="Responsible person"
+              searchable
               error={error?.message}
               nothingFoundMessage="Nothing found..."
               clearable

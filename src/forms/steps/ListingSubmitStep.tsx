@@ -9,13 +9,13 @@ type Props = {
 
 const ListingSubmitStep: FC<Props> = ({ onPrev }) => {
   const form = useFormContext<ListingFormData>();
-
   return (
     <Stack h={"100%"} justify="space-between">
       <Stack gap={"md"}>
         <Title order={4} pt={"lg"}>
           Listing Property
         </Title>
+        <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre>
       </Stack>
       <Group gap={1}>
         <Button flex={1} variant="default" radius={0} onClick={onPrev}>
