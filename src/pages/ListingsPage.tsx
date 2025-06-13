@@ -3,10 +3,23 @@ import { ColumnDef } from "@tanstack/react-table";
 import React, { FC } from "react";
 import { Listing } from "../types";
 import { useListings } from "../hooks";
-import { StateFullDataTable, TablerIcon } from "@hive/esm-core-components";
+import {
+  DataTableColumnHeader,
+  StateFullDataTable,
+  TablerIcon,
+} from "@hive/esm-core-components";
 import { ListingForm } from "../forms";
 import { openConfirmModal } from "@mantine/modals";
-import { ActionIcon, Group, Text } from "@mantine/core";
+import {
+  ActionIcon,
+  Badge,
+  Button,
+  Group,
+  Text,
+  useComputedColorScheme,
+} from "@mantine/core";
+import { Link } from "react-router-dom";
+import { getStatusColor, getStatusVariant } from "../utils/helpers";
 
 type ListingsPageProps = Pick<PiletApi, "launchWorkspace">;
 const ListingsPage: FC<ListingsPageProps> = ({ launchWorkspace }) => {
@@ -95,4 +108,72 @@ const ListingsPage: FC<ListingsPageProps> = ({ launchWorkspace }) => {
 };
 
 export default ListingsPage;
-const columns: ColumnDef<Listing>[] = [];
+const columns: ColumnDef<Listing>[] = [
+  {
+    accessorKey: "title",
+    header: "Title",
+    cell({ row }) {
+      const listing = row.original;
+      const link = `/dashboard/properties/${listing.propertyId}/listings/${listing.id}`;
+      return (
+        <Button variant="transparent" component={Link} to={link}>
+          {listing.title}
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "listedDate",
+    header({ column }) {
+      return <DataTableColumnHeader column={column} title="Date listed" />;
+    },
+    cell({ getValue }) {
+      const created = getValue<string>();
+      return new Date(created).toDateString();
+    },
+  },
+  {
+    accessorKey: "price",
+    header({ column }) {
+      return <DataTableColumnHeader column={column} title="Price" />;
+    },
+  },
+  {
+    accessorKey: "expiryDate",
+    header({ column }) {
+      return <DataTableColumnHeader column={column} title="Expiry Date" />;
+    },
+    cell({ getValue }) {
+      const created = getValue<string>();
+      return new Date(created).toDateString();
+    },
+  },
+  {
+    accessorKey: "status",
+    header({ column }) {
+      return <DataTableColumnHeader column={column} title="Status" />;
+    },
+    cell({ getValue }) {
+      const status = getValue<Listing["status"]>();
+      const colorScheme = useComputedColorScheme();
+      return (
+        <Badge
+          color={getStatusColor(status)}
+          variant={getStatusVariant(status, colorScheme)}
+        >
+          {status}
+        </Badge>
+      );
+    },
+  },
+  {
+    accessorKey: "createdAt",
+    header({ column }) {
+      return <DataTableColumnHeader column={column} title="Date Created" />;
+    },
+    cell({ getValue }) {
+      const created = getValue<string>();
+      return new Date(created).toDateString();
+    },
+  },
+];

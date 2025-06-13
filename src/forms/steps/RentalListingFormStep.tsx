@@ -101,7 +101,7 @@ const RentalListingFormStep: FC<Props> = ({ onNext, onPrev }) => {
           onClick={async () => {
             const valid = await form.trigger([
               "rentalDetails.availableFrom",
-              "rentalDetails.minimStay",
+              "rentalDetails.minimumStay",
               "rentalDetails.rentPeriod",
               "rentalDetails.utilities",
               "rentalDetails.securityDeposit",
