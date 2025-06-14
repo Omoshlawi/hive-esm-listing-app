@@ -12,6 +12,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import { ListingFormData, Property } from "../../types";
 import { User } from "@hive/esm-core-api";
 import { INPUT_ORDER } from "../../utils/constants";
+import ListingAdditionalCharges from "../ListingAdditionalCharges";
 type Props = {
   onNext?: () => void;
   onPrev?: () => void;
@@ -104,6 +105,7 @@ const ListingPropertyFormStep: FC<Props> = ({
             />
           )}
         />
+        <ListingAdditionalCharges />
       </Stack>
       <Group gap={1}>
         <Button flex={1} variant="default" radius={0} onClick={onPrev}>
@@ -118,7 +120,11 @@ const ListingPropertyFormStep: FC<Props> = ({
           loading={form.formState.isSubmitting}
           disabled={form.formState.isSubmitting}
           onClick={async () => {
-            const valid = await form.trigger(["price", "propertyId"]);
+            const valid = await form.trigger([
+              "price",
+              "propertyId",
+              "additionalCharges",
+            ]);
             if (valid) onNext?.();
           }}
         >

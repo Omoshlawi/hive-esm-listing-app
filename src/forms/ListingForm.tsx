@@ -5,7 +5,12 @@ import { FileWithPath } from "@mantine/dropzone";
 import { useMediaQuery } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
 import React, { FC, useState, useMemo, useCallback } from "react";
-import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
+import {
+  FieldPath,
+  FormProvider,
+  SubmitHandler,
+  useForm,
+} from "react-hook-form";
 import { useListingApi, useSearchProperties } from "../hooks";
 import { Listing, ListingFormData } from "../types";
 import { ListingSchema } from "../utils/validation";
@@ -108,7 +113,7 @@ const ListingForm: FC<ListingFormProps> = ({
       featured: listing?.featured,
       tags: listing?.tags ?? [],
       price: listing?.price ? Number(listing.price) : undefined,
-      type: listing?.type ?? "RENTAL",
+      type: listing?.type,
     },
     resolver: zodResolver(ListingSchema),
   });
@@ -163,6 +168,47 @@ const ListingForm: FC<ListingFormProps> = ({
       setActiveTab(fallbackStep);
     }
   }, [availableSteps, activeTab]);
+  React.useEffect(() => {
+    if (form.formState.errors) {
+      const fieldSteps: Record<FormSteps, Array<FieldPath<ListingFormData>>> = {
+        basic: ["type", "title", "description", "tags", "expiryDate"],
+        upload: ["coverImage"], //TODO Add media
+        property: [
+          "propertyId",
+          "contactPersonId",
+          "price",
+          "additionalCharges",
+          "additionalCharges",
+        ],
+        rent: [
+          "rentalDetails",
+          "rentalDetails.availableFrom",
+          "rentalDetails.furnished",
+          "rentalDetails.minimumStay",
+          "rentalDetails.rentPeriod",
+          "rentalDetails.securityDeposit",
+          "rentalDetails.utilities",
+        ],
+        sale: [
+          "saleDetails",
+          "saleDetails.downPayment",
+          "saleDetails.financingOptions",
+          "saleDetails.ownershipTypeId",
+          "saleDetails.priceNegotiable",
+          "saleDetails.titleDeedReady",
+        ],
+        auction: [],
+        lease: [],
+        submit: [],
+      };
+      for (const [step, fields] of Object.entries(fieldSteps)) {
+        if (fields.some((field) => form.getFieldState(field as any).invalid)) {
+          setActiveTab(step as FormSteps);
+          break;
+        }
+      }
+    }
+  }, [form.formState.errors, setActiveTab]);
 
   const onSubmit: SubmitHandler<ListingFormData> = async (data) => {
     try {

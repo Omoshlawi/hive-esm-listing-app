@@ -1,15 +1,7 @@
-import React, { FC } from "react";
-import { Controller, useFormContext } from "react-hook-form";
-import { ListingFormData } from "../../types";
 import {
-  Box,
   Button,
   Group,
-  InputError,
-  InputWrapper,
-  MultiSelect,
-  NumberInput,
-  SegmentedControl,
+  Select,
   Stack,
   TagsInput,
   Textarea,
@@ -17,6 +9,9 @@ import {
   Title,
 } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
+import React, { FC } from "react";
+import { Controller, useFormContext } from "react-hook-form";
+import { ListingFormData } from "../../types";
 import { INPUT_ORDER } from "../../utils/constants";
 
 type Props = {
@@ -36,23 +31,25 @@ const ListingBasicDetailsFormSection: FC<Props> = ({ onCancel, onNext }) => {
           control={form.control}
           name="type"
           render={({ field, fieldState: { error } }) => (
-            <InputWrapper label="Type" error={error?.message}>
-              <Box>
-                <SegmentedControl
-                  value={field.value}
-                  onChange={field.onChange}
-                  data={[
-                    { label: "Rental", value: "RENTAL" },
-                    { label: "Sale", value: "SALE" },
-                    { label: "Lease", value: "LEASE" },
-                    { label: "Auction", value: "AUCTION" },
-                    { label: "Rent to Own", value: "RENT_TO_OWN" },
-                    { label: "Short Term", value: "SHORT_TERM" },
-                    { label: "Co-Living", value: "CO_LIVING" },
-                  ]}
-                />
-              </Box>
-            </InputWrapper>
+            <Select
+              {...field}
+              data={[
+                { label: "Rental", value: "RENTAL" },
+                { label: "Sale", value: "SALE" },
+                { label: "Lease", value: "LEASE" },
+                { label: "Auction", value: "AUCTION" },
+                { label: "Rent to Own", value: "RENT_TO_OWN" },
+                { label: "Short Term", value: "SHORT_TERM" },
+                { label: "Co-Living", value: "CO_LIVING" },
+              ]}
+              placeholder="Select listing type"
+              limit={10}
+              label="Listing type"
+              searchable
+              error={error?.message}
+              nothingFoundMessage="Nothing found..."
+              clearable
+            />
           )}
         />
         <Controller
