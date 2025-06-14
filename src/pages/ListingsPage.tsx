@@ -114,7 +114,7 @@ const columns: ColumnDef<Listing>[] = [
     header: "Title",
     cell({ row }) {
       const listing = row.original;
-      const link = `/dashboard/properties/${listing.propertyId}/listings/${listing.id}`;
+      const link = `/dashboard/listings/${listing.id}`;
       return (
         <Button variant="transparent" component={Link} to={link}>
           {listing.title}

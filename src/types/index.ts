@@ -30,7 +30,7 @@ export interface Listing {
     | "RENT_TO_OWN"
     | "SHORT_TERM"
     | "CO_LIVING";
-  coverimage?: string;
+  coverImage?: string;
   price: string;
   listedDate: string;
   expiryDate: any;
@@ -43,6 +43,33 @@ export interface Listing {
   createdAt: string;
   updatedAt: string;
   saleDetails?: SaleDetails;
+  media?: Array<ListingMedia>;
+  additionalCharges?: Array<ListingCharge>;
+}
+
+export type ChargeFrequency =
+  | "ONE_TIME"
+  | "MONTHLY"
+  | "WEEKLY"
+  | "PER_NIGHT"
+  | "ANNUALLY";
+
+export interface ListingCharge {
+  id: string;
+  listingId: string;
+  listing?: Listing;
+
+  name: string; // e.g., "Cleaning Fee", "Pet Fee", "Parking"
+  description?: string;
+  amount: number;
+  frequency: ChargeFrequency;
+  mandatory: boolean;
+
+  metadata?: any;
+  voided: boolean;
+
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Property {

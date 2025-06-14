@@ -2,18 +2,24 @@ import * as React from "react";
 import type { PiletApi } from "@hive/esm-shell-app";
 import { ListingDetail, Listings, PropertyListings } from "./pages";
 import { HeaderLink } from "@hive/esm-core-components";
-import { useChartCurrentProperty } from "./hooks";
+import ListingChartLayout from "./layout/ListingChart";
+import { useListingChartListing, usePropertyChartProperty } from "./hooks";
 
 export function setup(app: PiletApi) {
+  app.registerPageLayout("listingChart", ({ children }) => (
+    <ListingChartLayout Extension={app.Extension}>
+      {children}
+    </ListingChartLayout>
+  ));
   app.registerPage(
     "/dashboard/listings",
     () => <Listings launchWorkspace={app.launchWorkspace} />,
     { layout: "dashboard" }
   );
   app.registerPage(
-    "/dashboard/properties/:propertyId/listings/:listingId",
+    "/dashboard/listings/:listingId",
     () => <ListingDetail launchWorkspace={app.launchWorkspace} />,
-    { layout: "propertyChart" }
+    { layout: "listingChart" }
   );
   app.registerPage(
     "/dashboard/properties/:propertyId/listings",
@@ -33,7 +39,7 @@ export function setup(app: PiletApi) {
   );
   app.registerMenu(
     ({ onClose }: any) => {
-      const id = useChartCurrentProperty();
+      const id = usePropertyChartProperty();
       return (
         <HeaderLink
           label="Listings"
@@ -43,5 +49,18 @@ export function setup(app: PiletApi) {
       );
     },
     { type: "propertyChart" as any }
+  );
+  app.registerMenu(
+    ({ onClose }: any) => {
+      const id = useListingChartListing();
+      return (
+        <HeaderLink
+          label="summary"
+          to={`/dashboard/listings/${id}`}
+          onClose={onClose ?? (() => {})}
+        />
+      );
+    },
+    { type: "listingChart" as any }
   );
 }

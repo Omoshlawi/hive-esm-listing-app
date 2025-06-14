@@ -20,6 +20,22 @@ export const getStatusColor = (status: string) => {
   }
 };
 
+
+  // const getStatusColor = (status: string) => {
+  //   const colors = {
+  //     DRAFT: "gray",
+  //     PENDING: "yellow",
+  //     APPROVED: "green",
+  //     REJECTED: "red",
+  //     SOLD: "blue",
+  //     UNDER_CONTRACT: "orange",
+  //     LEASED: "teal",
+  //     RENTED: "cyan",
+  //     WITHDRAWN: "red",
+  //     EXPIRED: "orange",
+  //   };
+  //   return colors[status as keyof typeof colors] || "gray";
+  // };
 // Enhanced status variant for better visibility
 export const getStatusVariant = (status: string, colorScheme: string) => {
   switch (status) {
