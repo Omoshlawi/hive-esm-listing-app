@@ -14,7 +14,7 @@ import React, { FC } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { ListingFormData } from "../../types";
 import { INPUT_ORDER } from "../../utils/constants";
-import { usefinancingOptions, useOwnershipTypes } from "../../hooks";
+import { useFinancingOptions, useOwnershipTypes } from "../../hooks";
 import { InputSkeleton, When } from "@hive/esm-core-components";
 import { handleApiErrors } from "@hive/esm-core-api";
 
@@ -26,7 +26,7 @@ type Props = {
 const SalesListingFormStep: FC<Props> = ({ onNext, onPrev }) => {
   const form = useFormContext<ListingFormData>();
   const ownershipTypesAsync = useOwnershipTypes();
-  const financingOptionsAsync = usefinancingOptions();
+  const financingOptionsAsync = useFinancingOptions();
   return (
     <Stack h={"100%"} justify="space-between">
       <Stack gap={"md"}>

@@ -104,7 +104,7 @@ export interface OwnershipType {
   createdAt: string;
   updatedAt: string;
 }
-export interface FinancingOptions {
+export interface FinancingOption {
   id: string;
   name: string;
   description?: string;

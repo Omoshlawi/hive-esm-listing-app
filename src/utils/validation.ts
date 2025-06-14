@@ -97,16 +97,6 @@ export const ListingSchema = z.object({
   additionalCharges: ListingAdditionalCharges.array().optional(),
 });
 
-export const OwnershipTypeSchema = z.object({
-  name: z.string().nonempty("required"),
-  description: z.string().optional(),
-});
-
-export const FinancingOptionSchema = z.object({
-  name: z.string().nonempty("required"),
-  description: z.string().optional(),
-});
-
 export const ListingFilterSchema = z.object({
   search: z.string().optional(),
   tags: z.string().array().optional(),

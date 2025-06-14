@@ -1,11 +1,11 @@
 import { APIFetchResponse } from "@hive/esm-core-api";
 import useSWR from "swr";
-import { FinancingOptions } from "../types";
+import { FinancingOption } from "../types";
 
-export const usefinancingOptions = () => {
+export const useFinancingOptions = () => {
   const url = "/financing-options";
   const { data, error, isLoading, mutate } =
-    useSWR<APIFetchResponse<{ results: Array<FinancingOptions> }>>(url);
+    useSWR<APIFetchResponse<{ results: Array<FinancingOption> }>>(url);
 
   return { mutate, error, isLoading, data: data?.data?.results ?? [] };
 };
