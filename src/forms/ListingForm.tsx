@@ -55,22 +55,22 @@ const STEP_CONFIG = [
   {
     key: "rent" as FormSteps,
     label: "Rent",
-    condition: (types: string[]) => types.includes("rent"),
+    condition: (type: ListingFormData["type"]) => type === "RENTAL",
   },
   {
     key: "sale" as FormSteps,
     label: "Sale",
-    condition: (types: string[]) => types.includes("sale"),
+    condition: (type: ListingFormData["type"]) => type === "SALE",
   },
   {
     key: "auction" as FormSteps,
     label: "Auction",
-    condition: (types: string[]) => types.includes("auction"),
+    condition: (type: ListingFormData["type"]) => type === "AUCTION",
   },
   {
     key: "lease" as FormSteps,
     label: "Lease",
-    condition: (types: string[]) => types.includes("lease"),
+    condition: (type: ListingFormData["type"]) => type === "LEASE",
   },
   {
     key: "submit" as FormSteps,
@@ -108,12 +108,12 @@ const ListingForm: FC<ListingFormProps> = ({
       featured: listing?.featured,
       tags: listing?.tags ?? [],
       price: listing?.price ? Number(listing.price) : undefined,
-      types: [],
+      type: listing?.type ?? "RENTAL",
     },
     resolver: zodResolver(ListingSchema),
   });
 
-  const ltypesObservable = form.watch("types");
+  const ltypesObservable = form.watch("type");
   const isMobile = useMediaQuery("(max-width: 48em)");
   const [activeTab, setActiveTab] = useState<FormSteps | null>("basic");
 

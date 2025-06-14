@@ -2,10 +2,14 @@ import React, { FC } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { ListingFormData } from "../../types";
 import {
+  Box,
   Button,
   Group,
+  InputError,
+  InputWrapper,
   MultiSelect,
   NumberInput,
+  SegmentedControl,
   Stack,
   TagsInput,
   Textarea,
@@ -13,7 +17,7 @@ import {
   Title,
 } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
-import { LISTING_TYPES } from "../../utils/constants";
+import { INPUT_ORDER } from "../../utils/constants";
 
 type Props = {
   onNext?: () => void;
@@ -30,20 +34,25 @@ const ListingBasicDetailsFormSection: FC<Props> = ({ onCancel, onNext }) => {
         </Title>
         <Controller
           control={form.control}
-          name="types"
+          name="type"
           render={({ field, fieldState: { error } }) => (
-            <MultiSelect
-              {...field}
-              data={LISTING_TYPES}
-              placeholder="Select types"
-              limit={10}
-              label="Property types"
-              searchable
-              error={error?.message}
-              nothingFoundMessage="Nothing found..."
-              hidePickedOptions
-              clearable
-            />
+            <InputWrapper label="Type" error={error?.message}>
+              <Box>
+                <SegmentedControl
+                  value={field.value}
+                  onChange={field.onChange}
+                  data={[
+                    { label: "Rental", value: "RENTAL" },
+                    { label: "Sale", value: "SALE" },
+                    { label: "Lease", value: "LEASE" },
+                    { label: "Auction", value: "AUCTION" },
+                    { label: "Rent to Own", value: "RENT_TO_OWN" },
+                    { label: "Short Term", value: "SHORT_TERM" },
+                    { label: "Co-Living", value: "CO_LIVING" },
+                  ]}
+                />
+              </Box>
+            </InputWrapper>
           )}
         />
         <Controller
@@ -52,7 +61,9 @@ const ListingBasicDetailsFormSection: FC<Props> = ({ onCancel, onNext }) => {
           render={({ field, fieldState }) => (
             <TextInput
               {...field}
-              label="Name"
+              label="Title"
+              inputWrapperOrder={INPUT_ORDER}
+              description="Should be descriptive and catchy for marketing purposes"
               error={fieldState.error?.message}
               placeholder="Listing title"
             />
@@ -77,6 +88,8 @@ const ListingBasicDetailsFormSection: FC<Props> = ({ onCancel, onNext }) => {
           render={({ field, fieldState }) => (
             <TagsInput
               {...field}
+              description="helpfull in listing discovery during search"
+              inputWrapperOrder={INPUT_ORDER}
               label="Tags"
               error={fieldState.error?.message}
               placeholder="Enter key words"
@@ -90,6 +103,8 @@ const ListingBasicDetailsFormSection: FC<Props> = ({ onCancel, onNext }) => {
             <DateInput
               {...field}
               label="Expiry date"
+              description="Must be a future date"
+              inputWrapperOrder={INPUT_ORDER}
               error={fieldState.error?.message}
               placeholder="dd/mm/yyyy"
             />
@@ -113,7 +128,7 @@ const ListingBasicDetailsFormSection: FC<Props> = ({ onCancel, onNext }) => {
               "title",
               "description",
               "tags",
-              "types",
+              "type",
               "expiryDate",
             ]);
             if (valid) onNext?.();

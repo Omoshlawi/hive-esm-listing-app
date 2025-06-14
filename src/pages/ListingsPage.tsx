@@ -58,7 +58,7 @@ const ListingsPage: FC<ListingsPageProps> = ({ launchWorkspace }) => {
 
   return (
     <StateFullDataTable
-      title="Property Listings"
+      title="Listings"
       onAdd={() => handleAddOrupdate()}
       columns={[
         ...columns,

@@ -8,16 +8,34 @@ export interface Listing {
   organizationId: string;
   organization: Organization;
   tags: any[];
-  status: string;
+  status:
+    | "DRAFT"
+    | "PENDING"
+    | "BLOCKED"
+    | "APPROVED"
+    | "REJECTED"
+    | "UNDER_CONTRACT"
+    | "SOLD"
+    | "LEASED"
+    | "RENTED"
+    | "WITHDRAWN"
+    | "EXPIRED";
   title: string;
   description: any;
+  type:
+    | "RENTAL"
+    | "SALE"
+    | "LEASE"
+    | "AUCTION"
+    | "RENT_TO_OWN"
+    | "SHORT_TERM"
+    | "CO_LIVING";
+  coverimage?: string;
   price: string;
-  currency: string;
   listedDate: string;
   expiryDate: any;
   featured: boolean;
   contactPersonId: string;
-  contactPerson: any;
   metadata: Metadata;
   views: number;
   createdBy: string;
@@ -33,6 +51,7 @@ export interface Property {
   address?: Address;
   thumbnail: string;
   addressId: string;
+  status: string;
 }
 
 export interface Address {
@@ -70,12 +89,26 @@ export interface SaleDetails {
   id: string;
   listingId: string;
   downPayment?: string;
-  mortgageAvailable: boolean;
   priceNegotiable: boolean;
   titleDeedReady: boolean;
-  financingOptions: string[];
   createdAt: string;
   updatedAt: string;
 }
 
 export type ListingFormData = z.infer<typeof ListingSchema>;
+export interface OwnershipType {
+  id: string;
+  name: string;
+  description?: string;
+  voided: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+export interface FinancingOptions {
+  id: string;
+  name: string;
+  description?: string;
+  voided: boolean;
+  createdAt: string;
+  updatedAt: string;
+}

@@ -11,6 +11,7 @@ import React, { FC } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { ListingFormData, Property } from "../../types";
 import { User } from "@hive/esm-core-api";
+import { INPUT_ORDER } from "../../utils/constants";
 type Props = {
   onNext?: () => void;
   onPrev?: () => void;
@@ -53,7 +54,7 @@ const ListingPropertyFormStep: FC<Props> = ({
                 label: p.name,
                 value: p.id,
               }))}
-              placeholder="Select property to list"
+              placeholder="Search property to list"
               limit={10}
               rightSection={isLoadingProperties && <Loader size={"xs"} />}
               label="Property"
@@ -79,7 +80,7 @@ const ListingPropertyFormStep: FC<Props> = ({
               rightSection={isLoadingUsers && <Loader size={"xs"} />}
               searchValue={userSearchValue}
               onSearchChange={onUserSearchChange}
-              placeholder="search user"
+              placeholder="Search user"
               limit={10}
               label="Responsible person"
               searchable
@@ -96,8 +97,10 @@ const ListingPropertyFormStep: FC<Props> = ({
             <NumberInput
               {...field}
               label="Price"
+              inputWrapperOrder={INPUT_ORDER}
+              description="In Ksh."
               error={fieldState.error?.message}
-              placeholder="Price in Ksh."
+              placeholder="Enter price"
             />
           )}
         />

@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   Checkbox,
   Group,
@@ -12,6 +13,10 @@ import {
 import React, { FC } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { ListingFormData } from "../../types";
+import { INPUT_ORDER } from "../../utils/constants";
+import { usefinancingOptions, useOwnershipTypes } from "../../hooks";
+import { InputSkeleton, When } from "@hive/esm-core-components";
+import { handleApiErrors } from "@hive/esm-core-api";
 
 type Props = {
   onNext?: () => void;
@@ -20,6 +25,8 @@ type Props = {
 
 const SalesListingFormStep: FC<Props> = ({ onNext, onPrev }) => {
   const form = useFormContext<ListingFormData>();
+  const ownershipTypesAsync = useOwnershipTypes();
+  const financingOptionsAsync = usefinancingOptions();
   return (
     <Stack h={"100%"} justify="space-between">
       <Stack gap={"md"}>
@@ -34,7 +41,9 @@ const SalesListingFormStep: FC<Props> = ({ onNext, onPrev }) => {
               {...field}
               label="Down payment"
               error={fieldState.error?.message}
-              placeholder="In Ksh."
+              placeholder="Enter down payment"
+              inputWrapperOrder={INPUT_ORDER}
+              description="In Ksh."
             />
           )}
         />
@@ -72,35 +81,65 @@ const SalesListingFormStep: FC<Props> = ({ onNext, onPrev }) => {
         />
         <Controller
           control={form.control}
-          name="saleDetails.ownershipType"
+          name="saleDetails.ownershipTypeId"
           render={({ field, fieldState }) => (
-            <Radio.Group
-              {...field}
-              label="Select ownership type"
-              error={fieldState.error?.message}
-            >
-              <Stack gap={"md"}>
-                <Radio value="Freehold" label="Freehold" />
-                <Radio value="Leasehold" label="Leasehold" />
-              </Stack>
-            </Radio.Group>
+            <When
+              asyncState={ownershipTypesAsync}
+              loading={() => <InputSkeleton />}
+              error={(e) => (
+                <Alert color="red" title="Error loading ownership types">
+                  {handleApiErrors(e).detail}
+                </Alert>
+              )}
+              success={(ownershipTypes) => (
+                <Select
+                  {...field}
+                  data={ownershipTypes.map((type) => ({
+                    label: type.name,
+                    value: type.id,
+                  }))}
+                  placeholder="Select ownership type"
+                  limit={10}
+                  label="ownership type"
+                  searchable
+                  error={fieldState.error?.message}
+                  nothingFoundMessage="Nothing found..."
+                  clearable
+                />
+              )}
+            />
           )}
         />
+
         <Controller
           control={form.control}
           name="saleDetails.financingOptions"
           render={({ field, fieldState }) => (
-            <MultiSelect
-              {...field}
-              data={["Cash", "Mortgage", "Installments"]}
-              placeholder="Supported financing options"
-              limit={10}
-              label="Supported financing options"
-              searchable
-              error={fieldState.error?.message}
-              nothingFoundMessage="Nothing found..."
-              hidePickedOptions
-              clearable
+            <When
+              asyncState={financingOptionsAsync}
+              loading={() => <InputSkeleton />}
+              error={(e) => (
+                <Alert color="red" title="Error loading financing options">
+                  {handleApiErrors(e).detail}
+                </Alert>
+              )}
+              success={(financingOptions) => (
+                <MultiSelect
+                  {...field}
+                  data={financingOptions.map((option) => ({
+                    label: option.name,
+                    value: option.id,
+                  }))}
+                  placeholder="Supported financing options"
+                  limit={10}
+                  label="Supported financing options"
+                  searchable
+                  error={fieldState.error?.message}
+                  nothingFoundMessage="Nothing found..."
+                  hidePickedOptions
+                  clearable
+                />
+              )}
             />
           )}
         />
@@ -121,7 +160,7 @@ const SalesListingFormStep: FC<Props> = ({ onNext, onPrev }) => {
             const valid = await form.trigger([
               "saleDetails.downPayment",
               "saleDetails.financingOptions",
-              "saleDetails.ownershipType",
+              "saleDetails.ownershipTypeId",
               "saleDetails.priceNegotiable",
               "saleDetails.titleDeedReady",
             ]);

@@ -7,6 +7,7 @@ import {
   SimpleGrid,
   Image,
   InputLabel,
+  InputWrapper,
 } from "@mantine/core";
 import React, { FC, useState } from "react";
 import { useFormContext } from "react-hook-form";
@@ -57,8 +58,7 @@ const ListingMediaUploadsFormStep: FC<Props> = ({
         <Title order={4} pt={"lg"}>
           Upload necessary files
         </Title>
-        <Stack>
-          <InputLabel>Cover image</InputLabel>
+        <InputWrapper label="Cover image">
           <Dropzone
             multiple={false}
             accept={IMAGE_MIME_TYPE}
@@ -69,9 +69,8 @@ const ListingMediaUploadsFormStep: FC<Props> = ({
             <Text ta="center">Drop cover image here</Text>
           </Dropzone>
           <SimpleGrid cols={{ base: 1, sm: 4 }}>{coverImagepreview}</SimpleGrid>
-        </Stack>
-        <Stack>
-          <InputLabel>Galary images</InputLabel>
+        </InputWrapper>
+        <InputWrapper label="Galary images">
           <Dropzone
             accept={IMAGE_MIME_TYPE}
             onDrop={onGalaryImagesChange}
@@ -83,7 +82,7 @@ const ListingMediaUploadsFormStep: FC<Props> = ({
           <SimpleGrid cols={{ base: 1, sm: 4 }}>
             {galaryImagepreview}
           </SimpleGrid>
-        </Stack>
+        </InputWrapper>
       </Stack>
       <Group gap={1}>
         <Button flex={1} variant="default" radius={0} onClick={onPrev}>

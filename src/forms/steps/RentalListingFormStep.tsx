@@ -11,6 +11,7 @@ import { DateInput } from "@mantine/dates";
 import React, { FC } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { ListingFormData } from "../../types";
+import { INPUT_ORDER } from "../../utils/constants";
 type Props = {
   onNext?: () => void;
   onPrev?: () => void;
@@ -56,7 +57,9 @@ const RentalListingFormStep: FC<Props> = ({ onNext, onPrev }) => {
               {...field}
               label="Security deposit"
               error={fieldState.error?.message}
-              placeholder="In Ksh."
+              placeholder="Enter security deposit"
+              inputWrapperOrder={INPUT_ORDER}
+              description="In Ksh."
             />
           )}
         />

@@ -23,13 +23,13 @@ const LeaseListingFormStep: FC<Props> = ({ onNext, onPrev }) => {
         </Title>
         <Controller
           control={form.control}
-          name="leaseDetails.leaseTerm"
+          name="leaseDetails.leaseTermInMoths"
           render={({ field, fieldState }) => (
             <NumberInput
               {...field}
               label="Lease term"
               error={fieldState.error?.message}
-              placeholder=""
+              placeholder="In months"
             />
           )}
         />
@@ -77,11 +77,9 @@ const LeaseListingFormStep: FC<Props> = ({ onNext, onPrev }) => {
           disabled={form.formState.isSubmitting}
           onClick={async () => {
             const valid = await form.trigger([
-              "leaseDetails.leaseTerm",
+              "leaseDetails.leaseTermInMoths",
               "leaseDetails.renewalAllowed",
               "leaseDetails.securityDeposit",
-              "leaseDetails.renewalOptions.maxRenewals",
-              "leaseDetails.renewalOptions.renewalAllowed",
             ]);
             if (valid) onNext?.();
           }}
