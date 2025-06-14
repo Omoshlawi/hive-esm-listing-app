@@ -53,7 +53,7 @@ const ListingChartLayout: React.FC<ListingChartLayoutProps> = ({
                 <Stack gap="xl">
                   <Extension
                     name="listing-chart-banner-extension-slot"
-                    params={{ propertyId: listingId, Extension }}
+                    params={{ listingId, Extension }}
                   />
                   <Box>{children}</Box>
                 </Stack>

@@ -4,6 +4,8 @@ import { ListingDetail, Listings, PropertyListings } from "./pages";
 import { HeaderLink } from "@hive/esm-core-components";
 import ListingChartLayout from "./layout/ListingChart";
 import { useListingChartListing, usePropertyChartProperty } from "./hooks";
+import { ListingChartBanner } from "./components/Banner";
+import ListingQuickActions from "./components/ListingQuickActions";
 
 export function setup(app: PiletApi) {
   app.registerPageLayout("listingChart", ({ children }) => (
@@ -62,5 +64,15 @@ export function setup(app: PiletApi) {
       );
     },
     { type: "listingChart" as any }
+  );
+
+  app.registerExtension("listing-chart-banner-extension-slot", ({ params }) => (
+    <ListingChartBanner {...params} />
+  ));
+  app.registerExtension(
+    "listing-chart-banner-actions-extension-slot",
+    ({ params }) => (
+      <ListingQuickActions {...params} launchWorkspace={app.launchWorkspace} />
+    )
   );
 }

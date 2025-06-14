@@ -1,9 +1,10 @@
-import { apiFetch, constructUrl } from "@hive/esm-core-api";
+import { apiFetch, constructUrl, mutate } from "@hive/esm-core-api";
 import {
   Listing,
   ListingFormData,
   ListingMedia,
   ListingMediaFormData,
+  ListingStatus,
   Property,
 } from "../types";
 
@@ -78,6 +79,25 @@ const searchProperty = (filters: Record<string, any>) => {
   return apiFetch<{ results: Array<Property> }>(url);
 };
 
+const submitDraftListingForReview = async (listingId: string) => {
+  const res = await apiFetch<ListingStatus>(
+    `/listings/${listingId}/status/submit`,
+    {
+      method: "POST",
+    }
+  );
+  return res.data;
+};
+
+const approvePendingListing = async (listingId: string) => {
+  const res = await apiFetch<ListingStatus>(
+    `/listings/${listingId}/status/approve`,
+    {
+      method: "POST",
+    }
+  );
+  return res.data;
+};
 export const useListingApi = () => {
   return {
     addListing,
@@ -87,5 +107,8 @@ export const useListingApi = () => {
     addListingMedia,
     updateListingMedia,
     deleteListingMedia,
+    submitDraftListingForReview,
+    approvePendingListing,
+    mutateListings: () => mutate("/listings"),
   };
 };

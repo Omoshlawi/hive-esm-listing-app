@@ -161,5 +161,16 @@ export interface ListingMedia {
     id: string;
   };
 }
+
+export interface ListingStatus {
+  id: string;
+  listingId: string;
+  previousStatus: string;
+  newStatus: string;
+  changedBy?: string;
+  reason?: string;
+  createdAt: string;
+}
+
 export type ListingFormData = z.infer<typeof ListingSchema>;
 export type ListingMediaFormData = z.infer<typeof ListingMediaSchema>;
