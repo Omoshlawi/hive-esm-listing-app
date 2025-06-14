@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ListingSchema } from "../utils/validation";
+import { ListingMediaSchema, ListingSchema } from "../utils/validation";
 
 export interface Listing {
   id: string;
@@ -95,7 +95,6 @@ export interface SaleDetails {
   updatedAt: string;
 }
 
-export type ListingFormData = z.infer<typeof ListingSchema>;
 export interface OwnershipType {
   id: string;
   name: string;
@@ -112,3 +111,28 @@ export interface FinancingOption {
   createdAt: string;
   updatedAt: string;
 }
+export interface ListingMedia {
+  id: string;
+  listingId: string;
+  tags?: string[];
+  title?: string;
+  description?: string;
+  url?: string;
+  order?: number;
+  documentPurpose?: string;
+  mediaType:
+    | "IMAGE"
+    | "VIDEO"
+    | "DOCUMENT"
+    | "FLOOR_PLAN"
+    | "LEGAL_DOC"
+    | "CONTRACT"
+    | "OTHER";
+  metadata?: {
+    size?: number;
+    memeType?: string;
+    id: string;
+  };
+}
+export type ListingFormData = z.infer<typeof ListingSchema>;
+export type ListingMediaFormData = z.infer<typeof ListingMediaSchema>;

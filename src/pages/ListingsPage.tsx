@@ -123,6 +123,14 @@ const columns: ColumnDef<Listing>[] = [
     },
   },
   {
+    accessorKey: "type",
+    header: "Type",
+    cell({ getValue }) {
+      const type = getValue<Listing["type"]>();
+      return <Badge variant="default">{type}</Badge>;
+    },
+  },
+  {
     accessorKey: "listedDate",
     header({ column }) {
       return <DataTableColumnHeader column={column} title="Date listed" />;

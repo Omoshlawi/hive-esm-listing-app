@@ -7,6 +7,16 @@ export const ListingMediaSchema = z.object({
   title: z.string().min(1, "Required").optional(),
   description: z.string().min(1, "Required").optional(),
   order: z.number({ coerce: true }).int().nonnegative().optional(),
+  documentPurpose: z.string().optional(),
+  mediaType: z.enum([
+    "IMAGE",
+    "VIDEO",
+    "DOCUMENT",
+    "FLOOR_PLAN",
+    "LEGAL_DOC",
+    "CONTRACT",
+    "OTHER",
+  ]),
   metadata: z.object({
     size: z
       .number({
@@ -14,6 +24,7 @@ export const ListingMediaSchema = z.object({
       })
       .nonnegative(),
     memeType: z.string().min(1, "Required").optional(),
+    id: z.string().uuid().optional(),
   }),
 });
 

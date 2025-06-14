@@ -1,8 +1,15 @@
 import { apiFetch, constructUrl } from "@hive/esm-core-api";
-import { Listing, ListingFormData, Property } from "../types";
+import {
+  Listing,
+  ListingFormData,
+  ListingMedia,
+  ListingMediaFormData,
+  Property,
+} from "../types";
 
 const addListing = async (data: ListingFormData) => {
-  return await apiFetch<Listing>("/listings", { method: "POST", data });
+  const res = await apiFetch<Listing>("/listings", { method: "POST", data });
+  return res.data;
 };
 
 const updateListing = async (
@@ -10,19 +17,60 @@ const updateListing = async (
   data: ListingFormData,
   method: "PUT" | "PATCH" = "PATCH"
 ) => {
-  return await apiFetch<Listing>(`/listings/${listingId}`, {
+  const res = await apiFetch<Listing>(`/listings/${listingId}`, {
     method: method,
     data,
   });
+  return res.data;
 };
 
 const deleteListing = async (
   listingId: string,
   method: "DELETE" | "PURGE" = "DELETE"
 ) => {
-  return await apiFetch<Listing>(`/listings/${listingId}`, {
+  const res = await apiFetch<Listing>(`/listings/${listingId}`, {
     method: method,
   });
+  return res.data;
+};
+
+const addListingMedia = async (
+  listingId: string,
+  data: ListingMediaFormData
+) => {
+  const res = await apiFetch<ListingMedia>(`/listings/${listingId}/media`, {
+    method: "POST",
+    data,
+  });
+  return res.data;
+};
+const updateListingMedia = async (
+  listingId: string,
+  mediaId: string,
+  data: ListingMediaFormData,
+  method: "PUT" | "PATCH" = "PATCH"
+) => {
+  const res = await apiFetch<ListingMedia>(
+    `/listings/${listingId}/media/${mediaId}`,
+    {
+      method: method,
+      data,
+    }
+  );
+  return res.data;
+};
+const deleteListingMedia = async (
+  listingId: string,
+  mediaId: string,
+  method: "DELETE" | "PURGE" = "DELETE"
+) => {
+  const res = await apiFetch<ListingMedia>(
+    `/listings/${listingId}/media/${mediaId}`,
+    {
+      method: method,
+    }
+  );
+  return res.data;
 };
 
 const searchProperty = (filters: Record<string, any>) => {
@@ -36,5 +84,8 @@ export const useListingApi = () => {
     updateListing,
     deleteListing,
     searchProperty,
+    addListingMedia,
+    updateListingMedia,
+    deleteListingMedia,
   };
 };

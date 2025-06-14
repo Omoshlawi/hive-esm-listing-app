@@ -8,7 +8,10 @@ export const useSearchProperties = () => {
   const [search, searchProperty] = useState<string>("");
   const [debounced] = useDebouncedValue(search, 500);
 
-  const url = constructUrl(`/properties`, { search: debounced });
+  const url = constructUrl(`/properties`, {
+    search: debounced,
+    // status: "APPROVED",
+  });
 
   const { data, error, isLoading } = useSWR<
     APIFetchResponse<{ results: Array<Property> }>

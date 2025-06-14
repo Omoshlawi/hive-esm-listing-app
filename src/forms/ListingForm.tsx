@@ -1,4 +1,9 @@
-import { handleApiErrors, mutate } from "@hive/esm-core-api";
+import {
+  cleanFiles,
+  handleApiErrors,
+  mutate,
+  uploadFiles,
+} from "@hive/esm-core-api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Paper, Stepper, Tabs } from "@mantine/core";
 import { FileWithPath } from "@mantine/dropzone";
@@ -89,7 +94,7 @@ const ListingForm: FC<ListingFormProps> = ({
   listing,
   onSuccess,
 }) => {
-  const { addListing, updateListing } = useListingApi();
+  const { addListing, updateListing, addListingMedia } = useListingApi();
   const {
     properties,
     isLoading: isLoadingProperties,
@@ -155,6 +160,53 @@ const ListingForm: FC<ListingFormProps> = ({
     [navigateToStep]
   );
 
+  // Extract error navigation logic into a separate function
+  const navigateToErrorStep = useCallback(() => {
+    const fieldSteps: Record<FormSteps, Array<FieldPath<ListingFormData>>> = {
+      basic: ["type", "title", "description", "tags", "expiryDate"],
+      upload: ["coverImage"],
+      property: [
+        "propertyId",
+        "contactPersonId",
+        "price",
+        "additionalCharges",
+        "additionalCharges",
+      ],
+      rent: [
+        "rentalDetails",
+        "rentalDetails.availableFrom",
+        "rentalDetails.furnished",
+        "rentalDetails.minimumStay",
+        "rentalDetails.rentPeriod",
+        "rentalDetails.securityDeposit",
+        "rentalDetails.utilities",
+      ],
+      sale: [
+        "saleDetails",
+        "saleDetails.downPayment",
+        "saleDetails.financingOptions",
+        "saleDetails.ownershipTypeId",
+        "saleDetails.priceNegotiable",
+        "saleDetails.titleDeedReady",
+      ],
+      auction: [],
+      lease: [],
+      submit: [],
+    };
+
+    for (const step of availableSteps) {
+      const fields = fieldSteps[step];
+      const hasError = fields.some(
+        (field) => form.getFieldState(field as any).invalid
+      );
+
+      if (hasError) {
+        setActiveTab(step);
+        break;
+      }
+    }
+  }, [availableSteps, form]);
+
   // Auto-correct invalid active tab
   React.useEffect(() => {
     if (activeTab && !availableSteps.includes(activeTab)) {
@@ -168,54 +220,49 @@ const ListingForm: FC<ListingFormProps> = ({
       setActiveTab(fallbackStep);
     }
   }, [availableSteps, activeTab]);
+
+  // Navigate to error step when form errors change
   React.useEffect(() => {
-    if (form.formState.errors) {
-      const fieldSteps: Record<FormSteps, Array<FieldPath<ListingFormData>>> = {
-        basic: ["type", "title", "description", "tags", "expiryDate"],
-        upload: ["coverImage"], //TODO Add media
-        property: [
-          "propertyId",
-          "contactPersonId",
-          "price",
-          "additionalCharges",
-          "additionalCharges",
-        ],
-        rent: [
-          "rentalDetails",
-          "rentalDetails.availableFrom",
-          "rentalDetails.furnished",
-          "rentalDetails.minimumStay",
-          "rentalDetails.rentPeriod",
-          "rentalDetails.securityDeposit",
-          "rentalDetails.utilities",
-        ],
-        sale: [
-          "saleDetails",
-          "saleDetails.downPayment",
-          "saleDetails.financingOptions",
-          "saleDetails.ownershipTypeId",
-          "saleDetails.priceNegotiable",
-          "saleDetails.titleDeedReady",
-        ],
-        auction: [],
-        lease: [],
-        submit: [],
-      };
-      for (const [step, fields] of Object.entries(fieldSteps)) {
-        if (fields.some((field) => form.getFieldState(field as any).invalid)) {
-          setActiveTab(step as FormSteps);
-          break;
-        }
-      }
+    if (Object.keys(form.formState.errors ?? {}).length > 0) {
+      navigateToErrorStep();
     }
-  }, [form.formState.errors, setActiveTab]);
+  }, [form.formState.errors, navigateToErrorStep]);
 
   const onSubmit: SubmitHandler<ListingFormData> = async (data) => {
     try {
       const res = listing
         ? await updateListing(listing?.id, data)
         : await addListing(data);
-      onSuccess?.(res.data);
+      // Upload cover images or galary if any
+      if (files.length > 0 || galaryImages.length > 0) {
+        const _files = await uploadFiles({
+          path: "listings/images",
+          files: { coverImage: files, galaryImages },
+        });
+        const cover = _files["coverImage"];
+        const galary = _files["galaryImages"];
+        if (cover.length > 0) {
+          // Update cover and clean old cover
+          await updateListing(res.id, { coverImage: cover[0].path });
+          if (res.coverimage) await cleanFiles([res.coverimage]);
+        }
+        if (galary.length > 0) {
+          // No cleaning since this only occurs on creation of listing
+          for (const g of galary) {
+            await addListingMedia(res.id, {
+              url: g.path,
+              mediaType: "IMAGE",
+              metadata: {
+                id: g.id,
+                size: Number(g.bytesSize),
+                memeType: g.memeType,
+              },
+            });
+          }
+        }
+      }
+
+      onSuccess?.(res);
       onCloseWorkspace?.();
       mutate("/listings");
       showNotification({
@@ -228,9 +275,17 @@ const ListingForm: FC<ListingFormProps> = ({
       if (e.detail) {
         showNotification({ title: "Error", message: e.detail, color: "red" });
       } else {
+        // Set all backend validation errors
         Object.entries(e).forEach(([key, val]) =>
           form.setError(key as keyof ListingFormData, { message: val })
         );
+
+        // Navigate to error step after setting errors
+        // Use setTimeout to ensure React Hook Form state is updated
+        setTimeout(() => {
+          // Without setTimeout - runs immediately in same stack:
+          navigateToErrorStep();
+        }, 0);
       }
     }
   };
