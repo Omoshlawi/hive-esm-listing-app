@@ -117,17 +117,19 @@ const ListingOverviewTab: FC<Props> = ({ listing }) => {
           </Paper>
 
           {/* Description */}
-          <Paper p="lg" radius="md" shadow="sm">
-            <Stack gap="md">
-              <Group justify="space-between">
-                <Title order={4}>Description</Title>
-                <ActionIcon variant="outline" size="sm">
-                  <IconEdit size={14} />
-                </ActionIcon>
-              </Group>
-              <Text>{listing.description}</Text>
-            </Stack>
-          </Paper>
+          {listing.description && (
+            <Paper p="lg" radius="md" shadow="sm">
+              <Stack gap="md">
+                <Group justify="space-between">
+                  <Title order={4}>Description</Title>
+                  <ActionIcon variant="outline" size="sm">
+                    <IconEdit size={14} />
+                  </ActionIcon>
+                </Group>
+                <Text>{listing.description}</Text>
+              </Stack>
+            </Paper>
+          )}
         </Stack>
       </Grid.Col>
 

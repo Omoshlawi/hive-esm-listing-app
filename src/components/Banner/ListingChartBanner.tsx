@@ -1,5 +1,5 @@
-import { ContextualBanner } from "@hive/esm-core-components";
-import { Badge, useComputedColorScheme } from "@mantine/core";
+import { ContextualBanner, TablerIcon } from "@hive/esm-core-components";
+import { Badge, useComputedColorScheme, Text, Title } from "@mantine/core";
 import React from "react";
 import { useListing } from "../../hooks";
 import { Listing } from "../../types";
@@ -79,6 +79,24 @@ export function ListingChartBanner({
           name="listing-chart-banner-actions-extension-slot"
           params={{}}
         />
+      )}
+      renderExtra={(l) => (
+        <>
+          <Text size="sm" c={"dimmed"}>
+            •
+          </Text>
+          <Title
+            style={{
+              display: "flex",
+              alignItems: "center",
+            }}
+            c={"blue"}
+            order={4}
+          >
+            <TablerIcon name="coin" size={16} style={{ marginRight: 4 }} />
+            Price {l.price}
+          </Title>
+        </>
       )}
     />
   );

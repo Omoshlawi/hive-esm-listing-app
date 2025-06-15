@@ -88,7 +88,7 @@ const MediaGridView: React.FC<MediaGridViewProps> = ({ media }) => {
                 </Menu>
               </Group>
               <Group>
-                <Badge size="xs" variant="outline">
+                <Badge size="xs" variant="outline" color="green">
                   {media_.mediaType}
                 </Badge>
                 <Badge size="xs" variant="outline">
