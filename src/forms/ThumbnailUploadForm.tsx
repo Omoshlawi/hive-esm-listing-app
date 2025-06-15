@@ -76,7 +76,7 @@ const ThumbnailUploadForm: FC<ThumbnailUploadFormProps> = ({
         disabled={loading}
         multiple={false}
       >
-        <Text ta="center">Drop images here</Text>
+        <Text ta="center">Drop image here</Text>
       </Dropzone>
       <SimpleGrid cols={{ base: 1, sm: 4 }}>{previews}</SimpleGrid>
       <Group justify="flex-end">

@@ -49,17 +49,29 @@ export function ListingChartBanner({
       renderId={(l) => l.id}
       renderTimeStamp={(l) => `Created ${formatDate(l.createdAt)}`}
       renderBadges={(l) => (
-        <Badge
-          size="sm"
-          color={getStatusColor(l.status)}
-          variant={getStatusVariant(l.status, colorScheme)}
-          style={{
-            textTransform: "capitalize",
-            fontWeight: 500,
-          }}
-        >
-          {l.status.replace("_", " ")}
-        </Badge>
+        <>
+          <Badge
+            size="sm"
+            color={getStatusColor(l.status)}
+            variant={getStatusVariant(l.status, colorScheme)}
+            style={{
+              textTransform: "capitalize",
+              fontWeight: 500,
+            }}
+          >
+            {l.status.replace("_", " ")}
+          </Badge>
+          <Badge
+            size="sm"
+            variant={"filled"}
+            style={{
+              textTransform: "capitalize",
+              fontWeight: 500,
+            }}
+          >
+            {l.type.replace("_", " ")}
+          </Badge>
+        </>
       )}
       renderExpandedSection={(l) => <BannerExpandedSection listing={l} />}
       renderMenuExtensionSlot={(l) => (

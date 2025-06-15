@@ -1,6 +1,7 @@
 import * as React from "react";
 import type { PiletApi } from "@hive/esm-shell-app";
 import {
+  ListingAnalytics,
   ListingDetail,
   ListingGalary,
   Listings,
@@ -31,6 +32,13 @@ export function setup(app: PiletApi) {
   app.registerPage("/dashboard/listings/:listingId/galary", ListingGalary, {
     layout: "listingChart",
   });
+  app.registerPage(
+    "/dashboard/listings/:listingId/analytics",
+    ListingAnalytics,
+    {
+      layout: "listingChart",
+    }
+  );
   app.registerPage(
     "/dashboard/properties/:propertyId/listings",
     () => <PropertyListings launchWorkspace={app.launchWorkspace} />,
@@ -81,6 +89,19 @@ export function setup(app: PiletApi) {
         <HeaderLink
           label="Galary"
           to={`/dashboard/listings/${id}/galary`}
+          onClose={onClose ?? (() => {})}
+        />
+      );
+    },
+    { type: "listingChart" as any }
+  );
+  app.registerMenu(
+    ({ onClose }: any) => {
+      const id = useListingChartListing();
+      return (
+        <HeaderLink
+          label="Analitics"
+          to={`/dashboard/listings/${id}/analytics`}
           onClose={onClose ?? (() => {})}
         />
       );

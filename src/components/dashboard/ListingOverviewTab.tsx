@@ -1,31 +1,23 @@
-import React, { FC, useState } from "react";
-import { Listing } from "../../types";
+import { getHiveFileUrl } from "@hive/esm-core-api";
 import {
   ActionIcon,
   Anchor,
   Button,
   Grid,
   Group,
+  Image,
   Paper,
-  SimpleGrid,
   Stack,
+  Text,
   ThemeIcon,
   Title,
-  Text,
-  Image,
   useMantineTheme,
 } from "@mantine/core";
-import {
-  IconUpload,
-  IconEdit,
-  IconEye,
-  IconShare,
-  IconDownload,
-  IconRefresh,
-  IconInfoCircle,
-} from "@tabler/icons-react";
-import { useListingMedia } from "../../hooks";
-import { getHiveFileUrl } from "@hive/esm-core-api";
+import { closeModal, openModal } from "@mantine/modals";
+import { IconEdit, IconInfoCircle, IconUpload } from "@tabler/icons-react";
+import React, { FC } from "react";
+import { Listing } from "../../types";
+import ThumbnailUploadForm from "../../forms/ThumbnailUploadForm";
 
 type Props = {
   listing: Listing;
@@ -62,13 +54,21 @@ const activities = [
   },
 ];
 
-const ListingGalary: FC<Props> = ({ listing }) => {
+const ListingOverviewTab: FC<Props> = ({ listing }) => {
   const theme = useMantineTheme();
-  const [selectedImage, setSelectedImage] = useState(listing?.coverImage);
-  const { error, isLoading, media } = useListingMedia(listing.id);
-  const primaryColor = theme.colors[theme.primaryColor];
+  const img = getHiveFileUrl(listing.coverImage);
 
-  if (isLoading || error) return null;
+  const handleUploadThumbnail = () => {
+    const modalId = openModal({
+      title: "Upload Thumbnail",
+      children: (
+        <ThumbnailUploadForm
+          listing={listing}
+          onClose={() => closeModal(modalId)}
+        />
+      ),
+    });
+  };
   return (
     <Grid gutter="xl">
       <Grid.Col span={12}>
@@ -77,52 +77,42 @@ const ListingGalary: FC<Props> = ({ listing }) => {
           <Paper p="lg" radius="md" shadow="sm">
             <Stack gap="md">
               <Group justify="space-between">
-                <Title order={4}>Property Images</Title>
+                <Title order={4}>Cover photo</Title>
                 <Button
                   variant="outline"
                   size="xs"
                   leftSection={<IconUpload size={14} />}
+                  onClick={handleUploadThumbnail}
                 >
-                  Upload More
+                  Update
                 </Button>
               </Group>
               <Image
-                src={
-                  selectedImage
-                    ? getHiveFileUrl(selectedImage)
-                    : getHiveFileUrl(listing.coverImage)
-                }
-                height={300}
-                fit="contain"
+                src={img}
+                height={320}
+                fit="cover"
                 radius="md"
+                fallbackSrc="https://placehold.co/600x400?text=Placeholder"
+                role="button"
+                onClick={
+                  img
+                    ? () =>
+                        openModal({
+                          fullScreen: true,
+                          title: listing.title,
+                          children: (
+                            <Image
+                              src={img}
+                              fit="contain"
+                              fallbackSrc="https://placehold.co/600x400?text=Placeholder"
+                              w={"100%"}
+                              h={"100%"}
+                            />
+                          ),
+                        })
+                    : undefined
+                }
               />
-              <SimpleGrid cols={5} spacing="xs">
-                {media
-                  .filter((m) => m.mediaType === "IMAGE")
-                  .slice(0, 5)
-                  .map((image) => (
-                    <Image
-                      key={image.id}
-                      src={
-                        image.url
-                          ? getHiveFileUrl(image.url)
-                          : "/placeholder.svg"
-                      }
-                      height={60}
-                      fit="cover"
-                      radius="sm"
-                      style={{
-                        cursor: "pointer",
-                        opacity: selectedImage === image.url ? 1 : 0.7,
-                        border:
-                          selectedImage === image.url
-                            ? `2px solid ${primaryColor[6]}`
-                            : "none",
-                      }}
-                      onClick={() => setSelectedImage(image.url)}
-                    />
-                  ))}
-              </SimpleGrid>
             </Stack>
           </Paper>
 
@@ -176,4 +166,4 @@ const ListingGalary: FC<Props> = ({ listing }) => {
   );
 };
 
-export default ListingGalary;
+export default ListingOverviewTab;

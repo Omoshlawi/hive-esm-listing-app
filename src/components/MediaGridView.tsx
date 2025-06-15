@@ -1,8 +1,26 @@
 import { getHiveFileUrl } from "@hive/esm-core-api";
-import { Card, Grid, Image } from "@mantine/core";
+import {
+  ActionIcon,
+  Badge,
+  Card,
+  Grid,
+  Group,
+  Image,
+  Menu,
+  SimpleGrid,
+  Stack,
+  Text,
+} from "@mantine/core";
 import { openModal } from "@mantine/modals";
 import React from "react";
 import { ListingMedia } from "../types";
+import {
+  IconDots,
+  IconEdit,
+  IconDownload,
+  IconTrash,
+} from "@tabler/icons-react";
+import { filesize } from "filesize";
 
 type MediaGridViewProps = {
   media: Array<ListingMedia>;
@@ -10,21 +28,18 @@ type MediaGridViewProps = {
 
 const MediaGridView: React.FC<MediaGridViewProps> = ({ media }) => {
   return (
-    <Grid m={"sm"}>
-      {media.map((m) => {
-        const img = getHiveFileUrl(m.url);
+    <SimpleGrid cols={4} spacing="md" m={"sm"}>
+      {media.map((media_) => {
+        const img = getHiveFileUrl(media_.url);
 
         return (
-          <Grid.Col key={m.id} span={{ base: 12, md: 6, lg: 3 }}>
-            <Card
-              p={0}
-              radius={"md"}
-              h={"100%"}
+          <Card key={media_.id} p="xs" radius="md" shadow="sm" h={"100%"}>
+            <Card.Section
               role="button"
               onClick={() =>
                 openModal({
                   fullScreen: true,
-                  title: m.title,
+                  title: media_.title,
                   children: (
                     <Image
                       src={img}
@@ -44,11 +59,47 @@ const MediaGridView: React.FC<MediaGridViewProps> = ({ media }) => {
                 w={"100%"}
                 height={"300"}
               />
-            </Card>
-          </Grid.Col>
+            </Card.Section>
+            <Stack gap="xs" mt="xs">
+              <Group justify="space-between" align="flex-start">
+                <Text size="xs" fw={500}>
+                  {media_.title}
+                </Text>
+                <Menu>
+                  <Menu.Target>
+                    <ActionIcon size="xs" variant="subtle">
+                      <IconDots size={12} />
+                    </ActionIcon>
+                  </Menu.Target>
+                  <Menu.Dropdown>
+                    <Menu.Item leftSection={<IconEdit size={12} />}>
+                      Edit
+                    </Menu.Item>
+                    <Menu.Item leftSection={<IconDownload size={12} />}>
+                      Download
+                    </Menu.Item>
+                    <Menu.Item
+                      leftSection={<IconTrash size={12} />}
+                      color="red"
+                    >
+                      Delete
+                    </Menu.Item>
+                  </Menu.Dropdown>
+                </Menu>
+              </Group>
+              <Group>
+                <Badge size="xs" variant="outline">
+                  {media_.mediaType}
+                </Badge>
+                <Badge size="xs" variant="outline">
+                  {filesize(media_.metadata.size)}
+                </Badge>
+              </Group>
+            </Stack>
+          </Card>
         );
       })}
-    </Grid>
+    </SimpleGrid>
   );
 };
 

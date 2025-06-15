@@ -49,7 +49,7 @@ import {
 } from "@tabler/icons-react";
 import React, { FC, useState } from "react";
 import { Listing } from "../../types";
-import ListingGalary from "./ListingGalary";
+import ListingOverviewTab from "./ListingOverviewTab";
 
 // Enhanced mock data for dashboard
 const mockListing = {
@@ -66,26 +66,6 @@ const mockListing = {
   expiryDate: "2024-07-15T00:00:00Z",
   views: 1247,
   tags: ["luxury", "penthouse", "downtown", "city-view", "modern"],
-
-  // Dashboard-specific data
-  analytics: {
-    totalViews: 1247,
-    uniqueViews: 892,
-    viewsThisWeek: 156,
-    viewsLastWeek: 134,
-    inquiries: 23,
-    inquiriesThisWeek: 5,
-    favorites: 67,
-    shares: 12,
-    conversionRate: 1.8,
-    averageTimeOnPage: "3:24",
-    topSources: [
-      { source: "Direct", visits: 456, percentage: 36.6 },
-      { source: "Google", visits: 312, percentage: 25.0 },
-      { source: "Social Media", visits: 234, percentage: 18.8 },
-      { source: "Referral", visits: 245, percentage: 19.6 },
-    ],
-  },
 
   leads: [
     {
@@ -242,7 +222,6 @@ export const MainDashboardTabs: FC<{ listing: Listing }> = ({ listing }) => {
   const theme = useMantineTheme();
   const [activeTab, setActiveTab] = useState("overview");
 
-
   const getLeadStatusColor = (status: string) => {
     const colors = {
       HOT: "red",
@@ -277,17 +256,11 @@ export const MainDashboardTabs: FC<{ listing: Listing }> = ({ listing }) => {
         <Tabs.Tab value="overview" leftSection={<IconHome size={16} />}>
           Overview
         </Tabs.Tab>
-        <Tabs.Tab value="analytics" leftSection={<IconChartBar size={16} />}>
-          Analytics
-        </Tabs.Tab>
         <Tabs.Tab value="leads" leftSection={<IconUsers size={16} />}>
           Leads ({mockListing.leads.length})
         </Tabs.Tab>
         <Tabs.Tab value="tasks" leftSection={<IconClipboardList size={16} />}>
           Tasks ({mockListing.tasks.filter((t) => !t.completed).length})
-        </Tabs.Tab>
-        <Tabs.Tab value="media" leftSection={<IconPhoto size={16} />}>
-          Media
         </Tabs.Tab>
         <Tabs.Tab value="activity" leftSection={<IconActivity size={16} />}>
           Activity
@@ -295,116 +268,7 @@ export const MainDashboardTabs: FC<{ listing: Listing }> = ({ listing }) => {
       </Tabs.List>
 
       <Tabs.Panel value="overview" pt="md">
-        <ListingGalary listing={listing}/>
-      </Tabs.Panel>
-
-      <Tabs.Panel value="analytics" pt="md">
-        <Grid gutter="xl">
-          <Grid.Col span={12}>
-            <Stack gap="xl">
-              {/* Views Chart */}
-              <Paper p="lg" radius="md" shadow="sm">
-                <Stack gap="md">
-                  <Title order={4}>Views Over Time</Title>
-                  {/* <AreaChart
-                        h={300}
-                        data={viewsData}
-                        dataKey="date"
-                        series={[{ name: "views", color: primaryColor[6] }]}
-                        curveType="linear"
-                      /> */}
-                </Stack>
-              </Paper>
-
-              {/* Traffic Sources */}
-              <Paper p="lg" radius="md" shadow="sm">
-                <Stack gap="md">
-                  <Title order={4}>Traffic Sources</Title>
-                  <Stack gap="xs">
-                    {mockListing.analytics.topSources.map((source, index) => (
-                      <Group key={index} justify="space-between">
-                        <Text size="sm">{source.source}</Text>
-                        <Group gap="xs">
-                          <Text size="sm" fw={500}>
-                            {source.visits}
-                          </Text>
-                          <Text size="xs" color="dimmed">
-                            ({source.percentage}%)
-                          </Text>
-                        </Group>
-                      </Group>
-                    ))}
-                  </Stack>
-                </Stack>
-              </Paper>
-            </Stack>
-          </Grid.Col>
-
-          <Grid.Col span={12}>
-            <Stack gap="md">
-              {/* Performance Metrics */}
-              <Paper p="lg" radius="md" shadow="sm">
-                <Stack gap="md">
-                  <Title order={4}>Performance</Title>
-                  <Stack gap="md">
-                    <div>
-                      <Group justify="space-between" mb="xs">
-                        <Text size="sm">Unique Views</Text>
-                        <Text size="sm" fw={500}>
-                          {mockListing.analytics.uniqueViews}
-                        </Text>
-                      </Group>
-                      <Progress
-                        value={
-                          (mockListing.analytics.uniqueViews /
-                            mockListing.analytics.totalViews) *
-                          100
-                        }
-                        color={theme.primaryColor}
-                      />
-                    </div>
-
-                    <div>
-                      <Group justify="space-between" mb="xs">
-                        <Text size="sm">Conversion Rate</Text>
-                        <Text size="sm" fw={500}>
-                          {mockListing.analytics.conversionRate}%
-                        </Text>
-                      </Group>
-                      <Progress
-                        value={mockListing.analytics.conversionRate * 10}
-                        color="green"
-                      />
-                    </div>
-                  </Stack>
-                </Stack>
-              </Paper>
-
-              {/* Engagement Ring */}
-              <Paper p="lg" radius="md" shadow="sm">
-                <Stack gap="md" align="center">
-                  <Title order={4}>Engagement Score</Title>
-                  <RingProgress
-                    size={120}
-                    thickness={12}
-                    sections={[
-                      { value: 40, color: "blue", tooltip: "Views" },
-                      { value: 25, color: "orange", tooltip: "Inquiries" },
-                      { value: 15, color: "green", tooltip: "Favorites" },
-                    ]}
-                    label={
-                      <Text size="xs" ta="center">
-                        Overall
-                        <br />
-                        Score: 80%
-                      </Text>
-                    }
-                  />
-                </Stack>
-              </Paper>
-            </Stack>
-          </Grid.Col>
-        </Grid>
+        <ListingOverviewTab listing={listing} />
       </Tabs.Panel>
 
       <Tabs.Panel value="leads" pt="md">
@@ -542,62 +406,6 @@ export const MainDashboardTabs: FC<{ listing: Listing }> = ({ listing }) => {
               </Paper>
             ))}
           </Stack>
-        </Stack>
-      </Tabs.Panel>
-
-      <Tabs.Panel value="media" pt="md">
-        <Stack gap="md">
-          <Group justify="space-between">
-            <Title order={4}>Media Management</Title>
-            <Button leftSection={<IconUpload size={16} />} size="sm">
-              Upload Media
-            </Button>
-          </Group>
-
-          <SimpleGrid cols={4} spacing="md">
-            {mockListing.media.map((media) => (
-              <Card key={media.id} p="xs" radius="md" shadow="sm">
-                <Card.Section>
-                  <Image
-                    src={media.url || "/placeholder.svg"}
-                    height={120}
-                    fit="cover"
-                  />
-                </Card.Section>
-                <Stack gap="xs" mt="xs">
-                  <Group justify="space-between" align="flex-start">
-                    <Text size="xs" fw={500}>
-                      {media.title}
-                    </Text>
-                    <Menu>
-                      <Menu.Target>
-                        <ActionIcon size="xs" variant="subtle">
-                          <IconDots size={12} />
-                        </ActionIcon>
-                      </Menu.Target>
-                      <Menu.Dropdown>
-                        <Menu.Item leftSection={<IconEdit size={12} />}>
-                          Edit
-                        </Menu.Item>
-                        <Menu.Item leftSection={<IconDownload size={12} />}>
-                          Download
-                        </Menu.Item>
-                        <Menu.Item
-                          leftSection={<IconTrash size={12} />}
-                          color="red"
-                        >
-                          Delete
-                        </Menu.Item>
-                      </Menu.Dropdown>
-                    </Menu>
-                  </Group>
-                  <Badge size="xs" variant="outline">
-                    {media.mediaType}
-                  </Badge>
-                </Stack>
-              </Card>
-            ))}
-          </SimpleGrid>
         </Stack>
       </Tabs.Panel>
 
