@@ -1,0 +1,55 @@
+import { getHiveFileUrl } from "@hive/esm-core-api";
+import { Card, Grid, Image } from "@mantine/core";
+import { openModal } from "@mantine/modals";
+import React from "react";
+import { ListingMedia } from "../types";
+
+type MediaGridViewProps = {
+  media: Array<ListingMedia>;
+};
+
+const MediaGridView: React.FC<MediaGridViewProps> = ({ media }) => {
+  return (
+    <Grid m={"sm"}>
+      {media.map((m) => {
+        const img = getHiveFileUrl(m.url);
+
+        return (
+          <Grid.Col key={m.id} span={{ base: 12, md: 6, lg: 3 }}>
+            <Card
+              p={0}
+              radius={"md"}
+              h={"100%"}
+              role="button"
+              onClick={() =>
+                openModal({
+                  fullScreen: true,
+                  title: m.title,
+                  children: (
+                    <Image
+                      src={img}
+                      fit="contain"
+                      fallbackSrc="https://placehold.co/600x400?text=Placeholder"
+                      w={"100%"}
+                      h={"100%"}
+                    />
+                  ),
+                })
+              }
+            >
+              <Image
+                src={img}
+                fit="cover"
+                fallbackSrc="https://placehold.co/600x400?text=Placeholder"
+                w={"100%"}
+                height={"300"}
+              />
+            </Card>
+          </Grid.Col>
+        );
+      })}
+    </Grid>
+  );
+};
+
+export default MediaGridView;

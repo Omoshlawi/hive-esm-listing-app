@@ -2,6 +2,7 @@ import { withUserAccess } from "@hive/esm-core-components";
 import ListingsPage from "./ListingsPage";
 import ListingDetailPage from "./ListingDetailPage";
 import PropertyListingsPage from "./PropertyListingsPage";
+import ListingGalaryPage from "./ListingGalaryPage";
 
 export const Listings = withUserAccess(ListingsPage, {
   isAuthenticated: (session) => session.isAuthenticated,
@@ -14,6 +15,10 @@ export const ListingDetail = withUserAccess(ListingDetailPage, {
 });
 
 export const PropertyListings = withUserAccess(PropertyListingsPage, {
+  isAuthenticated: (session) => session.isAuthenticated,
+  requiresAuth: true,
+});
+export const ListingGalary = withUserAccess(ListingGalaryPage, {
   isAuthenticated: (session) => session.isAuthenticated,
   requiresAuth: true,
 });

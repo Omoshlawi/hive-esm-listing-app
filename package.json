@@ -5,7 +5,9 @@
   "keywords": [
     "pilet"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "filesize": "^10.1.6"
+  },
   "devDependencies": {
     "@hive/esm-core-api": "../hive-esm-core/packages/esm-core-api/hive-esm-core-api-v1.0.0.tgz",
     "@hive/esm-core-components": "../hive-esm-core/packages/esm-core-components/hive-esm-core-components-v1.0.0.tgz",

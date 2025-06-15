@@ -25,8 +25,11 @@ export const useListing = (listingId: string) => {
   };
 };
 
-export const useListingMedia = (listingId: string) => {
-  const url = `/listings/${listingId}/media`;
+export const useListingMedia = (
+  listingId: string,
+  mediaType?: ListingMedia["mediaType"]
+) => {
+  const url = constructUrl(`/listings/${listingId}/media`, { mediaType });
   const { data, error, isLoading } =
     useSWR<APIFetchResponse<{ results: Array<ListingMedia> }>>(url);
   return {
