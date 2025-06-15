@@ -3,7 +3,6 @@ import {
   ActionIcon,
   Badge,
   Card,
-  Grid,
   Group,
   Image,
   Menu,
@@ -12,15 +11,15 @@ import {
   Text,
 } from "@mantine/core";
 import { openModal } from "@mantine/modals";
-import React from "react";
-import { ListingMedia } from "../types";
 import {
   IconDots,
-  IconEdit,
   IconDownload,
+  IconEdit,
   IconTrash,
 } from "@tabler/icons-react";
 import { filesize } from "filesize";
+import React from "react";
+import { ListingMedia } from "../types";
 
 type MediaGridViewProps = {
   media: Array<ListingMedia>;
@@ -28,7 +27,7 @@ type MediaGridViewProps = {
 
 const MediaGridView: React.FC<MediaGridViewProps> = ({ media }) => {
   return (
-    <SimpleGrid cols={4} spacing="md" m={"sm"}>
+    <SimpleGrid cols={{ base: 1, md: 2, lg: 4 }} spacing="md" m={"sm"}>
       {media.map((media_) => {
         const img = getHiveFileUrl(media_.url);
 

@@ -2,8 +2,8 @@ import { APIFetchResponse, constructUrl } from "@hive/esm-core-api";
 import { Listing, ListingMedia } from "../types";
 import useSWR from "swr";
 
-export const useListings = () => {
-  const url = constructUrl("/listings");
+export const useListings = (params: Record<string, any> = {}) => {
+  const url = constructUrl("/listings", params);
   const { data, error, isLoading, mutate } =
     useSWR<APIFetchResponse<{ results: Array<Listing> }>>(url);
   return {
