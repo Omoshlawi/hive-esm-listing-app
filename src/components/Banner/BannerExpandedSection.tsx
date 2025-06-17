@@ -1,18 +1,13 @@
+import { TablerIcon, TablerIconName } from "@hive/esm-core-components";
 import {
-  alpha,
-  Box,
   Group,
-  rem,
   Stack,
   Text,
   useComputedColorScheme,
-  useMantineTheme,
+  useMantineTheme
 } from "@mantine/core";
 import {
-  IconBuilding,
-  IconCalendar,
-  IconMapPin,
-  IconUser,
+  IconBuilding
 } from "@tabler/icons-react";
 import React, { FC } from "react";
 import { Listing } from "../../types";
@@ -48,99 +43,69 @@ const BannerExpandedSection: FC<BannerExpandedSectionProps> = ({ listing }) => {
     }
     return type === "primary" ? theme.colors.gray[9] : theme.colors.gray[6];
   };
-  const getBorderColor = () => {
-    return colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3];
-  };
+  const attrs: Array<{ icon: TablerIconName; label: string; value: string }> = [
+    { icon: "building", value: listing.property.name, label: "Property" },
+    {
+      icon: "calendar",
+      value: `${listing.property.address?.subCounty} ${listing.property?.address?.county}`,
+      label: "Address",
+    },
+    { icon: "building", value: listing.property.name, label: "Property" },
+    {
+      icon: "calendar",
+      value: formatDate(listing.updatedAt || listing.createdAt),
+      label: "Last updated",
+    },
+  ];
   return (
-    <Box
-      mt="lg"
-      pt="md"
-      style={{
-        borderTop: `1px solid ${getBorderColor()}`,
-        backgroundColor:
-          colorScheme === "dark"
-            ? alpha(theme.colors.dark[7], 0.3)
-            : alpha(theme.colors.gray[0], 0.5),
-        marginLeft: rem(-16),
-        marginRight: rem(-16),
-        paddingLeft: rem(16),
-        paddingRight: rem(16),
-        borderRadius: `0 0 ${theme.radius.md} ${theme.radius.md}`,
-      }}
-    >
-      <Stack gap="md">
-        <Text size="sm" fw={600} c={getTextColor("primary")} mb="xs">
-          Listing Details
-        </Text>
+    <Stack gap="md">
+      <Text size="sm" fw={600} c={getTextColor("primary")} mb="xs">
+        Listing Details
+      </Text>
 
-        <Group grow align="flex-start">
-          <Stack gap="sm">
+      <Group grow align="flex-start">
+        {attrs.map((attr, index) => (
+          <Stack gap="sm" key={index}>
             <Group gap="xs">
-              <IconUser size={16} style={{ color: getTextColor("dimmed") }} />
-              <Text size="sm" fw={500} c={getTextColor("primary")}>
-                Owner
-              </Text>
-            </Group>
-            <Text size="sm" c={getTextColor("dimmed")} pl="xl">
-              {"Not specified"}
-            </Text>
-          </Stack>
-
-          <Stack gap="sm">
-            <Group gap="xs">
-              <IconMapPin size={16} style={{ color: getTextColor("dimmed") }} />
-              <Text size="sm" fw={500} c={getTextColor("primary")}>
-                Location
-              </Text>
-            </Group>
-            <Text size="sm" c={getTextColor("dimmed")} pl="xl">
-              {"Not specified"}
-            </Text>
-          </Stack>
-
-          <Stack gap="sm">
-            <Group gap="xs">
-              <IconCalendar
+              <TablerIcon
+                name={attr.icon}
                 size={16}
                 style={{ color: getTextColor("dimmed") }}
               />
               <Text size="sm" fw={500} c={getTextColor("primary")}>
-                Last Updated
+                {attr.label}
               </Text>
             </Group>
             <Text size="sm" c={getTextColor("dimmed")} pl="xl">
-              {formatDate(listing.updatedAt || listing.createdAt)}
+              {attr.value}
             </Text>
           </Stack>
-        </Group>
+        ))}
+      </Group>
 
-        {listing.description && (
-          <Stack gap="sm">
-            <Group gap="xs">
-              <IconBuilding
-                size={16}
-                style={{ color: getTextColor("dimmed") }}
-              />
-              <Text size="sm" fw={500} c={getTextColor("primary")}>
-                Description
-              </Text>
-            </Group>
-            <Text
-              size="sm"
-              c={getTextColor("dimmed")}
-              pl="xl"
-              style={{
-                lineHeight: 1.5,
-                maxWidth: "100%",
-                wordBreak: "break-word",
-              }}
-            >
-              {listing.description}
+      {listing.description && (
+        <Stack gap="sm">
+          <Group gap="xs">
+            <IconBuilding size={16} style={{ color: getTextColor("dimmed") }} />
+            <Text size="sm" fw={500} c={getTextColor("primary")}>
+              Description
             </Text>
-          </Stack>
-        )}
-      </Stack>
-    </Box>
+          </Group>
+          <Text
+            size="sm"
+            c={getTextColor("dimmed")}
+            pl="xl"
+            style={{
+              lineHeight: 1.5,
+              maxWidth: "100%",
+              wordBreak: "break-word",
+            }}
+          >
+            {listing.description}
+          </Text>
+        </Stack>
+      )}
+    </Stack>
   );
 };
 

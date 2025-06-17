@@ -16,8 +16,8 @@ import {
 import { closeModal, openModal } from "@mantine/modals";
 import { IconEdit, IconInfoCircle, IconUpload } from "@tabler/icons-react";
 import React, { FC } from "react";
-import { Listing } from "../../types";
 import ThumbnailUploadForm from "../../forms/ThumbnailUploadForm";
+import { Listing } from "../../types";
 
 type Props = {
   listing: Listing;

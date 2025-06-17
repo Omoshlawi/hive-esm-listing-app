@@ -20,7 +20,7 @@ import { filesize } from "filesize";
 import React from "react";
 import { useParams } from "react-router-dom";
 import MediaGridView from "../components/MediaGridView";
-import ListingGalaryForm from "../forms/ListingGalaryForm";
+import ListingGalaryForm from "../forms/media/ListingGalaryForm";
 import { useListingMedia } from "../hooks";
 import { ListingMedia } from "../types";
 type PropertyMediaPageProps = {};
