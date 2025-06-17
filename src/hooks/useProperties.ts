@@ -10,7 +10,7 @@ export const useSearchProperties = () => {
 
   const url = constructUrl(`/properties`, {
     search: debounced,
-    // status: "APPROVED",
+    status: "APPROVED",
   });
 
   const { data, error, isLoading } = useSWR<

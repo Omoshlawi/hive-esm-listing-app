@@ -68,8 +68,10 @@ export const AuctionListingSchema = z.object({
   startingBid: z.number({ coerce: true }).nonnegative(),
   reservePrice: z.number({ coerce: true }).nonnegative().optional(),
   bidIncrement: z.number({ coerce: true }).nonnegative(),
-  auctionStart: z.date({ coerce: true }),
-  auctionEnd: z.date({ coerce: true }),
+  auctionStart: z
+    .date({ coerce: true })
+    .min(new Date(), "Must be a future date"),
+  auctionEnd: z.date({ coerce: true }).min(new Date(), "Must be a future date"),
   requirePreRegistration: z.boolean().optional(),
   requireBidderApproval: z.boolean().optional(),
 });
@@ -98,7 +100,10 @@ export const ListingSchema = z.object({
   coverImage: z.string().optional(),
   description: z.string().optional(),
   price: z.number({ coerce: true }).nonnegative(),
-  expiryDate: z.date({ coerce: true }).optional(),
+  expiryDate: z
+    .date({ coerce: true })
+    .min(new Date(), "Must be a future date")
+    .optional(),
   featured: z.boolean().optional(),
   contactPersonId: z.string().uuid(),
   saleDetails: SaleListingSchema.optional(),

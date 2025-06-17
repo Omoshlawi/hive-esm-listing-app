@@ -73,18 +73,6 @@ const ListingsPage: FC<ListingsPageProps> = ({ launchWorkspace }) => {
                   <ActionIcon
                     variant="outline"
                     aria-label="Settings"
-                    color="green"
-                    onClick={() => handleAddOrupdate(listing)}
-                  >
-                    <TablerIcon
-                      name="edit"
-                      style={{ width: "70%", height: "70%" }}
-                      stroke={1.5}
-                    />
-                  </ActionIcon>
-                  <ActionIcon
-                    variant="outline"
-                    aria-label="Settings"
                     color="red"
                     onClick={() => handleDelete(listing)}
                   >

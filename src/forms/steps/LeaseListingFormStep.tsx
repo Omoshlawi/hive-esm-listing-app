@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   Checkbox,
   Group,
@@ -9,6 +10,7 @@ import {
 import React, { FC } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { ListingFormData } from "../../types";
+import { INPUT_ORDER } from "../../utils/constants";
 type Props = {
   onNext?: () => void;
   onPrev?: () => void;
@@ -21,6 +23,11 @@ const LeaseListingFormStep: FC<Props> = ({ onNext, onPrev }) => {
         <Title order={4} pt={"lg"}>
           Lease Details
         </Title>
+        {form.formState?.errors?.leaseDetails?.message && (
+          <Alert color="red" variant="light" title="Lease error">
+            {form.formState?.errors?.leaseDetails?.message}
+          </Alert>
+        )}
         <Controller
           control={form.control}
           name="leaseDetails.leaseTermInMoths"
@@ -29,19 +36,23 @@ const LeaseListingFormStep: FC<Props> = ({ onNext, onPrev }) => {
               {...field}
               label="Lease term"
               error={fieldState.error?.message}
-              placeholder="In months"
+              placeholder="Enter lease terms"
+              description="In months"
+              inputWrapperOrder={INPUT_ORDER}
             />
           )}
         />
         <Controller
           control={form.control}
-          name="rentalDetails.securityDeposit"
+          name="leaseDetails.securityDeposit"
           render={({ field, fieldState }) => (
             <NumberInput
               {...field}
               label="Security deposit"
               error={fieldState.error?.message}
-              placeholder="In Ksh."
+              inputWrapperOrder={INPUT_ORDER}
+              description="Amount in Ksh"
+              placeholder="Enter deposit"
             />
           )}
         />
