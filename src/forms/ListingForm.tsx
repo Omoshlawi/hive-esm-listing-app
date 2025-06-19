@@ -244,7 +244,7 @@ const ListingForm: FC<ListingFormProps> = ({
         if (cover.length > 0) {
           // Update cover and clean old cover
           await updateListing(res.id, { coverImage: cover[0].path });
-          if (res.coverimage) await cleanFiles([res.coverimage]);
+          if (res.coverImage) await cleanFiles([res.coverImage]);
         }
         if (galary.length > 0) {
           // No cleaning since this only occurs on creation of listing
