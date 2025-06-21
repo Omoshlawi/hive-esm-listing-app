@@ -17,6 +17,7 @@ import {
   IconFilter,
   IconGrid3x3,
   IconList,
+  IconResize,
   IconSearch,
   IconSortDescending,
   IconX,
@@ -25,6 +26,7 @@ import React from "react";
 import { useListingFilterParams } from "../../hooks";
 import { Listing, ListingFilterParams } from "../../types";
 import { FilterContent } from "./FilterContent";
+import { PAGE_SIZES, SORT_OPTIONS } from "../../utils/constants";
 
 const SearchAndFiltersHeader = ({ listings }: { listings: Array<Listing> }) => {
   const [params, setParams, clear] = useListingFilterParams();
@@ -83,15 +85,20 @@ const SearchAndFiltersHeader = ({ listings }: { listings: Array<Listing> }) => {
                   setParams({ sortBy: value || "newest" })
                 }
                 clearable
-                data={[
-                  { value: "newest", label: "Newest First" },
-                  { value: "oldest", label: "Oldest First" },
-                  { value: "price-low", label: "Price: Low to High" },
-                  { value: "price-high", label: "Price: High to Low" },
-                  { value: "views", label: "Most Viewed" },
-                ]}
+                data={SORT_OPTIONS}
                 w={180}
                 onClear={() => clear("sortBy")}
+              />
+              <Select
+                placeholder={"Page size"}
+                leftSection={<IconResize size={16} />}
+                value={params.pageSize ? params.pageSize.toString() : undefined}
+                onChange={(value) =>
+                  setParams({ pageSize: value ? Number(value) : 12 })
+                }
+                data={PAGE_SIZES}
+                w={180}
+                onClear={() => clear("pageSize")}
               />
 
               {/* View Toggle */}

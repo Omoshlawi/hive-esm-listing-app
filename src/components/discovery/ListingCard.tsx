@@ -51,10 +51,10 @@ export const ListingCard = ({ listing }: { listing: Listing }) => {
             </Badge>
           )}
           <Group gap="xs" style={{ position: "absolute", top: 10, right: 10 }}>
-            <ActionIcon variant="filled" color="white" size="sm">
+            <ActionIcon variant="filled" color="black" size="sm">
               <IconHeart size={14} />
             </ActionIcon>
-            <ActionIcon variant="filled" color="white" size="sm">
+            <ActionIcon variant="filled" color="black" size="sm">
               <IconShare size={14} />
             </ActionIcon>
           </Group>

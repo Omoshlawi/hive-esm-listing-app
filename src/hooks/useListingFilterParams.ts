@@ -9,9 +9,9 @@ export const useListingFilterParams = () => {
       defaultValue: 1,
     },
     pageSize: {
-      parse: (value) => searchParamUtils.parseNumber(value, 10),
+      parse: (value) => searchParamUtils.parseNumber(value, 12),
       serialize: (value) => String(value),
-      defaultValue: 10,
+      defaultValue: 12,
     },
     search: {
       parse: (value) => value || "",
