@@ -174,3 +174,12 @@ export interface ListingStatus {
 
 export type ListingFormData = z.infer<typeof ListingSchema>;
 export type ListingMediaFormData = z.infer<typeof ListingMediaSchema>;
+export interface ListingFilterParams {
+  page: number;
+  pageSize: number;
+  search: string;
+  isActive: boolean;
+  tags: string[];
+  sortBy: "newest" | "oldest" | "price-low" | "price-high" | "views";
+  view: "grid" | "list";
+}

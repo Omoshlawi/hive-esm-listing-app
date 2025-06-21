@@ -27,3 +27,5 @@ export const ListingAnalytics = withUserAccess(ListingAnalyticsPage, {
   isAuthenticated: (session) => session.isAuthenticated,
   requiresAuth: true,
 });
+
+export { default as ListingsDiscovery } from "./ListingsDiscoveryPage";
