@@ -182,4 +182,5 @@ export interface ListingFilterParams {
   tags: string[];
   sortBy: "newest" | "oldest" | "price-low" | "price-high" | "views";
   view: "grid" | "list";
+  type: Listing["type"];
 }

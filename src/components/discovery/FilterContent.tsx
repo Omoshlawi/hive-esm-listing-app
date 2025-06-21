@@ -9,6 +9,7 @@ import {
   Divider,
   Text,
   Switch,
+  Select,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
@@ -19,6 +20,8 @@ import {
 } from "@tabler/icons-react";
 import React, { useState } from "react";
 import { useListingFilterParams } from "../../hooks";
+import { LISTING_TYPES } from "../../utils/constants";
+import { Listing } from "../../types";
 
 const locations = [
   "Downtown",
@@ -47,7 +50,7 @@ const amenities = [
 ];
 
 export const FilterContent = () => {
-  const [params, setParams] = useListingFilterParams();
+  const [params, setParams, clear] = useListingFilterParams();
   const [advancedFiltersOpen, { toggle: toggleAdvancedFiltersOpen }] =
     useDisclosure(false);
 
@@ -70,18 +73,18 @@ export const FilterContent = () => {
     <Stack gap="md">
       {/* Listing Type */}
       <div>
-        <Text size="sm" fw={500} mb="xs">
-          Listing Type
-        </Text>
-        <SegmentedControl
-          value={listingType || ""}
-          onChange={(value) => setListingType(value || null)}
-          data={[
-            { label: "All", value: "" },
-            { label: "Sale", value: "SALE" },
-            { label: "Rent", value: "RENT" },
-          ]}
-          fullWidth
+        <Select
+          value={params.type}
+          onChange={(value: Listing["type"]) => {
+            setParams({ type: value || undefined });
+          }}
+          data={LISTING_TYPES}
+          placeholder="Select listing type"
+          limit={10}
+          label="Listing type"
+          nothingFoundMessage="Nothing found..."
+          clearable
+          onClear={() => clear("type")}
         />
       </div>
 
@@ -103,9 +106,17 @@ export const FilterContent = () => {
       <div>
         <Text size="sm" fw={500} mb="xs">
           Price Range:{" "}
-          <NumberFormatter value={priceRange[0]} prefix="$" thousandSeparator />{" "}
+          <NumberFormatter
+            value={priceRange[0]}
+            prefix="Ksh."
+            thousandSeparator
+          />{" "}
           -{" "}
-          <NumberFormatter value={priceRange[1]} prefix="$" thousandSeparator />
+          <NumberFormatter
+            value={priceRange[1]}
+            prefix="Ksh."
+            thousandSeparator
+          />
         </Text>
         <RangeSlider
           value={priceRange}
@@ -114,9 +125,9 @@ export const FilterContent = () => {
           max={3000000}
           step={50000}
           marks={[
-            { value: 0, label: "$0" },
-            { value: 1500000, label: "$1.5M" },
-            { value: 3000000, label: "$3M" },
+            { value: 0, label: "Ksh.0" },
+            { value: 1500000, label: "Ksh.1.5M" },
+            { value: 3000000, label: "Ksh.3M" },
           ]}
         />
       </div>

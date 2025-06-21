@@ -2,6 +2,7 @@ import {
   ActionIcon,
   Button,
   Center,
+  Chip,
   Drawer,
   Group,
   Paper,
@@ -26,13 +27,13 @@ import { Listing, ListingFilterParams } from "../../types";
 import { FilterContent } from "./FilterContent";
 
 const SearchAndFiltersHeader = ({ listings }: { listings: Array<Listing> }) => {
-  const [params, setParams] = useListingFilterParams();
+  const [params, setParams, clear] = useListingFilterParams();
   const [filtersOpened, { open: openFilters, close: closeFilters }] =
     useDisclosure(false);
 
   return (
     <>
-      <Paper p="lg" radius="md" shadow="sm">
+      <Paper p="lg" radius="md" shadow="sm" withBorder>
         <Stack gap="md">
           {/* Search Bar */}
           <TextInput
@@ -45,10 +46,7 @@ const SearchAndFiltersHeader = ({ listings }: { listings: Array<Listing> }) => {
             size="md"
             rightSection={
               params.search && (
-                <ActionIcon
-                  variant="subtle"
-                  onClick={() => setParams({ search: "" })}
-                >
+                <ActionIcon variant="subtle" onClick={() => clear("search")}>
                   <IconX size={16} />
                 </ActionIcon>
               )
@@ -84,6 +82,7 @@ const SearchAndFiltersHeader = ({ listings }: { listings: Array<Listing> }) => {
                 onChange={(value: ListingFilterParams["sortBy"]) =>
                   setParams({ sortBy: value || "newest" })
                 }
+                clearable
                 data={[
                   { value: "newest", label: "Newest First" },
                   { value: "oldest", label: "Oldest First" },
@@ -92,6 +91,7 @@ const SearchAndFiltersHeader = ({ listings }: { listings: Array<Listing> }) => {
                   { value: "views", label: "Most Viewed" },
                 ]}
                 w={180}
+                onClear={() => clear("sortBy")}
               />
 
               {/* View Toggle */}
@@ -123,45 +123,45 @@ const SearchAndFiltersHeader = ({ listings }: { listings: Array<Listing> }) => {
           </Group>
 
           {/* Active Filters Chips */}
-          {/* {activeFiltersCount > 0 && (
-            <Group gap="xs">
-              <Text size="sm" fw={500}>
-                Active filters:
-              </Text>
-              {listingType && (
-                <Chip checked onChange={() => setListingType(null)} size="sm">
-                  {listingType}
-                </Chip>
-              )}
-              {selectedLocations.map((location) => (
-                <Chip
-                  key={location}
-                  checked
-                  onChange={() =>
-                    setSelectedLocations((prev) =>
-                      prev.filter((l) => l !== location)
-                    )
-                  }
-                  size="sm"
-                >
-                  {location}
-                </Chip>
-              ))}
-              {featuredOnly && (
-                <Chip checked onChange={() => setFeaturedOnly(false)} size="sm">
-                  Featured Only
-                </Chip>
-              )}
-              <Button
-                variant="subtle"
-                size="xs"
-                leftSection={<IconX size={12} />}
-                onClick={clearAllFilters}
+          {/* {activeFiltersCount > 0 && ( */}
+          <Group gap="xs">
+            <Text size="sm" fw={500}>
+              Active filters:
+            </Text>
+            {params.type && (
+              <Chip checked onChange={() => clear("type")} size="xs">
+                {params.type}
+              </Chip>
+            )}
+            {/* {selectedLocations.map((location) => (
+              <Chip
+                key={location}
+                checked
+                onChange={() =>
+                  setSelectedLocations((prev) =>
+                    prev.filter((l) => l !== location)
+                  )
+                }
+                size="sm"
               >
-                Clear All
-              </Button>
-            </Group>
-          )} */}
+                {location}
+              </Chip>
+            ))} */}
+            {/* {featuredOnly && (
+              <Chip checked onChange={() => setFeaturedOnly(false)} size="sm">
+                Featured Only
+              </Chip>
+            )} */}
+            <Button
+              variant="subtle"
+              size="xs"
+              leftSection={<IconX size={12} />}
+              onClick={() => clear()}
+            >
+              Clear All
+            </Button>
+          </Group>
+          {/* )} */}
         </Stack>
       </Paper>
       <Drawer

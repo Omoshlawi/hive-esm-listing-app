@@ -12,7 +12,7 @@ import { DateInput } from "@mantine/dates";
 import React, { FC } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { ListingFormData } from "../../types";
-import { INPUT_ORDER } from "../../utils/constants";
+import { INPUT_ORDER, LISTING_TYPES } from "../../utils/constants";
 
 type Props = {
   onNext?: () => void;
@@ -33,15 +33,7 @@ const ListingBasicDetailsFormSection: FC<Props> = ({ onCancel, onNext }) => {
           render={({ field, fieldState: { error } }) => (
             <Select
               {...field}
-              data={[
-                { label: "Rental", value: "RENTAL" },
-                { label: "Sale", value: "SALE" },
-                { label: "Lease", value: "LEASE" },
-                { label: "Auction", value: "AUCTION" },
-                { label: "Rent to Own", value: "RENT_TO_OWN" },
-                { label: "Short Term", value: "SHORT_TERM" },
-                { label: "Co-Living", value: "CO_LIVING" },
-              ]}
+              data={LISTING_TYPES}
               placeholder="Select listing type"
               limit={10}
               label="Listing type"

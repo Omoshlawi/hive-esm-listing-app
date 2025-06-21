@@ -49,6 +49,24 @@ export const useListingFilterParams = () => {
       serialize: (value) => value,
       defaultValue: "grid",
     },
+    type: {
+      parse: (value) => {
+        const validTypes = [
+          "RENTAL",
+          "SALE",
+          "LEASE",
+          "AUCTION",
+          "RENT_TO_OWN",
+          "SHORT_TERM",
+          "CO_LIVING",
+        ] as const;
+        return validTypes.includes(value as any)
+          ? (value as ListingFilterParams["type"])
+          : undefined;
+      },
+      serialize: (value) => value,
+      defaultValue: undefined,
+    },
   });
   return params;
 };
