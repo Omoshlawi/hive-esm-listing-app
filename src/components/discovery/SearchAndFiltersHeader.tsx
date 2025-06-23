@@ -15,8 +15,8 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import {
   IconFilter,
-  IconGrid3x3,
-  IconList,
+  IconLayoutGrid,
+  IconLayoutList,
   IconResize,
   IconSearch,
   IconSortDescending,
@@ -25,8 +25,8 @@ import {
 import React from "react";
 import { useListingFilterParams } from "../../hooks";
 import { Listing, ListingFilterParams } from "../../types";
-import { FilterContent } from "./FilterContent";
 import { PAGE_SIZES, SORT_OPTIONS } from "../../utils/constants";
+import { FilterContent } from "./FilterContent";
 
 const SearchAndFiltersHeader = ({ listings }: { listings: Array<Listing> }) => {
   const [params, setParams, clear] = useListingFilterParams();
@@ -111,7 +111,7 @@ const SearchAndFiltersHeader = ({ listings }: { listings: Array<Listing> }) => {
                   {
                     label: (
                       <Center>
-                        <IconGrid3x3 size={16} />
+                        <IconLayoutGrid />
                       </Center>
                     ),
                     value: "grid",
@@ -119,7 +119,7 @@ const SearchAndFiltersHeader = ({ listings }: { listings: Array<Listing> }) => {
                   {
                     label: (
                       <Center>
-                        <IconList size={16} />
+                        <IconLayoutList />
                       </Center>
                     ),
                     value: "list",

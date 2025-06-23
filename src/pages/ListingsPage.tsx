@@ -19,7 +19,11 @@ import { Link } from "react-router-dom";
 import { ListingForm } from "../forms";
 import { useListings } from "../hooks";
 import { Listing } from "../types";
-import { getStatusColor, getStatusVariant } from "../utils/helpers";
+import {
+  getListingTypeColor,
+  getStatusColor,
+  getStatusVariant,
+} from "../utils/helpers";
 
 type ListingsPageProps = Pick<PiletApi, "launchWorkspace">;
 const ListingsPage: FC<ListingsPageProps> = ({ launchWorkspace }) => {
@@ -115,7 +119,11 @@ const columns: ColumnDef<Listing>[] = [
     header: "Type",
     cell({ getValue }) {
       const type = getValue<Listing["type"]>();
-      return <Badge variant="default">{type}</Badge>;
+      return (
+        <Badge variant="outline" color={getListingTypeColor(type)} size="xs">
+          {type}
+        </Badge>
+      );
     },
   },
   {

@@ -1,4 +1,6 @@
-import React, { FC } from "react";
+import { Group, Pagination } from "@mantine/core";
+import React, { FC, useMemo } from "react";
+import { useListingFilterParams } from "../../hooks";
 import { Listing } from "../../types";
 
 type ListingsPaginationProps = {
@@ -8,19 +10,24 @@ type ListingsPaginationProps = {
 export const ListingsPagination: FC<ListingsPaginationProps> = ({
   listings,
 }) => {
+  const [{ page, pageSize }, setParams] = useListingFilterParams();
+  const pages = useMemo(
+    () => Math.ceil(listings.length / pageSize),
+    [listings, pageSize]
+  );
   return (
-    <div>
-      {/* {totalPages > 1 && (
+    <>
+      {pages > 1 && (
         <Group justify="center" mt="xl">
           <Pagination
-            value={currentPage}
-            onChange={setCurrentPage}
-            total={totalPages}
+            value={page}
+            onChange={(newPage) => setParams({ page: newPage })}
+            total={pages}
             size="md"
             withEdges
           />
         </Group>
-      )} */}
-    </div>
+      )}
+    </>
   );
 };

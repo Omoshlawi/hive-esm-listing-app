@@ -25,6 +25,7 @@ import {
 import React from "react";
 import { Listing } from "../../types";
 import { getHiveFileUrl } from "@hive/esm-core-api";
+import { getListingTypeColor } from "../../utils/helpers";
 
 export const ListingRow = ({ listing }: { listing: Listing }) => {
   const theme = useMantineTheme();
@@ -69,7 +70,11 @@ export const ListingRow = ({ listing }: { listing: Listing }) => {
                   </Text>
                 </Group>
               </div>
-              <Badge color={listing.type === "SALE" ? "blue" : "green"}>
+              <Badge
+                color={getListingTypeColor(listing.type)}
+                size="xs"
+                variant="filled"
+              >
                 {listing.type}
               </Badge>
             </Group>

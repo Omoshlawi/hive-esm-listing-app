@@ -1,3 +1,5 @@
+import { Listing } from "../types";
+
 // Enhanced status color mapping with better visual hierarchy
 export const getStatusColor = (status: string) => {
   switch (status) {
@@ -54,5 +56,27 @@ export const getStatusVariant = (status: string, colorScheme: string) => {
       return "light";
     default:
       return colorScheme === "dark" ? "light" : "outline";
+  }
+};
+
+
+export const getListingTypeColor = (type: Listing["type"]) => {
+  switch (type) {
+    case "RENTAL":
+      return "teal";
+    case "SALE":
+      return "blue";
+    case "LEASE":
+      return "purple";
+    case "AUCTION":
+      return "orange";
+    case "RENT_TO_OWN":
+      return "cyan";
+    case "SHORT_TERM":
+      return "pink";
+    case "CO_LIVING":
+      return "green";
+    default:
+      return "gray";
   }
 };

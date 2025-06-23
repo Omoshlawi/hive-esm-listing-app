@@ -23,7 +23,7 @@ import {
   IconExternalLink,
 } from "@tabler/icons-react";
 import React from "react";
-import { getStatusColor } from "../../utils/helpers";
+import { getListingTypeColor, getStatusColor } from "../../utils/helpers";
 import { Listing } from "../../types";
 import { getHiveFileUrl } from "@hive/esm-core-api";
 
@@ -58,41 +58,36 @@ export const ListingCard = ({ listing }: { listing: Listing }) => {
               <IconShare size={14} />
             </ActionIcon>
           </Group>
-          <Badge
-            color={listing.type === "SALE" ? "blue" : "green"}
+          <Group
+            gap="xs"
             style={{ position: "absolute", bottom: 10, left: 10 }}
           >
-            {listing.type}
-          </Badge>
+            <Badge color={getListingTypeColor(listing.type)} size="xs">
+              {listing.type}
+            </Badge>
+            <Badge size="xs" color={getStatusColor(listing.status)}>
+              {listing.status}
+            </Badge>
+          </Group>
         </Box>
       </Card.Section>
 
-      <Stack gap="md" mt="md">
-        <div>
-          <Group justify="space-between" align="flex-start">
-            <div style={{ flex: 1 }}>
-              <Text fw={500} size="lg" lineClamp={1}>
-                {listing.title}
-              </Text>
-              <Group gap="xs" mt="xs">
-                <IconMapPin size={14} />
-                <Text size="sm" c="dimmed">
-                  {"listing.location"}
-                </Text>
-              </Group>
-            </div>
-            <Text fw={700} size="xl" style={{ color: primaryColor[6] }}>
-              <NumberFormatter
-                value={listing.price}
-                prefix="Ksh."
-                thousandSeparator
-                // suffix={listing.type === "RENT" ? "/mo" : ""}
-              />
-            </Text>
-          </Group>
-        </div>
+      <Stack gap="xs" mt="md">
+        <Text fw={500} size="lg" lineClamp={1}>
+          {listing.title}
+        </Text>
+        <Group gap="xs" mt="xs">
+          <IconMapPin size={14} />
+          <Text size="sm" c="dimmed">
+            {`${listing.property.address?.landmark ?? ""} ${
+              listing.property.address?.ward ?? ""
+            }, ${listing.property.address?.subCounty ?? ""} ${
+              listing.property.address?.county ?? ""
+            }`}
+          </Text>
+        </Group>
 
-        <Text size="sm" color="dimmed" lineClamp={2}>
+        <Text size="sm" c="dimmed" lineClamp={2}>
           {listing.description}
         </Text>
 
@@ -113,21 +108,21 @@ export const ListingCard = ({ listing }: { listing: Listing }) => {
           </Group>
           <Group gap="xs">
             <IconEye size={14} />
-            <Text size="xs" color="dimmed">
+            <Text size="xs" c="dimmed">
               {listing.views}
             </Text>
           </Group>
         </Group>
 
         <Group justify="space-between" align="center">
-          <Group gap="xs">
-            <Text size="xs" color="dimmed">
-              {new Date(listing.listedDate).toLocaleDateString()}
-            </Text>
-            <Badge size="xs" color={getStatusColor(listing.status)}>
-              {listing.status}
-            </Badge>
-          </Group>
+          <Text fw={700} size="xl" style={{ color: primaryColor[6] }}>
+            <NumberFormatter
+              value={listing.price}
+              prefix="Ksh."
+              thousandSeparator
+              // suffix={listing.type === "RENT" ? "/mo" : ""}
+            />
+          </Text>
           <Group gap="xs">
             <Tooltip label="Call Agent">
               <ActionIcon

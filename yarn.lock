@@ -960,7 +960,7 @@
 
 "@hive/esm-core-api@../hive-esm-core/packages/esm-core-api/hive-esm-core-api-v1.0.0.tgz":
   version "1.0.0"
-  resolved "../hive-esm-core/packages/esm-core-api/hive-esm-core-api-v1.0.0.tgz#38696ea33ec4c9b8e577412dcfd372709e37ca52"
+  resolved "../hive-esm-core/packages/esm-core-api/hive-esm-core-api-v1.0.0.tgz#51729d8c524128ee4df5aa6da5bc96128a41df6d"
   dependencies:
     axios "^1.9.0"
     clsx "^2.1.1"
@@ -973,7 +973,7 @@
 
 "@hive/esm-shell-app@../hive-esm-core/packages/esm-shell-app/dist/emulator/hive-esm-shell-app-1.0.0.tgz":
   version "1.0.0"
-  resolved "../hive-esm-core/packages/esm-shell-app/dist/emulator/hive-esm-shell-app-1.0.0.tgz#dc729b4e9c48ce921e952ec30e25ec1baf50c99f"
+  resolved "../hive-esm-core/packages/esm-shell-app/dist/emulator/hive-esm-shell-app-1.0.0.tgz#3a53a2db0765edea5bb95d29c563d9d6a1b963f4"
 
 "@hookform/resolvers@5.0.1":
   version "5.0.1"
@@ -1369,21 +1369,21 @@ cheerio-select@^2.1.0:
     domhandler "^5.0.3"
     domutils "^3.0.1"
 
-cheerio@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/cheerio/-/cheerio-1.0.0.tgz#1ede4895a82f26e8af71009f961a9b8cb60d6a81"
-  integrity sha512-quS9HgjQpdaXOvsZz82Oz7uxtXiy6UIsIQcpBj7HRw2M63Skasm9qlDocAM7jNuaxdhpPU7c4kJN+gA5MCu4ww==
+cheerio@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/cheerio/-/cheerio-1.1.0.tgz#87b9bec6dd3696e405ea79da7d2749d8308b0953"
+  integrity sha512-+0hMx9eYhJvWbgpKV9hN7jg0JcwydpopZE4hgi+KvQtByZXPp04NiCWU0LzcAbP63abZckIHkTQaXVF52mX3xQ==
   dependencies:
     cheerio-select "^2.1.0"
     dom-serializer "^2.0.0"
     domhandler "^5.0.3"
-    domutils "^3.1.0"
+    domutils "^3.2.2"
     encoding-sniffer "^0.2.0"
-    htmlparser2 "^9.1.0"
-    parse5 "^7.1.2"
-    parse5-htmlparser2-tree-adapter "^7.0.0"
+    htmlparser2 "^10.0.0"
+    parse5 "^7.3.0"
+    parse5-htmlparser2-tree-adapter "^7.1.0"
     parse5-parser-stream "^7.1.2"
-    undici "^6.19.5"
+    undici "^7.10.0"
     whatwg-mimetype "^4.0.0"
 
 chokidar@^3.6.0:
@@ -1580,7 +1580,7 @@ domhandler@^5.0.2, domhandler@^5.0.3:
   dependencies:
     domelementtype "^2.3.0"
 
-domutils@^3.0.1, domutils@^3.1.0:
+domutils@^3.0.1, domutils@^3.2.1, domutils@^3.2.2:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/domutils/-/domutils-3.2.2.tgz#edbfe2b668b0c1d97c24baf0f1062b132221bc78"
   integrity sha512-6kZKyUajlDuqlHKVX1w7gyslj9MPIXzIFiz/rGu35uC1wMi+kMhQwGhl4lt9unC9Vb9INnY9Z3/ZA3+FhASLaw==
@@ -1616,7 +1616,7 @@ encoding-sniffer@^0.2.0:
     iconv-lite "^0.6.3"
     whatwg-encoding "^3.1.1"
 
-entities@^4.2.0, entities@^4.5.0:
+entities@^4.2.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/entities/-/entities-4.5.0.tgz#5d268ea5e7113ec74c4d033b79ea5a35a488fb48"
   integrity sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw==
@@ -1653,20 +1653,25 @@ es-set-tostringtag@^2.1.0:
     has-tostringtag "^1.0.2"
     hasown "^2.0.2"
 
-esbuild-auto-path-plugin@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/esbuild-auto-path-plugin/-/esbuild-auto-path-plugin-1.2.2.tgz#7b753005ba84ed040b37d12c5cd34f86d097ecb6"
-  integrity sha512-oeYjiEEQrOx9WTfuIXqCqdpx8QbaAZ+L/AQqYuO0c6xA0Ht220i21i7X5qGi5p20k3JWnnEyEI7+PtGthlez+A==
+esbuild-auto-path-plugin@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/esbuild-auto-path-plugin/-/esbuild-auto-path-plugin-1.3.0.tgz#7b6f286cd644f746733b5defb9a3b51dfa35fda8"
+  integrity sha512-j7kevLdV8jUtHqNJS9NTTBKIIMPXMgFOQ0aRLP+xdie7VmysjrqXdkDX8/t61emBdpAeBLsnSYlwYzZcDRYLqQ==
 
 esbuild-codegen-plugin@^2:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/esbuild-codegen-plugin/-/esbuild-codegen-plugin-2.1.0.tgz#1f5e3d0a2585c7fe04426211cce94f0e768b8c99"
   integrity sha512-rYalmCBSUODuKXTSVOWkEeN8C3RpRgUKFFbam5OB5AJE7ZkA7IHPEEGQot+v4bMtRBDek05/SMtkvMJM5gPiyg==
 
-esbuild-pilet-plugin@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/esbuild-pilet-plugin/-/esbuild-pilet-plugin-1.2.2.tgz#579477991ee8ea8f567ae095f911fc9fcd21533f"
-  integrity sha512-4IWVC5IUeXrFmKOkNSBUlw5Qp0Oz56+V+5YOtQRKqjgTbLbuinhjrUPCGJQ8TKkFoAEBcLqHI+Gm6WXJYpiNrQ==
+esbuild-externals-plugin@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/esbuild-externals-plugin/-/esbuild-externals-plugin-1.3.0.tgz#d117f000291572ddf1238778c4a18c2c813e2748"
+  integrity sha512-hjAa9faKQWHByaaCyolpKeCkT84+wj/bGlNVTBo1nxs0MkClLEKpK+OwCCskkFKffgGJtuYQXQsea9TXsA6TGw==
+
+esbuild-pilet-plugin@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/esbuild-pilet-plugin/-/esbuild-pilet-plugin-1.3.0.tgz#aef9dc3f3069d7300283e30c1b9d4e3103830770"
+  integrity sha512-QlBwivEzijDuRrZoKzDNHdVa3a0OmXpgavRnYBUSJXW+Y+fxxQIC5mBDkk4eyY3dxShQf+P9WmlIPDjtqfrqrA==
   dependencies:
     "@babel/cli" "^7.15.7"
     "@babel/core" "^7.15.8"
@@ -1680,7 +1685,7 @@ esbuild-sass-plugin@^2.9.0:
     resolve "^1.22.6"
     sass "^1.7.3"
 
-esbuild@^0.25.0:
+esbuild@^0.25.5:
   version "0.25.5"
   resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.25.5.tgz#71075054993fdfae76c66586f9b9c1f8d7edd430"
   integrity sha512-P8OtKZRv/5J5hhz0cUAdu/cLuPIKXpQl1R9pZtvmHWQvrAUVd0UNIPT4IB4W3rNOqVO0rlqHmCIbSwxh/c9yUQ==
@@ -1882,15 +1887,15 @@ hoist-non-react-statics@^3.1.0:
   dependencies:
     react-is "^16.7.0"
 
-htmlparser2@^9.1.0:
-  version "9.1.0"
-  resolved "https://registry.yarnpkg.com/htmlparser2/-/htmlparser2-9.1.0.tgz#cdb498d8a75a51f739b61d3f718136c369bc8c23"
-  integrity sha512-5zfg6mHUoaer/97TxnGpxmbR7zJtPwIYFMZ/H5ucTlPZhKvtum05yiPK3Mgai3a0DyVxv7qYqoweaEd2nrYQzQ==
+htmlparser2@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/htmlparser2/-/htmlparser2-10.0.0.tgz#77ad249037b66bf8cc99c6e286ef73b83aeb621d"
+  integrity sha512-TwAZM+zE5Tq3lrEHvOlvwgj1XLWQCtaaibSN11Q+gGBAS7Y1uZSWwXXRe4iF6OXnaq1riyQAPFOBtYc77Mxq0g==
   dependencies:
     domelementtype "^2.3.0"
     domhandler "^5.0.3"
-    domutils "^3.1.0"
-    entities "^4.5.0"
+    domutils "^3.2.1"
+    entities "^6.0.0"
 
 iconv-lite@0.6.3, iconv-lite@^0.6.3:
   version "0.6.3"
@@ -2191,7 +2196,7 @@ open@^10:
     is-inside-container "^1.0.0"
     is-wsl "^3.1.0"
 
-parse5-htmlparser2-tree-adapter@^7.0.0:
+parse5-htmlparser2-tree-adapter@^7.1.0:
   version "7.1.0"
   resolved "https://registry.yarnpkg.com/parse5-htmlparser2-tree-adapter/-/parse5-htmlparser2-tree-adapter-7.1.0.tgz#b5a806548ed893a43e24ccb42fbb78069311e81b"
   integrity sha512-ruw5xyKs6lrpo9x9rCZqZZnIUntICjQAd0Wsmp396Ul9lN/h+ifgVV1x1gZHi8euej6wTfpqX8j+BFQxF0NS/g==
@@ -2206,7 +2211,7 @@ parse5-parser-stream@^7.1.2:
   dependencies:
     parse5 "^7.0.0"
 
-parse5@^7.0.0, parse5@^7.1.2:
+parse5@^7.0.0, parse5@^7.3.0:
   version "7.3.0"
   resolved "https://registry.yarnpkg.com/parse5/-/parse5-7.3.0.tgz#d7e224fa72399c7a175099f45fc2ad024b05ec05"
   integrity sha512-IInvU7fabl34qmi9gY8XOVxhYyMyuH2xUNpb2q8/Y+7552KlejkRvqvD19nMoUW/uQGGbqNpA6Tufu5FL5BZgw==
@@ -2246,15 +2251,16 @@ pify@^4.0.1:
   integrity sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==
 
 piral-cli-esbuild@latest:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/piral-cli-esbuild/-/piral-cli-esbuild-1.2.2.tgz#6811306be01987ae3446b35eba0bc1ca41b1b49c"
-  integrity sha512-QGpMEZtvFWHbLI4KqEQK5x/hzHH0EjhsakU0o5D5ttfp6ifWnKF2qc4P9in97JnYHmkkcdse3OoDcC9VejUmYw==
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/piral-cli-esbuild/-/piral-cli-esbuild-1.3.0.tgz#9f699234743055b8dc1abe49d926e26416648825"
+  integrity sha512-4Nnw53MqHiwpOFbPsAcRYUsWcQI++OwozcQIeyvMixPBqDK334vzugDNLNg5Lz5dh5poUhCVx1MCR5gfiu+z2g==
   dependencies:
-    cheerio "1.0.0"
-    esbuild "^0.25.0"
-    esbuild-auto-path-plugin "^1.2.2"
+    cheerio "^1.1.0"
+    esbuild "^0.25.5"
+    esbuild-auto-path-plugin "^1.3.0"
     esbuild-codegen-plugin "^2"
-    esbuild-pilet-plugin "^1.2.2"
+    esbuild-externals-plugin "^1.3.0"
+    esbuild-pilet-plugin "^1.3.0"
     esbuild-sass-plugin "^2.9.0"
 
 piral-cli@1.8.5:
@@ -2586,10 +2592,10 @@ undici-types@~7.8.0:
   resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-7.8.0.tgz#de00b85b710c54122e44fbfd911f8d70174cd294"
   integrity sha512-9UJ2xGDvQ43tYyVMpuHlsgApydB8ZKfVYTsLDhXkFL/6gfkp+U8xTGdh8pMJv1SpZna0zxG1DwsKZsreLbXBxw==
 
-undici@^6.19.5:
-  version "6.21.3"
-  resolved "https://registry.yarnpkg.com/undici/-/undici-6.21.3.tgz#185752ad92c3d0efe7a7d1f6854a50f83b552d7a"
-  integrity sha512-gBLkYIlEnSp8pFbT64yFgGE6UIB9tAkhukC23PmMDCe5Nd+cRqKxSjw5y54MK2AZMgZfJWMaNE4nYUHgi1XEOw==
+undici@^7.10.0:
+  version "7.10.0"
+  resolved "https://registry.yarnpkg.com/undici/-/undici-7.10.0.tgz#8ae17a976acc6593b13c9ff3342840bea9b24670"
+  integrity sha512-u5otvFBOBZvmdjWLVW+5DAc9Nkq8f24g0O9oY7qw2JVIF1VocIFoyz9JFkuVOS2j41AufeO0xnlweJ2RLT8nGw==
 
 unicode-canonical-property-names-ecmascript@^2.0.0:
   version "2.0.1"
