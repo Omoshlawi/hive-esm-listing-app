@@ -1,9 +1,15 @@
-import { APIFetchResponse, constructUrl } from "@hive/esm-core-api";
-import { APIListResponse, Listing, ListingMedia } from "../types";
+import {
+  APIFetchResponse,
+  APIListResponse,
+  constructUrl,
+} from "@hive/esm-core-api";
+import { Listing, ListingMedia } from "../types";
 import useSWR from "swr";
+import { useDebouncedValue } from "@mantine/hooks";
 
 export const useListings = (params: Record<string, any> = {}) => {
-  const url = constructUrl("/listings", params);
+  const [debounced] = useDebouncedValue(params, 500);
+  const url = constructUrl("/listings", debounced);
   const { data, error, isLoading, mutate } =
     useSWR<APIFetchResponse<APIListResponse<Listing>>>(url);
   return {

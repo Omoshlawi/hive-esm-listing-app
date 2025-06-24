@@ -10,7 +10,7 @@ import {
   SimpleGrid,
   Stack,
   Text,
-  useMantineTheme
+  useMantineTheme,
 } from "@mantine/core";
 import { IconHome, IconRefresh } from "@tabler/icons-react";
 import React, { useState } from "react";
@@ -26,54 +26,10 @@ import { ListingCard } from "../components/discovery/ListingCard";
 import SearchAndFiltersHeader from "../components/discovery/SearchAndFiltersHeader";
 import { useListingFilterParams, useListings } from "../hooks";
 
-
 export function ListingDiscoveryPage() {
-  const { error, isLoading, listings } = useListings();
-  const [params, setParams] = useListingFilterParams();
+  const [params, , clear] = useListingFilterParams();
+  const { error, isLoading, listings } = useListings(params);
   const theme = useMantineTheme();
-  // Search and filter states
-  const [searchQuery, setSearchQuery] = useState("");
-  const [listingType, setListingType] = useState<string | null>(null);
-  const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
-  const [selectedPropertyTypes, setSelectedPropertyTypes] = useState<string[]>(
-    []
-  );
-  const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 3000000]);
-  const [bedroomRange, setBedroomRange] = useState<[number, number]>([1, 5]);
-  const [bathroomRange, setBathroomRange] = useState<[number, number]>([1, 5]);
-  const [squareFootageRange, setSquareFootageRange] = useState<
-    [number, number]
-  >([500, 5000]);
-  const [featuredOnly, setFeaturedOnly] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-
-  // Active filters count
-  const activeFiltersCount = [
-    listingType,
-    selectedLocations.length > 0,
-    selectedPropertyTypes.length > 0,
-    selectedAmenities.length > 0,
-    priceRange[0] > 0 || priceRange[1] < 3000000,
-    bedroomRange[0] > 1 || bedroomRange[1] < 5,
-    bathroomRange[0] > 1 || bathroomRange[1] < 5,
-    squareFootageRange[0] > 500 || squareFootageRange[1] < 5000,
-    featuredOnly,
-  ].filter(Boolean).length;
-
-  const clearAllFilters = () => {
-    setSearchQuery("");
-    setListingType(null);
-    setSelectedLocations([]);
-    setSelectedPropertyTypes([]);
-    setSelectedAmenities([]);
-    setPriceRange([0, 3000000]);
-    setBedroomRange([1, 5]);
-    setBathroomRange([1, 5]);
-    setSquareFootageRange([500, 5000]);
-    setFeaturedOnly(false);
-    setCurrentPage(1);
-  };
 
   if (isLoading)
     return (
@@ -110,14 +66,14 @@ export function ListingDiscoveryPage() {
               shadow="sm"
               style={{ position: "sticky", top: 20 }}
             >
-              <Group justify="space-between" mb="md">
+              {/* <Group justify="space-between" mb="md">
                 <Text fw={500}>Filters</Text>
                 {activeFiltersCount > 0 && (
                   <Badge size="sm" color={theme.primaryColor}>
                     {activeFiltersCount}
                   </Badge>
                 )}
-              </Group>
+              </Group> */}
               <FilterContent />
             </Paper>
           </Grid.Col>
@@ -142,7 +98,7 @@ export function ListingDiscoveryPage() {
                   )}
 
                   {/* Pagination */}
-                  <ListingsPagination listings={listings} />
+                  <ListingsPagination />
                 </>
               ) : (
                 <Paper p="xl" radius="md" style={{ textAlign: "center" }}>
@@ -159,7 +115,7 @@ export function ListingDiscoveryPage() {
                     <Button
                       variant="outline"
                       leftSection={<IconRefresh size={16} />}
-                      onClick={clearAllFilters}
+                      onClick={() => clear()}
                     >
                       Clear Filters
                     </Button>

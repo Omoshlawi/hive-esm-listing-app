@@ -184,10 +184,3 @@ export interface ListingFilterParams {
   view: "grid" | "list";
   type: Listing["type"];
 }
-
-export interface APIListResponse<T> {
-  results: Array<T>;
-  totalCount: number;
-  next?: string;
-  prev?: string;
-}

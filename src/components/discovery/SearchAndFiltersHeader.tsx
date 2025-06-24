@@ -4,6 +4,7 @@ import {
   Center,
   Chip,
   Drawer,
+  FocusTrap,
   Group,
   Paper,
   SegmentedControl,
@@ -38,22 +39,26 @@ const SearchAndFiltersHeader = ({ listings }: { listings: Array<Listing> }) => {
       <Paper p="lg" radius="md" shadow="sm" withBorder>
         <Stack gap="md">
           {/* Search Bar */}
-          <TextInput
-            placeholder="Search by title, description, or location..."
-            leftSection={<IconSearch size={16} />}
-            value={params.search}
-            onChange={(event) =>
-              setParams({ search: event.currentTarget.value })
-            }
-            size="md"
-            rightSection={
-              params.search && (
-                <ActionIcon variant="subtle" onClick={() => clear("search")}>
-                  <IconX size={16} />
-                </ActionIcon>
-              )
-            }
-          />
+          <FocusTrap active>
+            <TextInput
+              placeholder="Search by title, description, or location..."
+              leftSection={<IconSearch size={16} />}
+              value={params.search}
+              onChange={(event) =>
+                setParams({ search: event.currentTarget.value })
+              }
+              size="md"
+              rightSection={
+                params.search && (
+                  <ActionIcon variant="subtle" onClick={() => clear("search")}>
+                    <IconX size={16} />
+                  </ActionIcon>
+                )
+              }
+              autoFocus
+              data-autofocus
+            />
+          </FocusTrap>
 
           {/* Controls Row */}
           <Group justify="space-between" wrap="wrap">
