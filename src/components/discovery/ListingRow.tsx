@@ -10,6 +10,7 @@ import {
   Image,
   useMantineTheme,
   Text,
+  Button,
 } from "@mantine/core";
 import {
   IconMapPin,
@@ -26,10 +27,12 @@ import React from "react";
 import { Listing } from "../../types";
 import { getHiveFileUrl } from "@hive/esm-core-api";
 import { getListingTypeColor } from "../../utils/helpers";
+import { Link } from "react-router-dom";
 
 export const ListingRow = ({ listing }: { listing: Listing }) => {
   const theme = useMantineTheme();
   const primaryColor = theme.colors[theme.primaryColor];
+  const listingDetailUrl = `/listings/${listing.id}`;
   return (
     <Paper p="md" shadow="sm" radius="md" withBorder>
       <Grid gutter="md" align="center">
@@ -60,7 +63,7 @@ export const ListingRow = ({ listing }: { listing: Listing }) => {
           <Stack gap="xs">
             <Group justify="space-between" align="flex-start">
               <div>
-                <Text fw={500} size="lg">
+                <Text fw={500} size="lg" component={Link} to={listingDetailUrl}>
                   {listing.title}
                 </Text>
                 <Group gap="xs" mt="xs">
@@ -79,7 +82,7 @@ export const ListingRow = ({ listing }: { listing: Listing }) => {
               </Badge>
             </Group>
 
-            <Text size="sm" color="dimmed" lineClamp={2}>
+            <Text size="sm" c="dimmed" lineClamp={2}>
               {listing.description}
             </Text>
 
@@ -120,17 +123,14 @@ export const ListingRow = ({ listing }: { listing: Listing }) => {
               <ActionIcon variant="outline" size="sm">
                 <IconShare size={14} />
               </ActionIcon>
-              <ActionIcon
-                variant="outline"
-                size="sm"
-                color={theme.primaryColor}
-              >
+              <ActionIcon variant="outline" size="sm">
                 <IconPhone size={14} />
               </ActionIcon>
               <ActionIcon
                 variant="outline"
                 size="sm"
-                color={theme.primaryColor}
+                component={Link}
+                to={listingDetailUrl}
               >
                 <IconExternalLink size={14} />
               </ActionIcon>

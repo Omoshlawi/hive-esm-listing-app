@@ -73,10 +73,10 @@ export const FilterContent = () => {
     <Stack gap="md">
       {/* Listing Type */}
       <div>
-        <Select
-          value={params.type}
-          onChange={(value: Listing["type"]) => {
-            setParams({ type: value || undefined });
+        <MultiSelect
+          value={params.types}
+          onChange={(value: Array<Listing["type"]>) => {
+            setParams({ types: value || undefined });
           }}
           data={LISTING_TYPES}
           placeholder="Select listing type"
@@ -84,7 +84,7 @@ export const FilterContent = () => {
           label="Listing type"
           nothingFoundMessage="Nothing found..."
           clearable
-          onClear={() => clear("type")}
+          onClear={() => clear("types")}
         />
       </div>
 

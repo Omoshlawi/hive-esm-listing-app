@@ -4,8 +4,6 @@ import { useParams } from "react-router-dom";
 import { useListing } from "../hooks";
 import { MainDashboardTabs } from "../components/dashboard/MainDashboardTabs";
 import { Container, Stack } from "@mantine/core";
-import HeaderSection from "../components/dashboard/HeaderSection";
-import AnalyticsOverview from "../components/dashboard/AnalyticsOverview";
 
 type ListingDetailPageProps = Pick<PiletApi, "launchWorkspace">;
 

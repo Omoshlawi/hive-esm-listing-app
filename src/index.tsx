@@ -3,9 +3,10 @@ import type { PiletApi } from "@hive/esm-shell-app";
 import {
   ListingAnalytics,
   ListingDetail,
+  PublicListingDetail,
   ListingGalary,
   Listings,
-  ListingsDiscovery,
+  PublicListings,
   PropertyListings,
 } from "./pages";
 import { HeaderLink } from "@hive/esm-core-components";
@@ -40,8 +41,8 @@ export function setup(app: PiletApi) {
       layout: "listingChart",
     }
   );
-  app.registerPage("/listings", ListingsDiscovery);
-  app.registerPage("/listings/:listingId", ListingsDiscovery);
+  app.registerPage("/listings", PublicListings);
+  app.registerPage("/listings/:listingId", PublicListingDetail);
   app.registerPage(
     "/dashboard/properties/:propertyId/listings",
     () => <PropertyListings launchWorkspace={app.launchWorkspace} />,

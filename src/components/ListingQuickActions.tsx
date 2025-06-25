@@ -15,16 +15,17 @@ import React, { FC } from "react";
 import { ListingForm } from "../forms";
 import ThumbnailUploadForm from "../forms/ThumbnailUploadForm";
 import { useListing, useListingApi, useListingChartListing } from "../hooks";
+import { Link } from "react-router-dom";
 
 type PropertyQuickActionsProps = Pick<PiletApi, "launchWorkspace"> & {};
 
 const ListingQuickActions: FC<PropertyQuickActionsProps> = ({
   launchWorkspace,
 }) => {
-  const propertyId = useListingChartListing();
+  const listingId = useListingChartListing();
   const { submitDraftListingForReview, approvePendingListing, mutateListings } =
     useListingApi();
-  const { isLoading, error, listing } = useListing(propertyId);
+  const { isLoading, error, listing } = useListing(listingId);
   const handleEditProperty = () => {
     const dispose = launchWorkspace(
       <ListingForm onCloseWorkspace={() => dispose()} listing={listing} />,
@@ -58,8 +59,8 @@ const ListingQuickActions: FC<PropertyQuickActionsProps> = ({
       withCloseButton: false,
     });
     try {
-      if (action === "submit") await submitDraftListingForReview(propertyId);
-      else if (action === "approve") await approvePendingListing(propertyId);
+      if (action === "submit") await submitDraftListingForReview(listingId);
+      else if (action === "approve") await approvePendingListing(listingId);
       mutateListings();
       updateNotification({
         id,
@@ -100,6 +101,13 @@ const ListingQuickActions: FC<PropertyQuickActionsProps> = ({
     );
   return (
     <>
+      <Menu.Item
+        leftSection={<IconPhoto size={16} />}
+        component={Link}
+        to={`/listings/${listingId}`}
+      >
+        Preview
+      </Menu.Item>
       <Menu.Item
         leftSection={<IconPhoto size={16} />}
         onClick={handleUploadThumbnail}

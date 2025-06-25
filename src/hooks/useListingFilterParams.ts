@@ -49,7 +49,7 @@ export const useListingFilterParams = () => {
       serialize: (value) => value,
       defaultValue: "grid",
     },
-    type: {
+    types: {
       parse: (value) => {
         const validTypes = [
           "RENTAL",
@@ -60,11 +60,12 @@ export const useListingFilterParams = () => {
           "SHORT_TERM",
           "CO_LIVING",
         ] as const;
-        return validTypes.includes(value as any)
-          ? (value as ListingFilterParams["type"])
+        const types = searchParamUtils.parseArray(value || "", []);
+        return validTypes.some((vt) => types.includes(vt))
+          ? (types as ListingFilterParams["types"])
           : undefined;
       },
-      serialize: (value) => value,
+      serialize: (value) => searchParamUtils.serializeArray(value),
       defaultValue: undefined,
     },
   });

@@ -28,4 +28,5 @@ export const ListingAnalytics = withUserAccess(ListingAnalyticsPage, {
   requiresAuth: true,
 });
 
-export { default as ListingsDiscovery } from "./ListingsDiscoveryPage";
+export { default as PublicListings } from "./PublicListingsPage";
+export { default as PublicListingDetail } from "./PublicListingDetailPage";

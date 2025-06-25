@@ -21,3 +21,17 @@ export const useSearchUser = () => {
     searchValue: search,
   };
 };
+
+export const useContactPerson = (userId: string) => {
+  const url = constructUrl(`/users/${userId}`, {
+    v: "custom:include(person)",
+  });
+  const { data, error, isLoading } = useSWR<APIFetchResponse<User>>(
+    userId ? url : undefined
+  );
+  return {
+    contactPerson: data?.data,
+    isLoading,
+    error,
+  };
+};

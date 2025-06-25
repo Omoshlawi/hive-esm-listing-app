@@ -26,7 +26,7 @@ import { ListingCard } from "../components/discovery/ListingCard";
 import SearchAndFiltersHeader from "../components/discovery/SearchAndFiltersHeader";
 import { useListingFilterParams, useListings } from "../hooks";
 
-export function ListingDiscoveryPage() {
+export function PublicListingsPage() {
   const [params, , clear] = useListingFilterParams();
   const { error, isLoading, listings } = useListings(params);
   const theme = useMantineTheme();
@@ -130,4 +130,4 @@ export function ListingDiscoveryPage() {
   );
 }
 
-export default ListingDiscoveryPage;
+export default PublicListingsPage;
