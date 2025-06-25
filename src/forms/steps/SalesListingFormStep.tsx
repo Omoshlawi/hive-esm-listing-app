@@ -17,6 +17,7 @@ import { INPUT_ORDER } from "../../utils/constants";
 import { useFinancingOptions, useOwnershipTypes } from "../../hooks";
 import { InputSkeleton, When } from "@hive/esm-core-components";
 import { handleApiErrors } from "@hive/esm-core-api";
+import SaleListingFinancialOptionsInput from "./SaleListingFinancialOptionsInput";
 
 type Props = {
   onNext?: () => void;
@@ -111,38 +112,7 @@ const SalesListingFormStep: FC<Props> = ({ onNext, onPrev }) => {
           )}
         />
 
-        <Controller
-          control={form.control}
-          name="saleDetails.financingOptions"
-          render={({ field, fieldState }) => (
-            <When
-              asyncState={financingOptionsAsync}
-              loading={() => <InputSkeleton />}
-              error={(e) => (
-                <Alert color="red" title="Error loading financing options">
-                  {handleApiErrors(e).detail}
-                </Alert>
-              )}
-              success={(financingOptions) => (
-                <MultiSelect
-                  {...field}
-                  data={financingOptions.map((option) => ({
-                    label: option.name,
-                    value: option.id,
-                  }))}
-                  placeholder="Supported financing options"
-                  limit={10}
-                  label="Supported financing options"
-                  searchable
-                  error={fieldState.error?.message}
-                  nothingFoundMessage="Nothing found..."
-                  hidePickedOptions
-                  clearable
-                />
-              )}
-            />
-          )}
-        />
+       <SaleListingFinancialOptionsInput/>
       </Stack>
       <Group gap={1}>
         <Button flex={1} variant="default" radius={0} onClick={onPrev}>

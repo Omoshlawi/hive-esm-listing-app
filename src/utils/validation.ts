@@ -31,6 +31,7 @@ export const ListingMediaSchema = z.object({
 export const SaleListingFinancingOptionSchema = z.object({
   // listingId: z.string().uuid("Invalid"),
   optionId: z.string().uuid("Invalid"),
+  notes: z.string().optional(),
 });
 
 export const SaleListingSchema = z.object({
@@ -39,11 +40,9 @@ export const SaleListingSchema = z.object({
   priceNegotiable: z.boolean().optional(),
   ownershipTypeId: z.string().uuid("Invalid"),
   titleDeedReady: z.boolean().optional(),
-  financingOptions: z
-    .string()
-    .uuid("Invalid")
-    .array()
-    .nonempty("Atleast one payment option required"),
+  financingOptions: SaleListingFinancingOptionSchema.array().nonempty(
+    "Atleast one payment option required"
+  ),
 });
 
 export const RentalListingSchema = z.object({
