@@ -292,55 +292,10 @@ const mockListing = {
 function PublicListingDetailPage() {
   const { listingId } = useParams<{ listingId: string }>();
   const { listing, error, isLoading, mutate } = useListing(listingId);
-  const theme = useMantineTheme();
-  const { colorScheme } = useMantineColorScheme();
   const [activeTab, setActiveTab] = useState("overview");
-  const [
-    contactModalOpen,
-    { open: openContactModal, close: closeContactModal },
-  ] = useDisclosure(false);
 
-  const [
-    calculatorModalOpen,
-    { open: openCalculatorModal, close: closeCalculatorModal },
-  ] = useDisclosure(false);
   const [shareModalOpen, { open: openShareModal, close: closeShareModal }] =
     useDisclosure(false);
-  const [
-    galleryModalOpen,
-    { open: openGalleryModal, close: closeGalleryModal },
-  ] = useDisclosure(false);
-  const [inquiryForm, setInquiryForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    message: "",
-    visitDate: "",
-    visitTime: "",
-  });
-
-  const isDark = colorScheme === "dark";
-  const primaryColor = theme.colors[theme.primaryColor];
-  const gradientFrom = primaryColor[6];
-  const gradientTo = primaryColor[8];
-
-  const getStatusColor = (status: string) => {
-    const colors = {
-      DRAFT: "gray",
-      PENDING: "yellow",
-      APPROVED: "green",
-      REJECTED: "red",
-      SOLD: "blue",
-      UNDER_CONTRACT: "orange",
-    };
-    return colors[status as keyof typeof colors] || "gray";
-  };
-
-  const images = mockListing.media.filter((m) => m.mediaType === "IMAGE");
-  const videos = mockListing.media.filter((m) => m.mediaType === "VIDEO");
-  const documents = mockListing.media.filter(
-    (m) => m.mediaType !== "IMAGE" && m.mediaType !== "VIDEO"
-  );
 
   const handleShare = (platform: string) => {
     const url = window.location.href;
@@ -435,7 +390,7 @@ function PublicListingDetailPage() {
           </Tabs.Panel>
 
           <Tabs.Panel value="agent" pt="md">
-            <AgentTab listing={listing}/>
+            <AgentTab listing={listing} />
           </Tabs.Panel>
         </Tabs>
 
@@ -489,7 +444,6 @@ function PublicListingDetailPage() {
             </Group>
           </Stack>
         </Modal>
-    
       </Stack>
     </Container>
   );
