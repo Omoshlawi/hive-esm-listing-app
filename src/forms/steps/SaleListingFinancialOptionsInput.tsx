@@ -58,7 +58,7 @@ const SaleListingFinancialOptionsInput = () => {
                     value: d.id,
                     disabled:
                       financialOptions.findIndex(
-                        (option) => option.optionId === d.id
+                        (option: any) => option.optionId === d.id
                       ) !== -1,
                   }))}
                   placeholder="Select Option"

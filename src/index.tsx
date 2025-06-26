@@ -42,7 +42,9 @@ export function setup(app: PiletApi) {
     }
   );
   app.registerPage("/listings", PublicListings);
-  app.registerPage("/listings/:listingId", PublicListingDetail);
+  app.registerPage("/listings/:listingId", () => (
+    <PublicListingDetail Extension={app.Extension} />
+  ));
   app.registerPage(
     "/dashboard/properties/:propertyId/listings",
     () => <PropertyListings launchWorkspace={app.launchWorkspace} />,
@@ -111,6 +113,22 @@ export function setup(app: PiletApi) {
       );
     },
     { type: "listingChart" as any }
+  );
+  app.registerMenu(
+    ({ onClose }: any) => {
+      return (
+        <HeaderLink
+          label="Listings"
+          to={`/listings`}
+          icon="building"
+          onClose={onClose}
+          activeWhen={(path) => false}
+        />
+      );
+    },
+    {
+      type: "header",
+    }
   );
 
   app.registerExtension("listing-chart-banner-extension-slot", ({ params }) => (

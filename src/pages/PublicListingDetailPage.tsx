@@ -72,7 +72,7 @@ import {
   IconChevronLeft,
   IconChevronRight,
 } from "@tabler/icons-react";
-import { useState } from "react";
+import { FC, useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import React from "react";
 import { useParams } from "react-router";
@@ -289,7 +289,12 @@ const mockListing = {
     bio: "Sarah is a dedicated real estate professional with over 8 years of experience in luxury property sales. She specializes in downtown properties and has helped over 127 families find their dream homes.",
   },
 };
-function PublicListingDetailPage() {
+
+type Props = {
+  Extension: React.ComponentType<{ name: string; params: Record<string, any> }>;
+};
+
+const PublicListingDetailPage: FC<Props> = ({ Extension }) => {
   const { listingId } = useParams<{ listingId: string }>();
   const { listing, error, isLoading, mutate } = useListing(listingId);
   const [activeTab, setActiveTab] = useState("overview");
@@ -374,7 +379,15 @@ function PublicListingDetailPage() {
           </Tabs.List>
 
           <Tabs.Panel value="overview" pt="md">
-            <OverviewTab listing={listing} />
+            <OverviewTab
+              listing={listing}
+              scheduleViewingExtensionSlot={
+                <Extension
+                  name="public-listing-schedule-viewing-extension-slot"
+                  params={{ listingId }}
+                />
+              }
+            />
           </Tabs.Panel>
 
           <Tabs.Panel value="details" pt="md">
@@ -447,6 +460,6 @@ function PublicListingDetailPage() {
       </Stack>
     </Container>
   );
-}
+};
 
 export default PublicListingDetailPage;
