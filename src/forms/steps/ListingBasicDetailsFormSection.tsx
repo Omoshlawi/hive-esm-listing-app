@@ -1,7 +1,6 @@
 import {
   Button,
   Group,
-  Select,
   Stack,
   TagsInput,
   Textarea,
@@ -12,7 +11,7 @@ import { DateInput } from "@mantine/dates";
 import React, { FC } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { ListingFormData } from "../../types";
-import { INPUT_ORDER, LISTING_TYPES } from "../../utils/constants";
+import { INPUT_ORDER } from "../../utils/constants";
 
 type Props = {
   onNext?: () => void;
@@ -27,23 +26,6 @@ const ListingBasicDetailsFormSection: FC<Props> = ({ onCancel, onNext }) => {
         <Title order={4} pt={"lg"}>
           Listing Basic Information
         </Title>
-        <Controller
-          control={form.control}
-          name="type"
-          render={({ field, fieldState: { error } }) => (
-            <Select
-              {...field}
-              data={LISTING_TYPES}
-              placeholder="Select listing type"
-              limit={10}
-              label="Listing type"
-              searchable
-              error={error?.message}
-              nothingFoundMessage="Nothing found..."
-              clearable
-            />
-          )}
-        />
         <Controller
           control={form.control}
           name="title"
@@ -117,7 +99,6 @@ const ListingBasicDetailsFormSection: FC<Props> = ({ onCancel, onNext }) => {
               "title",
               "description",
               "tags",
-              "type",
               "expiryDate",
             ]);
             if (valid) onNext?.();

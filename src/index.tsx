@@ -14,6 +14,7 @@ import ListingChartLayout from "./layout/ListingChart";
 import { useListingChartListing, usePropertyChartProperty } from "./hooks";
 import { ListingChartBanner } from "./components/Banner";
 import ListingQuickActions from "./components/ListingQuickActions";
+import { OrganizationContextHeaderLink } from "./components/links";
 
 export function setup(app: PiletApi) {
   app.registerPageLayout("listingChart", ({ children }) => (
@@ -52,7 +53,7 @@ export function setup(app: PiletApi) {
   );
   app.registerMenu(
     ({ onClose }: any) => (
-      <HeaderLink
+      <OrganizationContextHeaderLink
         label="Listings"
         to="/dashboard/listings"
         icon="listDetails"

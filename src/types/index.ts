@@ -3,6 +3,7 @@ import { ListingMediaSchema, ListingSchema } from "../utils/validation";
 
 export interface Listing {
   id: string;
+  listingNumber: string;
   propertyId: string;
   property: Property;
   organizationId: string;

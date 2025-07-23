@@ -46,7 +46,7 @@ export function ListingChartBanner({
       icon="listDetails"
       color={color}
       iconVisbleFrom="sm"
-      renderId={(l) => l.id}
+      renderId={(l) => l.listingNumber}
       renderTimeStamp={(l) => `Created ${formatDate(l.createdAt)}`}
       renderBadges={(l) => (
         <>

@@ -1,22 +1,18 @@
+import { handleApiErrors } from "@hive/esm-core-api";
+import { InputSkeleton, When } from "@hive/esm-core-components";
 import {
   Alert,
-  Button,
   Checkbox,
-  Group,
-  MultiSelect,
+  Fieldset,
   NumberInput,
-  Radio,
   Select,
   Stack,
-  Title,
 } from "@mantine/core";
 import React, { FC } from "react";
 import { Controller, useFormContext } from "react-hook-form";
+import { useFinancingOptions, useOwnershipTypes } from "../../hooks";
 import { ListingFormData } from "../../types";
 import { INPUT_ORDER } from "../../utils/constants";
-import { useFinancingOptions, useOwnershipTypes } from "../../hooks";
-import { InputSkeleton, When } from "@hive/esm-core-components";
-import { handleApiErrors } from "@hive/esm-core-api";
 import SaleListingFinancialOptionsInput from "./SaleListingFinancialOptionsInput";
 
 type Props = {
@@ -24,16 +20,13 @@ type Props = {
   onPrev?: () => void;
 };
 
-const SalesListingFormStep: FC<Props> = ({ onNext, onPrev }) => {
+const SalesListingFormInput: FC<Props> = ({ onNext, onPrev }) => {
   const form = useFormContext<ListingFormData>();
   const ownershipTypesAsync = useOwnershipTypes();
   const financingOptionsAsync = useFinancingOptions();
   return (
-    <Stack h={"100%"} justify="space-between">
+    <Fieldset legend="Sales Details">
       <Stack gap={"md"}>
-        <Title order={4} pt={"lg"}>
-          Sales Details
-        </Title>
         <Controller
           control={form.control}
           name="saleDetails.downPayment"
@@ -112,36 +105,10 @@ const SalesListingFormStep: FC<Props> = ({ onNext, onPrev }) => {
           )}
         />
 
-       <SaleListingFinancialOptionsInput/>
+        <SaleListingFinancialOptionsInput />
       </Stack>
-      <Group gap={1}>
-        <Button flex={1} variant="default" radius={0} onClick={onPrev}>
-          Previous
-        </Button>
-        <Button
-          radius={0}
-          flex={1}
-          fullWidth
-          type={"button"}
-          variant="filled"
-          loading={form.formState.isSubmitting}
-          disabled={form.formState.isSubmitting}
-          onClick={async () => {
-            const valid = await form.trigger([
-              "saleDetails.downPayment",
-              "saleDetails.financingOptions",
-              "saleDetails.ownershipTypeId",
-              "saleDetails.priceNegotiable",
-              "saleDetails.titleDeedReady",
-            ]);
-            if (valid) onNext?.();
-          }}
-        >
-          Next
-        </Button>
-      </Group>
-    </Stack>
+    </Fieldset>
   );
 };
 
-export default SalesListingFormStep;
+export default SalesListingFormInput;

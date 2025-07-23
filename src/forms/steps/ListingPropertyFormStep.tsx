@@ -9,35 +9,28 @@ import {
 } from "@mantine/core";
 import React, { FC } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import { ListingFormData, Property } from "../../types";
-import { User } from "@hive/esm-core-api";
+import { useSearchProperties } from "../../hooks";
+import { useSearchUser } from "../../hooks/useUsers";
+import { ListingFormData } from "../../types";
 import { INPUT_ORDER } from "../../utils/constants";
 import ListingAdditionalCharges from "../ListingAdditionalCharges";
 type Props = {
-  onNext?: () => void;
   onPrev?: () => void;
-  propertiesSearchresults?: Array<Property>;
-  isLoadingProperties?: boolean;
-  propertySearchValue?: string;
-  onPropertySearchChange?: (search: string) => void;
-  userSearchresults?: Array<User>;
-  isLoadingUsers?: boolean;
-  userSearchValue?: string;
-  onUserSearchChange?: (search: string) => void;
 };
 
-const ListingPropertyFormStep: FC<Props> = ({
-  onPrev,
-  onNext,
-  isLoadingProperties,
-  onPropertySearchChange,
-  propertySearchValue,
-  propertiesSearchresults = [],
-  isLoadingUsers,
-  onUserSearchChange,
-  userSearchValue,
-  userSearchresults = [],
-}) => {
+const ListingPropertyFormStep: FC<Props> = ({ onPrev }) => {
+  const {
+    properties,
+    isLoading: isLoadingProperties,
+    searchProperty,
+    search,
+  } = useSearchProperties();
+  const {
+    users,
+    isLoading: isLoadingUsers,
+    searchUser,
+    searchValue: userSearchValue,
+  } = useSearchUser();
   const form = useFormContext<ListingFormData>();
   return (
     <Stack h={"100%"} justify="space-between">
@@ -51,7 +44,7 @@ const ListingPropertyFormStep: FC<Props> = ({
           render={({ field, fieldState: { error } }) => (
             <Select
               {...field}
-              data={propertiesSearchresults.map((p) => ({
+              data={properties.map((p) => ({
                 label: p.name,
                 value: p.id,
               }))}
@@ -60,8 +53,8 @@ const ListingPropertyFormStep: FC<Props> = ({
               rightSection={isLoadingProperties && <Loader size={"xs"} />}
               label="Property"
               searchable
-              searchValue={propertySearchValue}
-              onSearchChange={onPropertySearchChange}
+              searchValue={search}
+              onSearchChange={searchProperty}
               error={error?.message}
               nothingFoundMessage="Nothing found..."
               clearable
@@ -74,13 +67,13 @@ const ListingPropertyFormStep: FC<Props> = ({
           render={({ field, fieldState: { error } }) => (
             <Select
               {...field}
-              data={userSearchresults.map((u) => ({
+              data={users.map((u) => ({
                 label: u.username,
                 value: u.id,
               }))}
               rightSection={isLoadingUsers && <Loader size={"xs"} />}
               searchValue={userSearchValue}
-              onSearchChange={onUserSearchChange}
+              onSearchChange={searchUser}
               placeholder="Search user"
               limit={10}
               label="Responsible person"
@@ -115,20 +108,12 @@ const ListingPropertyFormStep: FC<Props> = ({
           radius={0}
           flex={1}
           fullWidth
-          type={"button"}
+          type={"submit"}
           variant="filled"
           loading={form.formState.isSubmitting}
           disabled={form.formState.isSubmitting}
-          onClick={async () => {
-            const valid = await form.trigger([
-              "price",
-              "propertyId",
-              "additionalCharges",
-            ]);
-            if (valid) onNext?.();
-          }}
         >
-          Next
+          Submit
         </Button>
       </Group>
     </Stack>

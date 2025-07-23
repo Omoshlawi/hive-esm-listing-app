@@ -1,4 +1,5 @@
 import {
+  DashboardPageHeader,
   DataTableColumnHeader,
   StateFullDataTable,
   TablerIcon,
@@ -7,8 +8,10 @@ import { PiletApi } from "@hive/esm-shell-app";
 import {
   ActionIcon,
   Badge,
+  Box,
   Button,
   Group,
+  Stack,
   Text,
   useComputedColorScheme,
 } from "@mantine/core";
@@ -61,46 +64,61 @@ const ListingsPage: FC<ListingsPageProps> = ({ launchWorkspace }) => {
   };
 
   return (
-    <StateFullDataTable
-      title="Listings"
-      onAdd={() => handleAddOrupdate()}
-      columns={[
-        ...columns,
-        {
-          id: "actions",
-          header: "Actions",
-          cell({ row }) {
-            const listing = row.original;
-            return (
-              <Group>
+    <Stack gap={"xl"}>
+      <Box>
+        <DashboardPageHeader
+          title="Listings"
+          subTitle={`
+            Organization Listings`}
+          icon={"building"}
+        />
+      </Box>
+      <StateFullDataTable
+        onAdd={() => handleAddOrupdate()}
+        columns={[
+          ...columns,
+          {
+            id: "actions",
+            header: "Actions",
+            cell({ row }) {
+              const listing = row.original;
+              return (
                 <Group>
-                  <ActionIcon
-                    variant="outline"
-                    aria-label="Settings"
-                    color="red"
-                    onClick={() => handleDelete(listing)}
-                  >
-                    <TablerIcon
-                      name="trash"
-                      style={{ width: "70%", height: "70%" }}
-                      stroke={1.5}
-                    />
-                  </ActionIcon>
+                  <Group>
+                    <ActionIcon
+                      variant="outline"
+                      aria-label="Settings"
+                      color="red"
+                      onClick={() => handleDelete(listing)}
+                    >
+                      <TablerIcon
+                        name="trash"
+                        style={{ width: "70%", height: "70%" }}
+                        stroke={1.5}
+                      />
+                    </ActionIcon>
+                  </Group>
                 </Group>
-              </Group>
-            );
+              );
+            },
           },
-        },
-      ]}
-      {...asyncListing}
-      data={asyncListing.listings}
-      withColumnViewOptions
-    />
+        ]}
+        {...asyncListing}
+        data={asyncListing.listings}
+        withColumnViewOptions
+      />
+    </Stack>
   );
 };
 
 export default ListingsPage;
 const columns: ColumnDef<Listing>[] = [
+  {
+    accessorKey: "listingNumber",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Listing Number" />
+    ),
+  },
   {
     accessorKey: "title",
     header: "Title",

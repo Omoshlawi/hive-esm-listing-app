@@ -1,12 +1,8 @@
-import React from "react";
-import { Controller, useFormContext } from "react-hook-form";
-import { ListingFormData } from "../../types";
-import { useFinancingOptions } from "../../hooks";
-import { InputSkeleton, TablerIcon, When } from "@hive/esm-core-components";
+import { handleApiErrors } from "@hive/esm-core-api";
+import { InputSkeleton, TablerIcon } from "@hive/esm-core-components";
 import {
   Alert,
   Button,
-  Checkbox,
   Fieldset,
   Group,
   Select,
@@ -14,7 +10,10 @@ import {
   Textarea,
   Title,
 } from "@mantine/core";
-import { handleApiErrors } from "@hive/esm-core-api";
+import React from "react";
+import { Controller, useFormContext } from "react-hook-form";
+import { useFinancingOptions } from "../../hooks";
+import { ListingFormData } from "../../types";
 
 const SaleListingFinancialOptionsInput = () => {
   const form = useFormContext<ListingFormData>();

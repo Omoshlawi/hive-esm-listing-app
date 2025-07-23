@@ -1,4 +1,5 @@
 import { cleanFiles, handleApiErrors, uploadFiles } from "@hive/esm-core-api";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Accordion,
   Avatar,
@@ -7,7 +8,6 @@ import {
   Checkbox,
   Group,
   Image,
-  Paper,
   SimpleGrid,
   Stack,
   Text,
@@ -15,15 +15,13 @@ import {
 } from "@mantine/core";
 import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import { showNotification } from "@mantine/notifications";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import z from "zod";
 import { useListingApi } from "../../hooks";
 import { ListingMedia, ListingMediaFormData } from "../../types";
-import MediaFormInputFields from "./MediaFormInputFields";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { ListingMediaSchema } from "../../utils/validation";
-import z from "zod";
-import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import { IconBulldozer } from "@tabler/icons-react";
+import MediaFormInputFields from "./MediaFormInputFields";
 
 type ListingGalaryFormProps = {
   listingId: string;

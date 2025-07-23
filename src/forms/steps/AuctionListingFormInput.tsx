@@ -1,24 +1,14 @@
-import {
-  Button,
-  Checkbox,
-  Group,
-  NumberInput,
-  Stack,
-  Title,
-} from "@mantine/core";
+import { Checkbox, Fieldset, NumberInput, Stack, Title } from "@mantine/core";
+import { DateInput } from "@mantine/dates";
 import React, { FC } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { ListingFormData } from "../../types";
 import { INPUT_ORDER } from "../../utils/constants";
-import { DateInput } from "@mantine/dates";
-type Props = {
-  onNext?: () => void;
-  onPrev?: () => void;
-};
-const AuctionListingFormStep: FC<Props> = ({ onNext, onPrev }) => {
+type Props = {};
+const AuctionListingFormInput: FC<Props> = () => {
   const form = useFormContext<ListingFormData>();
   return (
-    <Stack h={"100%"} justify="space-between">
+    <Fieldset legend="Auction information">
       <Stack gap={"md"}>
         <Title order={4} pt={"lg"}>
           Auction details
@@ -126,25 +116,8 @@ const AuctionListingFormStep: FC<Props> = ({ onNext, onPrev }) => {
           )}
         />
       </Stack>
-      <Group gap={1}>
-        <Button flex={1} variant="default" radius={0} onClick={onPrev}>
-          Previous
-        </Button>
-        <Button
-          radius={0}
-          flex={1}
-          fullWidth
-          type={"button"}
-          variant="filled"
-          loading={form.formState.isSubmitting}
-          disabled={form.formState.isSubmitting}
-          onClick={onNext}
-        >
-          Next
-        </Button>
-      </Group>
-    </Stack>
+    </Fieldset>
   );
 };
 
-export default AuctionListingFormStep;
+export default AuctionListingFormInput;

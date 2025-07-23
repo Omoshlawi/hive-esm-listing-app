@@ -1,18 +1,16 @@
 import { TablerIcon } from "@hive/esm-core-components";
 import {
-  Fieldset,
-  Stack,
-  Group,
-  Select,
-  TextInput,
-  ActionIcon,
   Button,
-  NumberInput,
-  Textarea,
-  Checkbox,
   Card,
+  Checkbox,
+  Fieldset,
+  NumberInput,
+  Select,
+  Stack,
+  Textarea,
+  TextInput,
 } from "@mantine/core";
-import React, { useMemo } from "react";
+import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { ListingFormData } from "../types";
 

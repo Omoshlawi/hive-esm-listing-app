@@ -1,12 +1,4 @@
-import {
-  Button,
-  Group,
-  NumberInput,
-  Select,
-  Stack,
-  TagsInput,
-  Title,
-} from "@mantine/core";
+import { Fieldset, NumberInput, Select, Stack, TagsInput } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 import React, { FC } from "react";
 import { Controller, useFormContext } from "react-hook-form";
@@ -16,14 +8,11 @@ type Props = {
   onNext?: () => void;
   onPrev?: () => void;
 };
-const RentalListingFormStep: FC<Props> = ({ onNext, onPrev }) => {
+const RentalListingFormInput: FC<Props> = ({ onNext, onPrev }) => {
   const form = useFormContext<ListingFormData>();
   return (
-    <Stack h={"100%"} justify="space-between">
+    <Fieldset legend="Rental Details">
       <Stack gap={"md"}>
-        <Title order={4} pt={"lg"}>
-          Rental details
-        </Title>
         <Controller
           control={form.control}
           name="rentalDetails.rentPeriod"
@@ -89,34 +78,8 @@ const RentalListingFormStep: FC<Props> = ({ onNext, onPrev }) => {
           )}
         />
       </Stack>
-      <Group gap={1}>
-        <Button flex={1} variant="default" radius={0} onClick={onPrev}>
-          Previous
-        </Button>
-        <Button
-          radius={0}
-          flex={1}
-          fullWidth
-          type={"button"}
-          variant="filled"
-          loading={form.formState.isSubmitting}
-          disabled={form.formState.isSubmitting}
-          onClick={async () => {
-            const valid = await form.trigger([
-              "rentalDetails.availableFrom",
-              "rentalDetails.minimumStay",
-              "rentalDetails.rentPeriod",
-              "rentalDetails.utilities",
-              "rentalDetails.securityDeposit",
-            ]);
-            if (valid) onNext?.();
-          }}
-        >
-          Next
-        </Button>
-      </Group>
-    </Stack>
+    </Fieldset>
   );
 };
 
-export default RentalListingFormStep;
+export default RentalListingFormInput;

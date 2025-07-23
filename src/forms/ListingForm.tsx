@@ -5,29 +5,24 @@ import {
   uploadFiles,
 } from "@hive/esm-core-api";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Paper, Stepper, Tabs } from "@mantine/core";
+import { Paper, Tabs } from "@mantine/core";
 import { FileWithPath } from "@mantine/dropzone";
 import { useMediaQuery } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
-import React, { FC, useState, useMemo, useCallback } from "react";
+import React, { FC, useCallback, useState } from "react";
 import {
   FieldPath,
   FormProvider,
   SubmitHandler,
   useForm,
 } from "react-hook-form";
-import { useListingApi, useSearchProperties } from "../hooks";
+import { useListingApi } from "../hooks";
 import { Listing, ListingFormData } from "../types";
 import { ListingSchema } from "../utils/validation";
-import AuctionListingFormStep from "./steps/AuctionListingFormStep";
-import LeaseListingFormStep from "./steps/LeaseListingFormStep";
 import ListingBasicDetailsFormSection from "./steps/ListingBasicDetailsFormSection";
 import ListingMediaUploadsFormStep from "./steps/ListingMediaUploadsFormStep";
 import ListingPropertyFormStep from "./steps/ListingPropertyFormStep";
-import RentalListingFormStep from "./steps/RentalListingFormStep";
-import SalesListingFormStep from "./steps/SalesListingFormStep";
-import ListingSubmitStep from "./steps/ListingSubmitStep";
-import { useSearchUser } from "../hooks/useUsers";
+import ListingTypeDetailsStep from "./steps/ListingTypeDetailsStep";
 
 type ListingFormProps = {
   listing?: Listing;
@@ -35,59 +30,7 @@ type ListingFormProps = {
   onCloseWorkspace?: () => void;
 };
 
-type FormSteps =
-  | "basic"
-  | "upload"
-  | "property"
-  | "rent"
-  | "sale"
-  | "auction"
-  | "lease"
-  | "submit";
-
-// Step configuration - easy to modify when adding new steps
-const STEP_CONFIG = [
-  {
-    key: "basic" as FormSteps,
-    label: "Basics",
-    required: true,
-  },
-  {
-    key: "upload" as FormSteps,
-    label: "Uploads",
-    required: true,
-  },
-  {
-    key: "property" as FormSteps,
-    label: "Property",
-    required: true,
-  },
-  {
-    key: "rent" as FormSteps,
-    label: "Rent",
-    condition: (type: ListingFormData["type"]) => type === "RENTAL",
-  },
-  {
-    key: "sale" as FormSteps,
-    label: "Sale",
-    condition: (type: ListingFormData["type"]) => type === "SALE",
-  },
-  {
-    key: "auction" as FormSteps,
-    label: "Auction",
-    condition: (type: ListingFormData["type"]) => type === "AUCTION",
-  },
-  {
-    key: "lease" as FormSteps,
-    label: "Lease",
-    condition: (type: ListingFormData["type"]) => type === "LEASE",
-  },
-  {
-    key: "submit" as FormSteps,
-    label: "Submit",
-    required: true,
-  },
-];
+type FormSteps = "basic" | "upload" | "property" | "type-details";
 
 const ListingForm: FC<ListingFormProps> = ({
   onCloseWorkspace,
@@ -95,18 +38,6 @@ const ListingForm: FC<ListingFormProps> = ({
   onSuccess,
 }) => {
   const { addListing, updateListing, addListingMedia } = useListingApi();
-  const {
-    properties,
-    isLoading: isLoadingProperties,
-    searchProperty,
-    search,
-  } = useSearchProperties();
-  const {
-    users,
-    isLoading: isLoadingUsers,
-    searchUser,
-    searchValue: userSearchValue,
-  } = useSearchUser();
 
   const [files, setFiles] = useState<FileWithPath[]>([]);
   const [galaryImages, setGalarayImages] = useState<FileWithPath[]>([]);
@@ -123,56 +54,16 @@ const ListingForm: FC<ListingFormProps> = ({
     resolver: zodResolver(ListingSchema),
   });
 
-  const ltypesObservable = form.watch("type");
   const isMobile = useMediaQuery("(max-width: 48em)");
   const [activeTab, setActiveTab] = useState<FormSteps | null>("basic");
-
-  // Calculate available steps based on configuration
-  const availableSteps = useMemo(() => {
-    return STEP_CONFIG.filter(
-      (step) =>
-        step.required || (step.condition && step.condition(ltypesObservable))
-    ).map((step) => step.key);
-  }, [ltypesObservable]);
-
-  // Generic navigation functions
-  const navigateToStep = useCallback(
-    (direction: "next" | "prev") => {
-      if (!activeTab) return;
-
-      const currentIndex = availableSteps.indexOf(activeTab);
-      const targetIndex =
-        direction === "next" ? currentIndex + 1 : currentIndex - 1;
-
-      if (targetIndex >= 0 && targetIndex < availableSteps.length) {
-        setActiveTab(availableSteps[targetIndex]);
-      }
-    },
-    [activeTab, availableSteps]
-  );
-
-  const navigateToNext = useCallback(
-    () => navigateToStep("next"),
-    [navigateToStep]
-  );
-  const navigateToPrev = useCallback(
-    () => navigateToStep("prev"),
-    [navigateToStep]
-  );
 
   // Extract error navigation logic into a separate function
   const navigateToErrorStep = useCallback(() => {
     const fieldSteps: Record<FormSteps, Array<FieldPath<ListingFormData>>> = {
-      basic: ["type", "title", "description", "tags", "expiryDate"],
+      basic: ["title", "description", "tags", "expiryDate"],
       upload: ["coverImage"],
-      property: [
-        "propertyId",
-        "contactPersonId",
-        "price",
-        "additionalCharges",
-        "additionalCharges",
-      ],
-      rent: [
+      property: ["propertyId", "contactPersonId", "price", "additionalCharges"],
+      "type-details": [
         "rentalDetails",
         "rentalDetails.availableFrom",
         "rentalDetails.furnished",
@@ -180,47 +71,42 @@ const ListingForm: FC<ListingFormProps> = ({
         "rentalDetails.rentPeriod",
         "rentalDetails.securityDeposit",
         "rentalDetails.utilities",
-      ],
-      sale: [
+
         "saleDetails",
         "saleDetails.downPayment",
         "saleDetails.financingOptions",
         "saleDetails.ownershipTypeId",
         "saleDetails.priceNegotiable",
         "saleDetails.titleDeedReady",
+
+        "auctionDetails",
+        "auctionDetails.auctionEnd",
+        "auctionDetails.auctionStart",
+        "auctionDetails.bidIncrement",
+        "auctionDetails.requireBidderApproval",
+        "auctionDetails.requirePreRegistration",
+        "auctionDetails.reservePrice",
+        "auctionDetails.startingBid",
+
+        "leaseDetails",
+        "leaseDetails.allowedUses",
+        "leaseDetails.leaseTermInMoths",
+        "leaseDetails.renewalAllowed",
+        "leaseDetails.securityDeposit",
       ],
-      auction: [],
-      lease: [],
-      submit: [],
     };
 
-    for (const step of availableSteps) {
-      const fields = fieldSteps[step];
+    for (const [step, fields] of Object.entries(fieldSteps)) {
       const hasError = fields.some(
         (field) => form.getFieldState(field as any).invalid
       );
 
       if (hasError) {
-        setActiveTab(step);
+        setActiveTab(step as FormSteps);
         break;
       }
     }
-  }, [availableSteps, form]);
-
-  // Auto-correct invalid active tab
-  React.useEffect(() => {
-    if (activeTab && !availableSteps.includes(activeTab)) {
-      const fallbackStep =
-        availableSteps[
-          Math.min(
-            availableSteps.length - 2,
-            availableSteps.indexOf("property")
-          )
-        ] || "basic";
-      setActiveTab(fallbackStep);
-    }
-  }, [availableSteps, activeTab]);
-
+  }, [form]);
   // Navigate to error step when form errors change
   React.useEffect(() => {
     if (Object.keys(form.formState.errors ?? {}).length > 0) {
@@ -290,53 +176,6 @@ const ListingForm: FC<ListingFormProps> = ({
     }
   };
 
-  // Step component mapping - easy to add new steps
-  const stepComponents = {
-    basic: (
-      <ListingBasicDetailsFormSection
-        onCancel={onCloseWorkspace}
-        onNext={navigateToNext}
-      />
-    ),
-    upload: (
-      <ListingMediaUploadsFormStep
-        onNext={navigateToNext}
-        onPrev={navigateToPrev}
-        coverImages={files}
-        onCoverImagesChange={setFiles}
-        galaryImages={galaryImages}
-        onGalaryImagesChange={setGalarayImages}
-      />
-    ),
-    property: (
-      <ListingPropertyFormStep
-        onNext={navigateToNext}
-        onPrev={navigateToPrev}
-        isLoadingProperties={isLoadingProperties}
-        onPropertySearchChange={searchProperty}
-        propertiesSearchresults={properties}
-        propertySearchValue={search}
-        isLoadingUsers={isLoadingUsers}
-        onUserSearchChange={searchUser}
-        userSearchValue={userSearchValue}
-        userSearchresults={users}
-      />
-    ),
-    rent: (
-      <RentalListingFormStep onNext={navigateToNext} onPrev={navigateToPrev} />
-    ),
-    sale: (
-      <SalesListingFormStep onNext={navigateToNext} onPrev={navigateToPrev} />
-    ),
-    auction: (
-      <AuctionListingFormStep onNext={navigateToNext} onPrev={navigateToPrev} />
-    ),
-    lease: (
-      <LeaseListingFormStep onNext={navigateToNext} onPrev={navigateToPrev} />
-    ),
-    submit: <ListingSubmitStep onPrev={navigateToPrev} />,
-  };
-
   return (
     <FormProvider {...form}>
       <form
@@ -354,31 +193,49 @@ const ListingForm: FC<ListingFormProps> = ({
             h={"100%"}
             value={activeTab}
             onChange={(value) => {
-              if (value && availableSteps.includes(value as FormSteps)) {
-                setActiveTab(value as FormSteps);
-              }
+              setActiveTab(value as FormSteps);
             }}
           >
             <Tabs.List justify={isMobile ? "space-between" : undefined}>
-              {STEP_CONFIG.map(
-                (step) =>
-                  availableSteps.includes(step.key) && (
-                    <Tabs.Tab key={step.key} p={"lg"} value={step.key}>
-                      {step.label}
-                    </Tabs.Tab>
-                  )
-              )}
+              <Tabs.Tab p={"lg"} value={"basic"}>
+                Basics
+              </Tabs.Tab>
+              <Tabs.Tab p={"lg"} value={"type-details"}>
+                Type
+              </Tabs.Tab>
+              <Tabs.Tab p={"lg"} value={"upload"}>
+                Uploads
+              </Tabs.Tab>
+              <Tabs.Tab p={"lg"} value={"property"}>
+                Property
+              </Tabs.Tab>
             </Tabs.List>
 
-            {availableSteps.map((stepKey) => (
-              <Tabs.Panel key={stepKey} value={stepKey} p={"sm"}>
-                {stepComponents[stepKey]}
-              </Tabs.Panel>
-            ))}
-
-            <Stepper.Completed>
-              Completed, click back button to get to previous step
-            </Stepper.Completed>
+            <Tabs.Panel value={"basic"} p={"sm"}>
+              <ListingBasicDetailsFormSection
+                onCancel={onCloseWorkspace}
+                onNext={() => setActiveTab("type-details")}
+              />
+            </Tabs.Panel>
+            <Tabs.Panel value={"type-details"} p={"sm"}>
+              <ListingTypeDetailsStep
+                onPrev={() => setActiveTab("basic")}
+                onNext={() => setActiveTab("upload")}
+              />
+            </Tabs.Panel>
+            <Tabs.Panel value={"upload"} p={"sm"}>
+              <ListingMediaUploadsFormStep
+                onPrev={() => setActiveTab("type-details")}
+                onNext={() => setActiveTab("property")}
+                coverImages={files}
+                galaryImages={galaryImages}
+                onCoverImagesChange={setFiles}
+                onGalaryImagesChange={setGalarayImages}
+              />
+            </Tabs.Panel>
+            <Tabs.Panel value={"property"} p={"sm"}>
+              <ListingPropertyFormStep onPrev={() => setActiveTab("upload")} />
+            </Tabs.Panel>
           </Tabs>
         </Paper>
       </form>

@@ -10,9 +10,9 @@ export const LISTING_TYPES = [
   { label: "Sale", value: "SALE" },
   { label: "Lease", value: "LEASE" },
   { label: "Auction", value: "AUCTION" },
-  { label: "Rent to Own", value: "RENT_TO_OWN" },
-  { label: "Short Term", value: "SHORT_TERM" },
-  { label: "Co-Living", value: "CO_LIVING" },
+  // { label: "Rent to Own", value: "RENT_TO_OWN" },
+  // { label: "Short Term", value: "SHORT_TERM" },
+  // { label: "Co-Living", value: "CO_LIVING" },
 ];
 
 export const PAGE_SIZES = [
