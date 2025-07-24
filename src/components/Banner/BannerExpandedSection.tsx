@@ -1,14 +1,13 @@
 import { TablerIcon, TablerIconName } from "@hive/esm-core-components";
 import {
   Group,
+  SimpleGrid,
   Stack,
   Text,
   useComputedColorScheme,
-  useMantineTheme
+  useMantineTheme,
 } from "@mantine/core";
-import {
-  IconBuilding
-} from "@tabler/icons-react";
+import { IconBuilding } from "@tabler/icons-react";
 import React, { FC } from "react";
 import { Listing } from "../../types";
 
@@ -50,7 +49,7 @@ const BannerExpandedSection: FC<BannerExpandedSectionProps> = ({ listing }) => {
       value: `${listing.property.address?.subCounty} ${listing.property?.address?.county}`,
       label: "Address",
     },
-    { icon: "building", value: listing.property.name, label: "Property" },
+    { icon: "building", value: listing.tags.join(", "), label: "Tags" },
     {
       icon: "calendar",
       value: formatDate(listing.updatedAt || listing.createdAt),
@@ -63,7 +62,7 @@ const BannerExpandedSection: FC<BannerExpandedSectionProps> = ({ listing }) => {
         Listing Details
       </Text>
 
-      <Group grow align="flex-start">
+      <SimpleGrid spacing={"sm"} cols={{ base: 1, md: 2, lg: 4 }}>
         {attrs.map((attr, index) => (
           <Stack gap="sm" key={index}>
             <Group gap="xs">
@@ -76,25 +75,21 @@ const BannerExpandedSection: FC<BannerExpandedSectionProps> = ({ listing }) => {
                 {attr.label}
               </Text>
             </Group>
-            <Text size="sm" c={getTextColor("dimmed")} pl="xl">
+            <Text size="sm" c={getTextColor("dimmed")}>
               {attr.value}
             </Text>
           </Stack>
         ))}
-      </Group>
+      </SimpleGrid>
 
       {listing.description && (
-        <Stack gap="sm">
-          <Group gap="xs">
-            <IconBuilding size={16} style={{ color: getTextColor("dimmed") }} />
-            <Text size="sm" fw={500} c={getTextColor("primary")}>
-              Description
-            </Text>
-          </Group>
+        <Stack gap="xs">
+          <Text size="sm" fw={500} c={getTextColor("primary")}>
+            Description
+          </Text>
           <Text
             size="sm"
             c={getTextColor("dimmed")}
-            pl="xl"
             style={{
               lineHeight: 1.5,
               maxWidth: "100%",

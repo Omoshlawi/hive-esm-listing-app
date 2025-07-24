@@ -49,7 +49,6 @@ import {
 } from "@tabler/icons-react";
 import React, { FC, useState } from "react";
 import { Listing } from "../../types";
-import ListingOverviewTab from "./ListingOverviewTab";
 
 // Enhanced mock data for dashboard
 const mockListing = {
@@ -220,7 +219,7 @@ const mockListing = {
 
 export const MainDashboardTabs: FC<{ listing: Listing }> = ({ listing }) => {
   const theme = useMantineTheme();
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState("leads");
 
   const getLeadStatusColor = (status: string) => {
     const colors = {
@@ -253,9 +252,6 @@ export const MainDashboardTabs: FC<{ listing: Listing }> = ({ listing }) => {
   return (
     <Tabs value={activeTab} onChange={setActiveTab}>
       <Tabs.List>
-        <Tabs.Tab value="overview" leftSection={<IconHome size={16} />}>
-          Overview
-        </Tabs.Tab>
         <Tabs.Tab value="leads" leftSection={<IconUsers size={16} />}>
           Leads ({mockListing.leads.length})
         </Tabs.Tab>
@@ -266,10 +262,6 @@ export const MainDashboardTabs: FC<{ listing: Listing }> = ({ listing }) => {
           Activity
         </Tabs.Tab>
       </Tabs.List>
-
-      <Tabs.Panel value="overview" pt="md">
-        <ListingOverviewTab listing={listing} />
-      </Tabs.Panel>
 
       <Tabs.Panel value="leads" pt="md">
         <Stack gap="md">

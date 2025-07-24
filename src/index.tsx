@@ -32,9 +32,13 @@ export function setup(app: PiletApi) {
     () => <ListingDetail launchWorkspace={app.launchWorkspace} />,
     { layout: "listingChart" }
   );
-  app.registerPage("/dashboard/listings/:listingId/galary", ListingGalary, {
-    layout: "listingChart",
-  });
+  app.registerPage(
+    "/dashboard/listings/:listingId/galary",
+    () => <ListingGalary launchWorkspace={app.launchWorkspace} />,
+    {
+      layout: "listingChart",
+    }
+  );
   app.registerPage(
     "/dashboard/listings/:listingId/analytics",
     ListingAnalytics,

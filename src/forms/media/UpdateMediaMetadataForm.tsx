@@ -28,7 +28,10 @@ const UpdateMediaMetadataForm: FC<Props> = ({
   onSuccess,
 }) => {
   const form = useForm<ListingMediaFormData>({
-    defaultValues: media,
+    defaultValues: Object.entries(media ?? {}).reduce(
+      (prev, [k, v]) => ({ ...prev, [k]: v ?? undefined }),
+      {}
+    ),
     resolver: zodResolver(ListingMediaSchema),
   });
   const { updateListingMedia, mutateListings } = useListingApi();

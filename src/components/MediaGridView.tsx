@@ -19,13 +19,29 @@ import {
 } from "@tabler/icons-react";
 import { filesize } from "filesize";
 import React from "react";
-import { ListingMedia } from "../types";
+import { ListingMedia, PropsWithLaunchWorkspace } from "../types";
+import UpdateMediaMetadataForm from "../forms/media/UpdateMediaMetadataForm";
 
-type MediaGridViewProps = {
+type MediaGridViewProps = PropsWithLaunchWorkspace & {
   media: Array<ListingMedia>;
 };
 
-const MediaGridView: React.FC<MediaGridViewProps> = ({ media }) => {
+const MediaGridView: React.FC<MediaGridViewProps> = ({
+  media,
+  launchWorkspace,
+}) => {
+  const handleUpdate = (_media: ListingMedia) => {
+    const close = launchWorkspace(
+      <UpdateMediaMetadataForm
+        listingId={_media.listingId}
+        media={_media}
+        onClose={() => close()}
+      />,
+      {
+        title: "Update Media",
+      }
+    );
+  };
   return (
     <SimpleGrid cols={{ base: 1, md: 2, lg: 4 }} spacing="md" m={"sm"}>
       {media.map((media_) => {
@@ -71,7 +87,10 @@ const MediaGridView: React.FC<MediaGridViewProps> = ({ media }) => {
                     </ActionIcon>
                   </Menu.Target>
                   <Menu.Dropdown>
-                    <Menu.Item leftSection={<IconEdit size={12} />}>
+                    <Menu.Item
+                      leftSection={<IconEdit size={12} />}
+                      onClick={() => handleUpdate(media_)}
+                    >
                       Edit
                     </Menu.Item>
                     <Menu.Item leftSection={<IconDownload size={12} />}>

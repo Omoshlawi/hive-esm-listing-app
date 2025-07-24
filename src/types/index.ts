@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { ListingMediaSchema, ListingSchema } from "../utils/validation";
+import { PiletApi } from "@hive/esm-shell-app";
 
 export interface Listing {
   id: string;
@@ -238,3 +239,6 @@ export interface ListingFilterParams {
   view: "grid" | "list";
   types: Array<Listing["type"]>;
 }
+
+
+export type PropsWithLaunchWorkspace = Pick<PiletApi, "launchWorkspace">

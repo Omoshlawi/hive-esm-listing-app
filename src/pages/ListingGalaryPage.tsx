@@ -22,10 +22,13 @@ import { useParams } from "react-router-dom";
 import MediaGridView from "../components/MediaGridView";
 import ListingGalaryForm from "../forms/media/ListingGalaryForm";
 import { useListingMedia } from "../hooks";
-import { ListingMedia } from "../types";
-type PropertyMediaPageProps = {};
+import { ListingMedia, PropsWithLaunchWorkspace } from "../types";
+import UpdateMediaMetadataForm from "../forms/media/UpdateMediaMetadataForm";
+type PropertyMediaPageProps = PropsWithLaunchWorkspace & {};
 
-const ListingGalaryPage: React.FC<PropertyMediaPageProps> = ({}) => {
+const ListingGalaryPage: React.FC<PropertyMediaPageProps> = ({
+  launchWorkspace,
+}) => {
   const { listingId } = useParams<{ listingId: string }>();
   const listingMediaAsync = useListingMedia(listingId, "IMAGE");
   const title = "Listing galary";
@@ -40,6 +43,19 @@ const ListingGalaryPage: React.FC<PropertyMediaPageProps> = ({}) => {
         />
       ),
     });
+  };
+
+  const handleUpdate = (media: ListingMedia) => {
+    const close = launchWorkspace(
+      <UpdateMediaMetadataForm
+        listingId={listingId}
+        media={media}
+        onClose={() => close()}
+      />,
+      {
+        title: "Update Media",
+      }
+    );
   };
   const handleDelete = (media: ListingMedia) => {
     openConfirmModal({
@@ -71,20 +87,30 @@ const ListingGalaryPage: React.FC<PropertyMediaPageProps> = ({}) => {
             const property = row.original;
             return (
               <Group>
-                <Group>
-                  <ActionIcon
-                    variant="outline"
-                    aria-label="Settings"
-                    color="red"
-                    onClick={() => handleDelete(property)}
-                  >
-                    <TablerIcon
-                      name="trash"
-                      style={{ width: "70%", height: "70%" }}
-                      stroke={1.5}
-                    />
-                  </ActionIcon>
-                </Group>
+                <ActionIcon
+                  variant="outline"
+                  aria-label="Edit"
+                  color="green"
+                  onClick={() => handleUpdate(property)}
+                >
+                  <TablerIcon
+                    name="edit"
+                    style={{ width: "70%", height: "70%" }}
+                    stroke={1.5}
+                  />
+                </ActionIcon>
+                <ActionIcon
+                  variant="outline"
+                  aria-label="Settings"
+                  color="red"
+                  onClick={() => handleDelete(property)}
+                >
+                  <TablerIcon
+                    name="trash"
+                    style={{ width: "70%", height: "70%" }}
+                    stroke={1.5}
+                  />
+                </ActionIcon>
               </Group>
             );
           },
@@ -105,7 +131,12 @@ const ListingGalaryPage: React.FC<PropertyMediaPageProps> = ({}) => {
         </Button>
       )}
       views={{
-        grid: (table) => <MediaGridView media={table.options.data} />,
+        grid: (table) => (
+          <MediaGridView
+            media={table.options.data}
+            launchWorkspace={launchWorkspace}
+          />
+        ),
       }}
       renderViewTabItem={(view) => {
         if (view === "table")
@@ -129,6 +160,7 @@ const columns: ColumnDef<ListingMedia>[] = [
   {
     accessorKey: "url",
     header: "Image",
+    size: 0,
     cell({ getValue, row }) {
       const url = getValue<string>();
       const media = row.original;
@@ -165,6 +197,8 @@ const columns: ColumnDef<ListingMedia>[] = [
 
       return (
         <Button
+          p={0}
+          m={0}
           variant="transparent"
           onClick={() =>
             openModal({
@@ -180,7 +214,7 @@ const columns: ColumnDef<ListingMedia>[] = [
             })
           }
         >
-          {(media.url.split("/") as any)?.at(-1)}
+          {media.title ?? (media.url.split("/") as any)?.at(-1)}
         </Button>
       );
     },
