@@ -84,20 +84,30 @@ const ListingsPage: FC<ListingsPageProps> = ({ launchWorkspace }) => {
               const listing = row.original;
               return (
                 <Group>
-                  <Group>
-                    <ActionIcon
-                      variant="outline"
-                      aria-label="Settings"
-                      color="red"
-                      onClick={() => handleDelete(listing)}
-                    >
-                      <TablerIcon
-                        name="trash"
-                        style={{ width: "70%", height: "70%" }}
-                        stroke={1.5}
-                      />
-                    </ActionIcon>
-                  </Group>
+                  {/* <ActionIcon
+                    variant="outline"
+                    aria-label="Edit"
+                    color="green"
+                    onClick={() => handleAddOrupdate(listing)}
+                  >
+                    <TablerIcon
+                      name="edit"
+                      style={{ width: "70%", height: "70%" }}
+                      stroke={1.5}
+                    />
+                  </ActionIcon> */}
+                  <ActionIcon
+                    variant="outline"
+                    aria-label="Settings"
+                    color="red"
+                    onClick={() => handleDelete(listing)}
+                  >
+                    <TablerIcon
+                      name="trash"
+                      style={{ width: "70%", height: "70%" }}
+                      stroke={1.5}
+                    />
+                  </ActionIcon>
                 </Group>
               );
             },
@@ -167,6 +177,7 @@ const columns: ColumnDef<Listing>[] = [
     },
     cell({ getValue }) {
       const created = getValue<string>();
+      if (!created) return "--";
       return new Date(created).toDateString();
     },
   },

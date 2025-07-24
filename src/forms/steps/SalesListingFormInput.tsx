@@ -11,16 +11,17 @@ import {
 import React, { FC } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { useFinancingOptions, useOwnershipTypes } from "../../hooks";
-import { ListingFormData } from "../../types";
+import { Listing, ListingFormData } from "../../types";
 import { INPUT_ORDER } from "../../utils/constants";
 import SaleListingFinancialOptionsInput from "./SaleListingFinancialOptionsInput";
 
 type Props = {
   onNext?: () => void;
   onPrev?: () => void;
+  listing?: Listing;
 };
 
-const SalesListingFormInput: FC<Props> = ({ onNext, onPrev }) => {
+const SalesListingFormInput: FC<Props> = ({ onNext, onPrev, listing }) => {
   const form = useFormContext<ListingFormData>();
   const ownershipTypesAsync = useOwnershipTypes();
   const financingOptionsAsync = useFinancingOptions();
@@ -105,7 +106,7 @@ const SalesListingFormInput: FC<Props> = ({ onNext, onPrev }) => {
           )}
         />
 
-        <SaleListingFinancialOptionsInput />
+        {!!!listing && <SaleListingFinancialOptionsInput />}
       </Stack>
     </Fieldset>
   );

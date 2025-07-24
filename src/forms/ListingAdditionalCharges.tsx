@@ -1,7 +1,6 @@
 import { TablerIcon } from "@hive/esm-core-components";
 import {
   Button,
-  Card,
   Checkbox,
   Fieldset,
   NumberInput,
@@ -18,7 +17,7 @@ const ListingAdditionalCharges = () => {
   const form = useFormContext<ListingFormData>();
   const attrs = form.watch("additionalCharges") ?? [];
   return (
-    <Card component={Stack} withBorder>
+    <>
       {attrs.map((_, index) => (
         <Fieldset legend="Additional Charge" py={"xs"}>
           <Stack flex={1} gap={"xs"}>
@@ -124,7 +123,7 @@ const ListingAdditionalCharges = () => {
       >
         Add Additional charges
       </Button>
-    </Card>
+    </>
   );
 };
 

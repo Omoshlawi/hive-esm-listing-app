@@ -30,8 +30,9 @@ const ListingQuickActions: FC<PropertyQuickActionsProps> = ({
     const dispose = launchWorkspace(
       <ListingForm onCloseWorkspace={() => dispose()} listing={listing} />,
       {
-        width: "wide",
+        width: "extra-wide",
         title: "Update Property",
+        expandable: true,
       }
     );
   };

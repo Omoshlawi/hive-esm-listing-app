@@ -44,6 +44,9 @@ export interface Listing {
   createdAt: string;
   updatedAt: string;
   saleDetails?: SaleDetails;
+  rentalDetails?: RentalDetails;
+  auctionDetails?: AuctionDetails;
+  leaseDetails?: LeaseDetails;
   media?: Array<ListingMedia>;
   additionalCharges?: Array<ListingCharge>;
 }
@@ -117,8 +120,58 @@ export interface SaleDetails {
   id: string;
   listingId: string;
   downPayment?: string;
+  ownershipType?: OwnershipType;
   priceNegotiable: boolean;
   titleDeedReady: boolean;
+  financingOptions?: Array<SaleListingFinancingOption>;
+
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface SaleListingFinancingOption {
+  id: string;
+  listingId: string;
+  optionId: string;
+  notes: string;
+  voided: boolean;
+  createdAt: string;
+  updatedAt: string;
+  option?: FinancingOption;
+}
+
+export interface RentalDetails {
+  id: string;
+  listingId: string;
+  rentPeriod: "Monthly" | "Weekly" | "Daily" | "Yearly";
+  minimumStay: number;
+  securityDeposit: string;
+  furnished: boolean;
+  utilities: Array<string>;
+  availableFrom?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+export interface AuctionDetails {
+  id: string;
+  listingId: string;
+  startingBid: string;
+  reservePrice: string;
+  bidIncrement: string;
+  auctionStart: string;
+  auctionEnd: string;
+  requirePreRegistration: boolean;
+  requireBidderApproval: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+export interface LeaseDetails {
+  id: string;
+  listingId: string;
+  leaseTermInMoths: number;
+  securityDeposit: string;
+  renewalAllowed: boolean;
+  allowedUses: Array<string>;
   createdAt: string;
   updatedAt: string;
 }

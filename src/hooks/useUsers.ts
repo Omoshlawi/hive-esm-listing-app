@@ -27,7 +27,7 @@ export const useContactPerson = (userId: string) => {
     v: "custom:include(person)",
   });
   const { data, error, isLoading } = useSWR<APIFetchResponse<User>>(
-    userId ? url : undefined
+    userId ? url : null
   );
   return {
     contactPerson: data?.data,

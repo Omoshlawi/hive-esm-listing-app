@@ -1,12 +1,6 @@
-import {
-  cleanFiles,
-  handleApiErrors,
-  mutate,
-  uploadFiles,
-} from "@hive/esm-core-api";
+import { handleApiErrors } from "@hive/esm-core-api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Paper, Tabs } from "@mantine/core";
-import { FileWithPath } from "@mantine/dropzone";
 import { useMediaQuery } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
 import React, { FC, useCallback, useState } from "react";
@@ -18,9 +12,9 @@ import {
 } from "react-hook-form";
 import { useListingApi } from "../hooks";
 import { Listing, ListingFormData } from "../types";
+import { getListingFormDefaultValues } from "../utils/helpers";
 import { ListingSchema } from "../utils/validation";
 import ListingBasicDetailsFormSection from "./steps/ListingBasicDetailsFormSection";
-import ListingMediaUploadsFormStep from "./steps/ListingMediaUploadsFormStep";
 import ListingPropertyFormStep from "./steps/ListingPropertyFormStep";
 import ListingTypeDetailsStep from "./steps/ListingTypeDetailsStep";
 
@@ -37,20 +31,13 @@ const ListingForm: FC<ListingFormProps> = ({
   listing,
   onSuccess,
 }) => {
-  const { addListing, updateListing, addListingMedia } = useListingApi();
+  const { addListing, updateListing, addListingMedia, mutateListings } =
+    useListingApi();
 
-  const [files, setFiles] = useState<FileWithPath[]>([]);
-  const [galaryImages, setGalarayImages] = useState<FileWithPath[]>([]);
+  // const [files, setFiles] = useState<FileWithPath[]>([]);
+  // const [galaryImages, setGalarayImages] = useState<FileWithPath[]>([]);
   const form = useForm<ListingFormData>({
-    defaultValues: {
-      title: listing?.title,
-      description: listing?.description,
-      expiryDate: listing?.expiryDate,
-      featured: listing?.featured,
-      tags: listing?.tags ?? [],
-      price: listing?.price ? Number(listing.price) : undefined,
-      type: listing?.type,
-    },
+    defaultValues: getListingFormDefaultValues(listing),
     resolver: zodResolver(ListingSchema),
   });
 
@@ -120,7 +107,7 @@ const ListingForm: FC<ListingFormProps> = ({
         ? await updateListing(listing?.id, data)
         : await addListing(data);
       // Upload cover images or galary if any
-      if (files.length > 0 || galaryImages.length > 0) {
+      /*if (files.length > 0 || galaryImages.length > 0) {
         const _files = await uploadFiles({
           path: "listings/images",
           files: { coverImage: files, galaryImages },
@@ -147,10 +134,10 @@ const ListingForm: FC<ListingFormProps> = ({
           }
         }
       }
-
+*/
       onSuccess?.(res);
       onCloseWorkspace?.();
-      mutate("/listings");
+      mutateListings();
       showNotification({
         title: "Success",
         message: `Listing ${listing ? "updated" : "created"} successfully`,
@@ -203,9 +190,9 @@ const ListingForm: FC<ListingFormProps> = ({
               <Tabs.Tab p={"lg"} value={"type-details"}>
                 Type
               </Tabs.Tab>
-              <Tabs.Tab p={"lg"} value={"upload"}>
+              {/* <Tabs.Tab p={"lg"} value={"upload"}>
                 Uploads
-              </Tabs.Tab>
+              </Tabs.Tab> */}
               <Tabs.Tab p={"lg"} value={"property"}>
                 Property
               </Tabs.Tab>
@@ -220,10 +207,11 @@ const ListingForm: FC<ListingFormProps> = ({
             <Tabs.Panel value={"type-details"} p={"sm"}>
               <ListingTypeDetailsStep
                 onPrev={() => setActiveTab("basic")}
-                onNext={() => setActiveTab("upload")}
+                onNext={() => setActiveTab("property")}
+                listing={listing}
               />
             </Tabs.Panel>
-            <Tabs.Panel value={"upload"} p={"sm"}>
+            {/* <Tabs.Panel value={"upload"} p={"sm"}>
               <ListingMediaUploadsFormStep
                 onPrev={() => setActiveTab("type-details")}
                 onNext={() => setActiveTab("property")}
@@ -232,9 +220,12 @@ const ListingForm: FC<ListingFormProps> = ({
                 onCoverImagesChange={setFiles}
                 onGalaryImagesChange={setGalarayImages}
               />
-            </Tabs.Panel>
+            </Tabs.Panel> */}
             <Tabs.Panel value={"property"} p={"sm"}>
-              <ListingPropertyFormStep onPrev={() => setActiveTab("upload")} />
+              <ListingPropertyFormStep
+                onPrev={() => setActiveTab("type-details")}
+                listing={listing}
+              />
             </Tabs.Panel>
           </Tabs>
         </Paper>

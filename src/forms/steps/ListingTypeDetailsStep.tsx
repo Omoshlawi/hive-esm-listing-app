@@ -1,6 +1,6 @@
 import { Stack, Title, Group, Button, Select } from "@mantine/core";
 import React, { FC } from "react";
-import { ListingFormData } from "../../types";
+import { Listing, ListingFormData } from "../../types";
 import { Controller, useFormContext } from "react-hook-form";
 import { LISTING_TYPES } from "../../utils/constants";
 import AuctionListingFormInput from "./AuctionListingFormInput";
@@ -11,9 +11,10 @@ import SalesListingFormInput from "./SalesListingFormInput";
 type Props = {
   onPrev?: () => void;
   onNext?: () => void;
+  listing?: Listing;
 };
 
-const ListingTypeDetailsStep: FC<Props> = ({ onPrev, onNext }) => {
+const ListingTypeDetailsStep: FC<Props> = ({ onPrev, onNext, listing }) => {
   const form = useFormContext<ListingFormData>();
   const ltypesObservable = form.watch("type");
 
@@ -29,6 +30,7 @@ const ListingTypeDetailsStep: FC<Props> = ({ onPrev, onNext }) => {
           render={({ field, fieldState: { error } }) => (
             <Select
               {...field}
+              readOnly={Boolean(listing)}
               data={LISTING_TYPES}
               placeholder="Select listing type"
               limit={10}
@@ -43,7 +45,9 @@ const ListingTypeDetailsStep: FC<Props> = ({ onPrev, onNext }) => {
         {ltypesObservable === "AUCTION" && <AuctionListingFormInput />}
         {ltypesObservable === "LEASE" && <LeaseListingFormInput />}
         {ltypesObservable === "RENTAL" && <RentalListingFormInput />}
-        {ltypesObservable === "SALE" && <SalesListingFormInput />}
+        {ltypesObservable === "SALE" && (
+          <SalesListingFormInput listing={listing} />
+        )}
       </Stack>
       <Group gap={1}>
         <Button flex={1} variant="default" radius={0} onClick={onPrev}>
