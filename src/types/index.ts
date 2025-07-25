@@ -80,10 +80,93 @@ export interface ListingCharge {
 export interface Property {
   id: string;
   name: string;
-  address?: Address;
+  isVirtual: boolean;
+  propertyNumber: string;
+  description: any;
   thumbnail: string;
+  organizationId: string;
+  organization?: Organization;
   addressId: string;
-  status: string;
+  address?: Address;
+  createdBy: string;
+  voided: boolean;
+  createdAt: string;
+  updatedAt: string;
+  categories?: Array<PropertyCategory>;
+  amenities?: Array<PropertyAmenity>;
+  attributes?: Array<Attribute>;
+  status:
+    | "BLOCKED"
+    | "DRAFT"
+    | "ARCHIVED"
+    | "APPROVED"
+    | "REJECTED"
+    | "PAUSED"
+    | "PENDING";
+}
+
+export interface Icon {
+  name: string;
+  family: string;
+}
+export interface Amenity {
+  id: string;
+  name: string;
+  organizationId: any;
+  icon: Icon;
+  voided: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+export interface PropertyAmenity {
+  id: string;
+  propertyId: string;
+  amenityId: string;
+  voided: boolean;
+  createdAt: string;
+  updatedAt: string;
+  amenity?: Amenity;
+}
+
+export interface Category {
+  id: string;
+  name: string;
+  organizationId: any;
+  icon: Icon;
+  voided: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface PropertyCategory {
+  id: string;
+  propertyId: string;
+  categoryId: string;
+  voided: boolean;
+  createdAt: string;
+  updatedAt: string;
+  category?: Category;
+}
+
+export interface AttributeType {
+  id: string;
+  name: string;
+  organizationId: any;
+  icon: Icon;
+  voided: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Attribute {
+  id: string;
+  propertyId: string;
+  attributeId: string;
+  value: string;
+  voided: boolean;
+  createdAt: string;
+  updatedAt: string;
+  attribute?: AttributeType;
 }
 
 export interface Address {
@@ -240,5 +323,4 @@ export interface ListingFilterParams {
   types: Array<Listing["type"]>;
 }
 
-
-export type PropsWithLaunchWorkspace = Pick<PiletApi, "launchWorkspace">
+export type PropsWithLaunchWorkspace = Pick<PiletApi, "launchWorkspace">;

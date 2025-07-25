@@ -36,6 +36,12 @@ const PropertyListingsPage: FC<PropertyListingsPageProps> = ({
 export default PropertyListingsPage;
 const columns: ColumnDef<Listing>[] = [
   {
+    accessorKey: "listingNumber",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Listing Number" />
+    ),
+  },
+  {
     accessorKey: "title",
     header: "Title",
     cell({ row }) {

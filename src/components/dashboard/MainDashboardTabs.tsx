@@ -250,192 +250,197 @@ export const MainDashboardTabs: FC<{ listing: Listing }> = ({ listing }) => {
   ];
 
   return (
-    <Tabs value={activeTab} onChange={setActiveTab}>
-      <Tabs.List>
-        <Tabs.Tab value="leads" leftSection={<IconUsers size={16} />}>
-          Leads ({mockListing.leads.length})
-        </Tabs.Tab>
-        <Tabs.Tab value="tasks" leftSection={<IconClipboardList size={16} />}>
-          Tasks ({mockListing.tasks.filter((t) => !t.completed).length})
-        </Tabs.Tab>
-        <Tabs.Tab value="activity" leftSection={<IconActivity size={16} />}>
-          Activity
-        </Tabs.Tab>
-      </Tabs.List>
+    <Card withBorder>
+      <Tabs value={activeTab} onChange={setActiveTab}>
+        <Tabs.List>
+          <Tabs.Tab value="leads" leftSection={<IconUsers size={16} />}>
+            Leads ({mockListing.leads.length})
+          </Tabs.Tab>
+          <Tabs.Tab value="tasks" leftSection={<IconClipboardList size={16} />}>
+            Tasks ({mockListing.tasks.filter((t) => !t.completed).length})
+          </Tabs.Tab>
+          <Tabs.Tab value="activity" leftSection={<IconActivity size={16} />}>
+            Activity
+          </Tabs.Tab>
+        </Tabs.List>
 
-      <Tabs.Panel value="leads" pt="md">
-        <Stack gap="md">
-          <Group justify="space-between">
-            <Title order={4}>Leads Management</Title>
-            <Group gap="xs">
-              <TextInput
-                placeholder="Search leads..."
-                leftSection={<IconSearch size={16} />}
-                size="sm"
-              />
-              <Button leftSection={<IconUserPlus size={16} />} size="sm">
-                Add Lead
-              </Button>
+        <Tabs.Panel value="leads" pt="md">
+          <Stack gap="md">
+            <Group justify="space-between">
+              <Title order={4}>Leads Management</Title>
+              <Group gap="xs">
+                <TextInput
+                  placeholder="Search leads..."
+                  leftSection={<IconSearch size={16} />}
+                  size="sm"
+                />
+                <Button leftSection={<IconUserPlus size={16} />} size="sm">
+                  Add Lead
+                </Button>
+              </Group>
             </Group>
-          </Group>
 
-          <SimpleGrid cols={1} spacing="md">
-            {mockListing.leads.map((lead) => (
-              <Paper key={lead.id} p="lg" radius="md" shadow="sm">
-                <Grid gutter="md" align="center">
-                  <Grid.Col span="auto">
-                    <Group gap="md">
-                      <Avatar src={lead.avatar} size="md" />
-                      <div>
-                        <Text fw={500}>{lead.name}</Text>
-                        <Text size="sm" color="dimmed">
-                          {lead.email}
-                        </Text>
-                        <Text size="sm" color="dimmed">
-                          {lead.phone}
-                        </Text>
-                      </div>
-                    </Group>
-                  </Grid.Col>
+            <SimpleGrid cols={1} spacing="md">
+              {mockListing.leads.map((lead) => (
+                <Paper key={lead.id} p="lg" radius="md" shadow="sm">
+                  <Grid gutter="md" align="center">
+                    <Grid.Col span="auto">
+                      <Group gap="md">
+                        <Avatar src={lead.avatar} size="md" />
+                        <div>
+                          <Text fw={500}>{lead.name}</Text>
+                          <Text size="sm" color="dimmed">
+                            {lead.email}
+                          </Text>
+                          <Text size="sm" color="dimmed">
+                            {lead.phone}
+                          </Text>
+                        </div>
+                      </Group>
+                    </Grid.Col>
 
-                  <Grid.Col span="content">
-                    <Stack gap="xs" align="center">
-                      <Badge
-                        color={getLeadStatusColor(lead.status)}
-                        variant="light"
-                      >
-                        {lead.status}
-                      </Badge>
-                      <Text size="xs" color="dimmed">
-                        {lead.source}
-                      </Text>
-                    </Stack>
-                  </Grid.Col>
-
-                  <Grid.Col span="content">
-                    <Stack gap="xs">
-                      <Text size="sm" fw={500}>
-                        Last Contact
-                      </Text>
-                      <Text size="xs" color="dimmed">
-                        {new Date(lead.lastContact).toLocaleDateString()}
-                      </Text>
-                    </Stack>
-                  </Grid.Col>
-
-                  <Grid.Col span={3}>
-                    <Text size="sm">{lead.notes}</Text>
-                  </Grid.Col>
-
-                  <Grid.Col span="content">
-                    <Group gap="xs">
-                      <ActionIcon variant="outline" color="blue">
-                        <IconPhone size={16} />
-                      </ActionIcon>
-                      <ActionIcon variant="outline" color="green">
-                        <IconMail size={16} />
-                      </ActionIcon>
-                      <ActionIcon variant="outline" color={theme.primaryColor}>
-                        <IconMessageCircle size={16} />
-                      </ActionIcon>
-                    </Group>
-                  </Grid.Col>
-                </Grid>
-              </Paper>
-            ))}
-          </SimpleGrid>
-        </Stack>
-      </Tabs.Panel>
-
-      <Tabs.Panel value="tasks" pt="md">
-        <Stack gap="md">
-          <Group justify="space-between">
-            <Title order={4}>Tasks & Reminders</Title>
-            <Button leftSection={<IconPlus size={16} />} size="sm">
-              Add Task
-            </Button>
-          </Group>
-
-          <Stack gap="xs">
-            {mockListing.tasks.map((task) => (
-              <Paper key={task.id} p="md" radius="md" shadow="sm">
-                <Group justify="space-between">
-                  <Group gap="md">
-                    <Switch
-                      checked={task.completed}
-                      onChange={() => {}}
-                      color={theme.primaryColor}
-                    />
-                    <div>
-                      <Text
-                        fw={500}
-                        style={{
-                          textDecoration: task.completed
-                            ? "line-through"
-                            : "none",
-                          opacity: task.completed ? 0.6 : 1,
-                        }}
-                      >
-                        {task.title}
-                      </Text>
-                      <Group gap="xs">
+                    <Grid.Col span="content">
+                      <Stack gap="xs" align="center">
                         <Badge
-                          size="xs"
-                          color={getPriorityColor(task.priority)}
+                          color={getLeadStatusColor(lead.status)}
+                          variant="light"
                         >
-                          {task.priority}
+                          {lead.status}
                         </Badge>
                         <Text size="xs" color="dimmed">
-                          Due: {new Date(task.dueDate).toLocaleDateString()}
+                          {lead.source}
                         </Text>
-                      </Group>
-                    </div>
-                  </Group>
-                  <ActionIcon variant="subtle">
-                    <IconDots size={16} />
-                  </ActionIcon>
-                </Group>
-              </Paper>
-            ))}
-          </Stack>
-        </Stack>
-      </Tabs.Panel>
+                      </Stack>
+                    </Grid.Col>
 
-      <Tabs.Panel value="activity" pt="md">
-        <Paper p="lg" radius="md" shadow="sm">
-          <Stack gap="md">
-            <Title order={4}>Activity Timeline</Title>
-            <Timeline
-              active={mockListing.activities.length}
-              bulletSize={24}
-              lineWidth={2}
-            >
-              {mockListing.activities.map((activity, index) => (
-                <Timeline.Item
-                  key={activity.id}
-                  bullet={
-                    <ThemeIcon
-                      size={24}
-                      variant="filled"
-                      color={theme.primaryColor}
-                      radius="xl"
-                    >
-                      <IconCheck size={12} />
-                    </ThemeIcon>
-                  }
-                  title={activity.description}
-                >
-                  <Text color="dimmed" size="sm">
-                    {new Date(activity.timestamp).toLocaleDateString()} at{" "}
-                    {new Date(activity.timestamp).toLocaleTimeString()} by{" "}
-                    {activity.user}
-                  </Text>
-                </Timeline.Item>
+                    <Grid.Col span="content">
+                      <Stack gap="xs">
+                        <Text size="sm" fw={500}>
+                          Last Contact
+                        </Text>
+                        <Text size="xs" color="dimmed">
+                          {new Date(lead.lastContact).toLocaleDateString()}
+                        </Text>
+                      </Stack>
+                    </Grid.Col>
+
+                    <Grid.Col span={3}>
+                      <Text size="sm">{lead.notes}</Text>
+                    </Grid.Col>
+
+                    <Grid.Col span="content">
+                      <Group gap="xs">
+                        <ActionIcon variant="outline" color="blue">
+                          <IconPhone size={16} />
+                        </ActionIcon>
+                        <ActionIcon variant="outline" color="green">
+                          <IconMail size={16} />
+                        </ActionIcon>
+                        <ActionIcon
+                          variant="outline"
+                          color={theme.primaryColor}
+                        >
+                          <IconMessageCircle size={16} />
+                        </ActionIcon>
+                      </Group>
+                    </Grid.Col>
+                  </Grid>
+                </Paper>
               ))}
-            </Timeline>
+            </SimpleGrid>
           </Stack>
-        </Paper>
-      </Tabs.Panel>
-    </Tabs>
+        </Tabs.Panel>
+
+        <Tabs.Panel value="tasks" pt="md">
+          <Stack gap="md">
+            <Group justify="space-between">
+              <Title order={4}>Tasks & Reminders</Title>
+              <Button leftSection={<IconPlus size={16} />} size="sm">
+                Add Task
+              </Button>
+            </Group>
+
+            <Stack gap="xs">
+              {mockListing.tasks.map((task) => (
+                <Paper key={task.id} p="md" radius="md" shadow="sm">
+                  <Group justify="space-between">
+                    <Group gap="md">
+                      <Switch
+                        checked={task.completed}
+                        onChange={() => {}}
+                        color={theme.primaryColor}
+                      />
+                      <div>
+                        <Text
+                          fw={500}
+                          style={{
+                            textDecoration: task.completed
+                              ? "line-through"
+                              : "none",
+                            opacity: task.completed ? 0.6 : 1,
+                          }}
+                        >
+                          {task.title}
+                        </Text>
+                        <Group gap="xs">
+                          <Badge
+                            size="xs"
+                            color={getPriorityColor(task.priority)}
+                          >
+                            {task.priority}
+                          </Badge>
+                          <Text size="xs" color="dimmed">
+                            Due: {new Date(task.dueDate).toLocaleDateString()}
+                          </Text>
+                        </Group>
+                      </div>
+                    </Group>
+                    <ActionIcon variant="subtle">
+                      <IconDots size={16} />
+                    </ActionIcon>
+                  </Group>
+                </Paper>
+              ))}
+            </Stack>
+          </Stack>
+        </Tabs.Panel>
+
+        <Tabs.Panel value="activity" pt="md">
+          <Paper p="lg" radius="md" shadow="sm">
+            <Stack gap="md">
+              <Title order={4}>Activity Timeline</Title>
+              <Timeline
+                active={mockListing.activities.length}
+                bulletSize={24}
+                lineWidth={2}
+              >
+                {mockListing.activities.map((activity, index) => (
+                  <Timeline.Item
+                    key={activity.id}
+                    bullet={
+                      <ThemeIcon
+                        size={24}
+                        variant="filled"
+                        color={theme.primaryColor}
+                        radius="xl"
+                      >
+                        <IconCheck size={12} />
+                      </ThemeIcon>
+                    }
+                    title={activity.description}
+                  >
+                    <Text color="dimmed" size="sm">
+                      {new Date(activity.timestamp).toLocaleDateString()} at{" "}
+                      {new Date(activity.timestamp).toLocaleTimeString()} by{" "}
+                      {activity.user}
+                    </Text>
+                  </Timeline.Item>
+                ))}
+              </Timeline>
+            </Stack>
+          </Paper>
+        </Tabs.Panel>
+      </Tabs>
+    </Card>
   );
 };

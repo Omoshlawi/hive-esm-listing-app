@@ -14,12 +14,15 @@ import {
   Title,
   Text,
   useMantineTheme,
+  Grid,
 } from "@mantine/core";
 import ListingThumbnail from "../components/dashboard/ListingThumbnail";
 import { IconInfoCircle } from "@tabler/icons-react";
 import { PropsWithLaunchWorkspace } from "../types";
 import { closeModal, openModal } from "@mantine/modals";
 import ThumbnailUploadForm from "../forms/ThumbnailUploadForm";
+import ProfileCompletion from "../components/dashboard/ProfileCompletion";
+import ListingPropertyDetails from "../components/dashboard/ListingPropertyDetails";
 
 type ListingDetailPageProps = PropsWithLaunchWorkspace & {};
 const activities = [
@@ -87,7 +90,15 @@ const ListingDetailPage: FC<ListingDetailPageProps> = ({ launchWorkspace }) => {
           </Text>
         </Center>
       </Card>
-      <MainDashboardTabs listing={listing} />
+      <ListingPropertyDetails listing={listing} />
+      <Grid>
+        <Grid.Col span={{ base: 12, md: 8 }}>
+          <MainDashboardTabs listing={listing} />
+        </Grid.Col>
+        <Grid.Col span={{ base: 12, md: 4 }}>
+          <ProfileCompletion listing={listing} />
+        </Grid.Col>
+      </Grid>
       {/* <Card p="lg" radius="md" withBorder>
         <Stack gap="md">
           <Title order={4}>Recent Activity</Title>

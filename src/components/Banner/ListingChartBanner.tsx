@@ -3,7 +3,11 @@ import { Badge, useComputedColorScheme, Text, Title } from "@mantine/core";
 import React from "react";
 import { useListing } from "../../hooks";
 import { Listing } from "../../types";
-import { getStatusColor, getStatusVariant } from "../../utils/helpers";
+import {
+  getListingTypeColor,
+  getStatusColor,
+  getStatusVariant,
+} from "../../utils/helpers";
 import BannerExpandedSection from "./BannerExpandedSection";
 
 interface PropertyBannerProps {
@@ -63,11 +67,12 @@ export function ListingChartBanner({
           </Badge>
           <Badge
             size="sm"
-            variant={"filled"}
+            variant={"light"}
             style={{
               textTransform: "capitalize",
               fontWeight: 500,
             }}
+            color={getListingTypeColor(l.type)}
           >
             {l.type.replace("_", " ")}
           </Badge>
