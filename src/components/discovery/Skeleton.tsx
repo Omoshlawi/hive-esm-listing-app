@@ -74,7 +74,7 @@ export const FilterSkeleton = () => (
   </Paper>
 );
 
-const ListingCardSkeleton = () => (
+export const ListingCardSkeleton = () => (
   <Card shadow="sm" padding="lg" radius="md" withBorder>
     <Card.Section>
       <Skeleton height={200} />
@@ -131,7 +131,7 @@ const ListingCardSkeleton = () => (
   </Card>
 );
 
-const ListingRowSkeleton = () => (
+export const ListingRowSkeleton = () => (
   <Paper p="md" shadow="sm" radius="md" withBorder>
     <Grid gutter="md" align="center">
       <Grid.Col span={{ base: 12, sm: 3 }}>

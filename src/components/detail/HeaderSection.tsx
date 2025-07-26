@@ -1,78 +1,52 @@
 import {
-  Paper,
-  Grid,
-  Stack,
-  Group,
+  ActionIcon,
+  Avatar,
   Badge,
+  Button,
+  Divider,
+  Grid,
+  Group,
+  NumberFormatter,
+  Paper,
+  Rating,
+  SimpleGrid,
+  Stack,
+  Text,
+  ThemeIcon,
   Title,
   Tooltip,
-  ActionIcon,
-  SimpleGrid,
-  ThemeIcon,
-  NumberFormatter,
-  Divider,
-  Avatar,
-  Rating,
-  Button,
-  useMantineColorScheme,
-  useMantineTheme,
   useComputedColorScheme,
-  Text,
+  useMantineTheme,
 } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import {
-  IconMapPinFilled,
-  IconHeart,
-  IconShare,
-  IconPrinter,
-  IconBed,
   IconBath,
-  IconRuler,
+  IconBed,
+  IconBrandWhatsapp,
+  IconBuildingEstate,
+  IconCalculator,
+  IconCalendar,
   IconCar,
   IconEye,
-  IconCalendar,
-  IconBuildingEstate,
-  IconPhone,
+  IconHeart,
+  IconMapPinFilled,
   IconMessage,
-  IconBrandWhatsapp,
-  IconCalculator,
+  IconPhone,
+  IconPrinter,
+  IconRuler,
+  IconShare,
 } from "@tabler/icons-react";
 import React, { useState } from "react";
-import { getStatusColor } from "../../utils/helpers";
 import { Listing } from "../../types";
-import { useDisclosure } from "@mantine/hooks";
+import { getStatusColor } from "../../utils/helpers";
+import { useProperty } from "../../hooks";
+import { TablerIcon } from "@hive/esm-core-components";
 
 const HeaderSection = ({ listing }: { listing: Listing }) => {
   const theme = useMantineTheme();
   const colorScheme = useComputedColorScheme();
   const [favorited, setFavorited] = useState(false);
-  const [
-    contactModalOpen,
-    { open: openContactModal, close: closeContactModal },
-  ] = useDisclosure(false);
-  const [
-    inquiryModalOpen,
-    { open: openInquiryModal, close: closeInquiryModal },
-  ] = useDisclosure(false);
-  const [
-    calculatorModalOpen,
-    { open: openCalculatorModal, close: closeCalculatorModal },
-  ] = useDisclosure(false);
-  const [shareModalOpen, { open: openShareModal, close: closeShareModal }] =
-    useDisclosure(false);
-  const [
-    galleryModalOpen,
-    { open: openGalleryModal, close: closeGalleryModal },
-  ] = useDisclosure(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [inquiryForm, setInquiryForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    message: "",
-    visitDate: "",
-    visitTime: "",
-  });
-
+  const { isLoading, property } = useProperty(listing.propertyId);
   const isDark = colorScheme === "dark";
   const primaryColor = theme.colors[theme.primaryColor];
   const gradientFrom = primaryColor[6];
@@ -126,7 +100,6 @@ const HeaderSection = ({ listing }: { listing: Listing }) => {
                         variant="outline"
                         color={theme.primaryColor}
                         size="lg"
-                        onClick={openShareModal}
                       >
                         <IconShare size={18} />
                       </ActionIcon>
@@ -148,7 +121,18 @@ const HeaderSection = ({ listing }: { listing: Listing }) => {
                 <Group gap="xs">
                   <IconMapPinFilled size={16} color={theme.colors.gray[6]} />
                   <Text c="dimmed" size="sm">
-                    {`${listing.property.address?.county} ${listing.property.address?.subCounty} ${listing.property.address?.ward} ${listing.property.address?.landmark}`}
+                    {`${
+                      property?.address?.county ??
+                      listing.property.address?.county
+                    } ${
+                      property?.address?.subCounty ??
+                      listing.property.address?.subCounty
+                    } ${
+                      property?.address?.ward ?? listing.property.address?.ward
+                    } ${
+                      property?.address?.landmark ??
+                      listing.property.address?.landmark
+                    }`}
                   </Text>
                 </Group>
               </Stack>
@@ -156,50 +140,22 @@ const HeaderSection = ({ listing }: { listing: Listing }) => {
 
             {/* Property Stats */}
             <SimpleGrid cols={{ base: 4, md: 2 }} spacing="xl">
-              <Group gap="xs">
-                <ThemeIcon variant="light" color={theme.primaryColor}>
-                  <IconBed size={20} />
-                </ThemeIcon>
-                <div>
-                  <Text fw={500}>{2}</Text>
-                  <Text size="xs" c="dimmed">
-                    Bedrooms
-                  </Text>
-                </div>
-              </Group>
-              <Group gap="xs">
-                <ThemeIcon variant="light" color={theme.primaryColor}>
-                  <IconBath size={20} />
-                </ThemeIcon>
-                <div>
-                  <Text fw={500}>{3}</Text>
-                  <Text size="xs" c="dimmed">
-                    Bathrooms
-                  </Text>
-                </div>
-              </Group>
-              <Group gap="xs">
-                <ThemeIcon variant="light" color={theme.primaryColor}>
-                  <IconRuler size={20} />
-                </ThemeIcon>
-                <div>
-                  <Text fw={500}>{(20).toLocaleString()}</Text>
-                  <Text size="xs" c="dimmed">
-                    Sq Ft
-                  </Text>
-                </div>
-              </Group>
-              <Group gap="xs">
-                <ThemeIcon variant="light" color={theme.primaryColor}>
-                  <IconCar size={20} />
-                </ThemeIcon>
-                <div>
-                  <Text fw={500}>{3}</Text>
-                  <Text size="xs" c="dimmed">
-                    Parking
-                  </Text>
-                </div>
-              </Group>
+              {(property?.attributes ?? []).map((attr) => (
+                <Group gap="xs" key={attr.id}>
+                  <ThemeIcon variant="light" color={theme.primaryColor}>
+                    <TablerIcon
+                      name={attr.attribute.icon.name as any}
+                      size={20}
+                    />
+                  </ThemeIcon>
+                  <div>
+                    <Text fw={500}>{attr.value}</Text>
+                    <Text size="xs" c="dimmed">
+                      {attr.attribute.name}
+                    </Text>
+                  </div>
+                </Group>
+              ))}
             </SimpleGrid>
 
             {/* Quick Info */}
@@ -217,10 +173,9 @@ const HeaderSection = ({ listing }: { listing: Listing }) => {
                 </Text>
               </Group>
               <Group gap="xs">
-                <IconBuildingEstate size={16} />
+                <IconHeart size={16} />
                 <Text size="sm" c="dimmed">
-                  Floor {"listing.property.floorNumber"} of{" "}
-                  {"mockListing.property.totalFloors"}
+                  Favourite 0
                 </Text>
               </Group>
             </Group>
@@ -301,7 +256,6 @@ const HeaderSection = ({ listing }: { listing: Listing }) => {
                   variant="gradient"
                   gradient={{ from: gradientFrom, to: gradientTo }}
                   leftSection={<IconPhone size={16} />}
-                  onClick={openContactModal}
                 >
                   Call Agent
                 </Button>
@@ -310,7 +264,6 @@ const HeaderSection = ({ listing }: { listing: Listing }) => {
                   variant="outline"
                   color={theme.primaryColor}
                   leftSection={<IconMessage size={16} />}
-                  onClick={openInquiryModal}
                 >
                   Send Message
                 </Button>
@@ -328,7 +281,6 @@ const HeaderSection = ({ listing }: { listing: Listing }) => {
                     color={theme.primaryColor}
                     leftSection={<IconCalculator size={16} />}
                     size="sm"
-                    onClick={openCalculatorModal}
                   >
                     Calculator
                   </Button>

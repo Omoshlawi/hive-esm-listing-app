@@ -1,38 +1,55 @@
+import { getHiveFileUrl } from "@hive/esm-core-api";
+import { TablerIcon } from "@hive/esm-core-components";
 import {
-  Paper,
-  Grid,
-  Box,
-  Badge,
-  Stack,
-  Group,
-  NumberFormatter,
   ActionIcon,
+  Badge,
+  Box,
+  Grid,
+  Group,
   Image,
-  useMantineTheme,
+  NumberFormatter,
+  Paper,
+  Stack,
   Text,
-  Button,
+  Tooltip,
+  useMantineTheme,
 } from "@mantine/core";
 import {
-  IconMapPin,
-  IconBed,
-  IconBath,
-  IconRuler,
-  IconHeart,
-  IconShare,
-  IconPhone,
   IconExternalLink,
   IconEye,
+  IconHeart,
+  IconMapPin,
+  IconPhone,
+  IconShare,
 } from "@tabler/icons-react";
-import React from "react";
-import { Listing } from "../../types";
-import { getHiveFileUrl } from "@hive/esm-core-api";
-import { getListingTypeColor } from "../../utils/helpers";
+import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
+import { useProperty } from "../../hooks";
+import { Attribute, Listing } from "../../types";
+import { clipText, getListingTypeColor } from "../../utils/helpers";
+import { ListingRowSkeleton } from "./Skeleton";
+const MAX_ATTRS = 4;
 
 export const ListingRow = ({ listing }: { listing: Listing }) => {
   const theme = useMantineTheme();
+  const { isLoading, property } = useProperty(listing.propertyId);
+  const attributes = useMemo(
+    () =>
+      // Get Attributes with number like values and icon and retreive trim the first four for list view
+      (property?.attributes ?? []).reduce<Array<Attribute>>((prev, curr) => {
+        if (prev.length > MAX_ATTRS) return prev;
+        const val = Number(curr.value);
+        if (val && curr.attribute.icon) {
+          prev.push(curr);
+        }
+        return prev;
+      }, []),
+    [property]
+  );
   const primaryColor = theme.colors[theme.primaryColor];
   const listingDetailUrl = `/listings/${listing.id}`;
+
+  if (isLoading) return <ListingRowSkeleton />;
   return (
     <Paper p="md" shadow="sm" radius="md" withBorder>
       <Grid gutter="md" align="center">
@@ -64,12 +81,14 @@ export const ListingRow = ({ listing }: { listing: Listing }) => {
             <Group justify="space-between" align="flex-start">
               <div>
                 <Text fw={500} size="lg" component={Link} to={listingDetailUrl}>
-                  {listing.title}
+                  {clipText(listing.title)}
                 </Text>
                 <Group gap="xs" mt="xs">
                   <IconMapPin size={14} />
                   <Text size="sm" c="dimmed">
-                    {"listing.location"}
+                    {`${listing.property.address?.ward ?? ""}, ${
+                      listing.property.address?.subCounty ?? ""
+                    } ${listing.property.address?.county ?? ""}`}
                   </Text>
                 </Group>
               </div>
@@ -83,24 +102,28 @@ export const ListingRow = ({ listing }: { listing: Listing }) => {
             </Group>
 
             <Text size="sm" c="dimmed" lineClamp={2}>
-              {listing.description}
+              {property?.name}
             </Text>
 
             <Group gap="md">
-              <Group gap="xs">
-                <IconBed size={16} />
-                <Text size="sm">{"listing.bedrooms"} beds</Text>
-              </Group>
-              <Group gap="xs">
-                <IconBath size={16} />
-                <Text size="sm">{"listing.bathrooms"} baths</Text>
-              </Group>
-              <Group gap="xs">
-                <IconRuler size={16} />
-                <Text size="sm">
-                  {"listing.squareFootage.toLocaleString()"} sq ft
-                </Text>
-              </Group>
+              {attributes.map((attr) => (
+                <Tooltip key={attr.id} label={attr.attribute.name}>
+                  <Group gap="xs">
+                    <TablerIcon
+                      name={attr.attribute.icon.name as any}
+                      size={16}
+                    />
+                    <Text size="sm">{attr.value}</Text>
+                  </Group>
+                </Tooltip>
+              ))}
+              {attributes.length === MAX_ATTRS && (
+                <Tooltip label={"More attributes"}>
+                  <Group gap="xs">
+                    <Text size="sm">{"..."}</Text>
+                  </Group>
+                </Tooltip>
+              )}
             </Group>
           </Stack>
         </Grid.Col>
@@ -137,12 +160,12 @@ export const ListingRow = ({ listing }: { listing: Listing }) => {
             </Group>
 
             <Group gap="xs">
-              <Text size="xs" color="dimmed">
+              <Text size="xs" c="dimmed">
                 {new Date(listing.listedDate).toLocaleDateString()}
               </Text>
               <Group gap="xs">
                 <IconEye size={12} />
-                <Text size="xs" color="dimmed">
+                <Text size="xs" c="dimmed">
                   {listing.views}
                 </Text>
               </Group>

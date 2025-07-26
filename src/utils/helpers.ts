@@ -155,4 +155,12 @@ export const getListingFormDefaultValues = (
       : undefined,
   };
 };
+export const clipText = (text: string, threshold: number = 25) => {
+  if (!text) return "";
 
+  if (text.length <= threshold) {
+    return text;
+  }
+
+  return text.slice(0, threshold).trim() + "...";
+};

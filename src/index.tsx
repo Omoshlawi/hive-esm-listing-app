@@ -133,6 +133,7 @@ export function setup(app: PiletApi) {
     },
     {
       type: "header",
+      order: 6
     }
   );
 

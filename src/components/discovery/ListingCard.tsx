@@ -1,35 +1,56 @@
+import { getHiveFileUrl } from "@hive/esm-core-api";
+import { TablerIcon } from "@hive/esm-core-components";
 import {
-  Card,
-  Box,
-  Badge,
-  Group,
   ActionIcon,
-  Stack,
-  NumberFormatter,
-  Tooltip,
+  Badge,
+  Box,
+  Card,
+  Group,
   Image,
-  useMantineTheme,
+  NumberFormatter,
+  Stack,
   Text,
+  Tooltip,
+  useMantineTheme,
 } from "@mantine/core";
 import {
-  IconHeart,
-  IconShare,
-  IconMapPin,
-  IconBed,
-  IconBath,
-  IconRuler,
-  IconEye,
-  IconPhone,
   IconExternalLink,
+  IconEye,
+  IconHeart,
+  IconMapPin,
+  IconPhone,
+  IconShare,
 } from "@tabler/icons-react";
-import React from "react";
+import React, { useMemo } from "react";
+import { Link } from "react-router-dom";
+import { useProperty } from "../../hooks";
+import { Attribute, Listing } from "../../types";
 import { getListingTypeColor, getStatusColor } from "../../utils/helpers";
-import { Listing } from "../../types";
-import { getHiveFileUrl } from "@hive/esm-core-api";
+import { ListingCardSkeleton } from "./Skeleton";
+
+const MAX_ATTRS = 4;
 
 export const ListingCard = ({ listing }: { listing: Listing }) => {
+  const { isLoading, property, error } = useProperty(listing.propertyId);
   const theme = useMantineTheme();
+  const attributes = useMemo(
+    () =>
+      // Get Attributes with number like values and icon and retreive trim the first four for list view
+      (property?.attributes ?? []).reduce<Array<Attribute>>((prev, curr) => {
+        if (prev.length > MAX_ATTRS) return prev;
+        const val = Number(curr.value);
+        if (val && curr.attribute.icon) {
+          prev.push(curr);
+        }
+        return prev;
+      }, []),
+    [property]
+  );
+  const listingDetailUrl = `/listings/${listing.id}`;
+
   const primaryColor = theme.colors[theme.primaryColor];
+  if (isLoading) return <ListingCardSkeleton />;
+
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
       <Card.Section>
@@ -73,38 +94,43 @@ export const ListingCard = ({ listing }: { listing: Listing }) => {
       </Card.Section>
 
       <Stack gap="xs" mt="md">
-        <Text fw={500} size="lg" lineClamp={1}>
+        <Text
+          fw={500}
+          size="lg"
+          lineClamp={1}
+          component={Link}
+          to={listingDetailUrl}
+        >
           {listing.title}
         </Text>
         <Group gap="xs" mt="xs">
           <IconMapPin size={14} />
           <Text size="sm" c="dimmed">
-            {`${listing.property.address?.landmark ?? ""} ${
-              listing.property.address?.ward ?? ""
-            }, ${listing.property.address?.subCounty ?? ""} ${
-              listing.property.address?.county ?? ""
-            }`}
+            {`${listing.property.address?.ward ?? ""}, ${
+              listing.property.address?.subCounty ?? ""
+            } ${listing.property.address?.county ?? ""}`}
           </Text>
         </Group>
-
-        <Text size="sm" c="dimmed" lineClamp={2}>
-          {listing.description}
-        </Text>
-
         <Group justify="space-between">
           <Group gap="md">
-            <Group gap="xs">
-              <IconBed size={16} />
-              <Text size="sm">{2}</Text>
-            </Group>
-            <Group gap="xs">
-              <IconBath size={16} />
-              <Text size="sm">{2}</Text>
-            </Group>
-            <Group gap="xs">
-              <IconRuler size={16} />
-              <Text size="sm">{20} sq ft</Text>
-            </Group>
+            {attributes.map((attribute) => (
+              <Tooltip label={attribute.attribute.name} key={attribute.id}>
+                <Group gap="xs">
+                  <TablerIcon
+                    name={attribute.attribute.icon?.name as any}
+                    size={16}
+                  />
+                  <Text size="sm">{attribute.value}</Text>
+                </Group>
+              </Tooltip>
+            ))}
+            {attributes.length === MAX_ATTRS && (
+              <Group gap="xs">
+                <Tooltip label={"More"}>
+                  <Text size="sm">{"..."}</Text>
+                </Tooltip>
+              </Group>
+            )}
           </Group>
           <Group gap="xs">
             <IconEye size={14} />
@@ -138,6 +164,8 @@ export const ListingCard = ({ listing }: { listing: Listing }) => {
                 variant="outline"
                 size="sm"
                 color={theme.primaryColor}
+                component={Link}
+                to={listingDetailUrl}
               >
                 <IconExternalLink size={14} />
               </ActionIcon>

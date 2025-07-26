@@ -1,91 +1,43 @@
 import {
-  Container,
-  Grid,
-  Stack,
-  Title,
-  Text,
-  Badge,
-  Group,
-  Button,
-  Paper,
-  Image,
-  ThemeIcon,
-  Divider,
-  SimpleGrid,
-  Card,
-  Tabs,
   ActionIcon,
-  Avatar,
-  NumberFormatter,
-  Modal,
-  useMantineTheme,
-  useMantineColorScheme,
-  Box,
-  Table,
   Anchor,
-  Tooltip,
-  Alert,
-  Rating,
-  Textarea,
-  TextInput,
-  Select,
+  Button,
+  Container,
+  Group,
+  Modal,
+  Stack,
+  Tabs,
+  Text,
 } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import {
-  IconBed,
-  IconBath,
-  IconRuler,
-  IconMapPin,
-  IconCalendar,
-  IconCoin,
-  IconHeart,
-  IconShare,
-  IconPhone,
-  IconMail,
-  IconEye,
-  IconCar,
-  IconBuildingEstate,
-  IconKey,
-  IconShield,
-  IconCheck,
-  IconUser,
-  IconUsers,
-  IconHome,
-  IconBrandWhatsapp,
-  IconPhoto,
-  IconTrendingUp,
-  IconInfoCircle,
-  IconCalculator,
-  IconPrinter,
   IconArrowLeft,
-  IconMaximize,
-  IconMessage,
-  IconSend,
-  IconMapPinFilled,
   IconBrandFacebook,
-  IconBrandTwitter,
   IconBrandLinkedin,
-  IconCopy,
-  IconSchool,
+  IconBrandTwitter,
+  IconBuildingEstate,
   IconBus,
+  IconCoin,
+  IconCopy,
+  IconHome,
+  IconMapPin,
+  IconSchool,
   IconShoppingCart,
   IconStethoscope,
-  IconChevronLeft,
-  IconChevronRight,
+  IconUser,
 } from "@tabler/icons-react";
-import { FC, useState } from "react";
-import { useDisclosure } from "@mantine/hooks";
-import React from "react";
+import React, { FC, useState } from "react";
 import { useParams } from "react-router";
-import { useListing } from "../hooks";
-import HeaderSection from "../components/detail/HeaderSection";
-import MediaGalary from "../components/detail/MediaGalary";
 import { Link } from "react-router-dom";
-import SimilarListings from "../components/detail/SimilarListings";
-import OverviewTab from "../components/detail/OverviewTab";
-import DetailsTab from "../components/detail/DetailsTab";
-import LocationTab from "../components/detail/LocationTab";
-import FinancialsTab from "../components/detail/FinancialsTab";
 import AgentTab from "../components/detail/AgentTab";
+import DetailsTab from "../components/detail/DetailsTab";
+import FinancialsTab from "../components/detail/FinancialsTab";
+import HeaderSection from "../components/detail/HeaderSection";
+import LocationTab from "../components/detail/LocationTab";
+import MediaGalary from "../components/detail/MediaGalary";
+import OverviewTab from "../components/detail/OverviewTab";
+import SimilarListings from "../components/detail/SimilarListings";
+import { useListing } from "../hooks";
 
 // Enhanced mock data for public view
 const mockListing = {
