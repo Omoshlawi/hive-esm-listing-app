@@ -91,7 +91,7 @@ export function setup(app: PiletApi) {
         />
       );
     },
-    { type: "listingChart" as any }
+    { type: "listingChart" as any, order: 0 }
   );
   app.registerMenu(
     ({ onClose }: any) => {

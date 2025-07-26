@@ -9,6 +9,7 @@ type RenderProps = {
     component: React.JSX.Element;
     meta: {
       type: string;
+      order?: number;
     };
   }[];
 };
@@ -46,6 +47,11 @@ const ListingChartLayout: React.FC<ListingChartLayoutProps> = ({
         renderChildren: ({ menuItems, toggleDrawerOpen }: RenderProps) => {
           const menu = menuItems
             .filter((menu) => menu.meta.type === "listingChart")
+            .sort((a, b) => {
+              const ma = a.meta.order ?? Number.MAX_SAFE_INTEGER;
+              const mb = b.meta.order ?? Number.MAX_SAFE_INTEGER;
+              return ma - mb;
+            })
             .map((m) => m.component);
           return (
             <>
