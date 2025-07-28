@@ -28,7 +28,7 @@ export const useListings = (params: Record<string, any> = {}) => {
 
 export const useListing = (listingId: string) => {
   const url = constructUrl(`/listings/${listingId}`, {
-    v: "custom:include(saleDetails:include(ownershipType,financingOptions),rentalDetails,leaseDetails,auctionDetails,shortTermDetails,rentToOwnDetails,coLivingDetails)",
+    v: "custom:include(saleDetails:include(ownershipType,financingOptions),rentalDetails,leaseDetails,auctionDetails,shortTermDetails,rentToOwnDetails,coLivingDetails,additionalCharges)",
   });
   const { data, isValidating, ...props } = useSWR<APIFetchResponse<Listing>>(
     listingId ? url : null

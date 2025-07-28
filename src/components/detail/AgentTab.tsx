@@ -41,9 +41,6 @@ const AgentTab: FC<Props> = ({ listing }) => {
     listing.contactPersonId
   );
   const theme = useMantineTheme();
-  const primaryColor = theme.colors[theme.primaryColor];
-  const gradientFrom = primaryColor[6];
-  const gradientTo = primaryColor[8];
 
   const handleLaunchContactDialogForm = () => {
     openModal({

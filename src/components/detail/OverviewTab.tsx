@@ -10,6 +10,8 @@ import {
   Button,
   Text,
   useMantineTheme,
+  Divider,
+  Badge,
 } from "@mantine/core";
 import {
   IconCalendar,
@@ -20,9 +22,11 @@ import {
   IconTrendingUp,
   IconCheck,
 } from "@tabler/icons-react";
-import React, { FC } from "react";
+import React, { FC, useMemo } from "react";
 import { Listing } from "../../types";
 import { openModal } from "@mantine/modals";
+import { TablerIcon, TablerIconName } from "@hive/esm-core-components";
+import { useProperty } from "../../hooks";
 
 type Props = {
   listing: Listing;
@@ -49,7 +53,7 @@ const financingOptions = [
     },
   },
 ];
-const amenities = [
+const _amenities = [
   "Swimming Pool",
   "Fitness Center",
   "24/7 Concierge",
@@ -68,10 +72,28 @@ const amenities = [
 
 const OverviewTab: FC<Props> = ({ listing, scheduleViewingExtensionSlot }) => {
   const theme = useMantineTheme();
-  const primaryColor = theme.colors[theme.primaryColor];
-  const gradientFrom = primaryColor[6];
-  const gradientTo = primaryColor[8];
+  const { property } = useProperty(listing.propertyId);
+  const amenities = useMemo<
+    Array<{ icon: TablerIconName; amenity: string }>
+  >(() => {
+    const amenities_ = (property?.amenities ?? []).map((amenity) => ({
+      icon: amenity.amenity.icon.name as any,
+      amenity: amenity.amenity.name,
+    }));
+    amenities_.push(
+      ..._amenities.map((am) => ({ icon: "check", amenity: am }))
+    );
+    return amenities_;
+  }, [property]);
 
+  const features = useMemo<Array<{ icon: TablerIconName; feature: string }>>(
+    () => [
+      { feature: listing.type, icon: "building" },
+      { feature: `${listing.featured}`, icon: "building" },
+      { feature: `${property.isVirtual}`, icon: "viewportShort" },
+    ],
+    [property, listing]
+  );
   return (
     <Grid gutter="xl">
       <Grid.Col span={{ base: 12, md: 8 }}>
@@ -80,7 +102,19 @@ const OverviewTab: FC<Props> = ({ listing, scheduleViewingExtensionSlot }) => {
           <Paper p="lg" radius="md" shadow="sm">
             <Stack gap="md">
               <Title order={4}>About This Property</Title>
-              <Text style={{ lineHeight: 1.6 }}>{listing.description}</Text>
+              <Text style={{ lineHeight: 1.6 }}>
+                {listing.description ?? "No Description"}
+              </Text>
+              <Divider />
+              <Group gap={"xs"}>
+                {listing.tags.map((tag) => (
+                  <Badge
+                    size="xs"
+                    variant="default"
+                    style={{ textTransform: "capitalize" }}
+                  >{`# ${tag}`}</Badge>
+                ))}
+              </Group>
             </Stack>
           </Paper>
 
@@ -139,9 +173,9 @@ const OverviewTab: FC<Props> = ({ listing, scheduleViewingExtensionSlot }) => {
                       variant="light"
                       color={theme.primaryColor}
                     >
-                      <IconCheck size={12} />
+                      <TablerIcon name={amenity.icon} size={12} />
                     </ThemeIcon>
-                    <Text size="sm">{amenity}</Text>
+                    <Text size="sm">{amenity.amenity}</Text>
                   </Group>
                 ))}
               </SimpleGrid>
@@ -209,7 +243,7 @@ const OverviewTab: FC<Props> = ({ listing, scheduleViewingExtensionSlot }) => {
                     <Text size="sm" fw={500}>
                       {option.option.name}
                     </Text>
-                    <Text size="xs" color="dimmed">
+                    <Text size="xs" c="dimmed">
                       {option.option.description}
                     </Text>
                   </div>

@@ -1,3 +1,4 @@
+import { TablerIcon, When } from "@hive/esm-core-components";
 import {
   ActionIcon,
   Avatar,
@@ -10,6 +11,7 @@ import {
   Paper,
   Rating,
   SimpleGrid,
+  Skeleton,
   Stack,
   Text,
   ThemeIcon,
@@ -18,35 +20,32 @@ import {
   useComputedColorScheme,
   useMantineTheme,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
 import {
-  IconBath,
-  IconBed,
   IconBrandWhatsapp,
-  IconBuildingEstate,
   IconCalculator,
   IconCalendar,
-  IconCar,
   IconEye,
   IconHeart,
   IconMapPinFilled,
   IconMessage,
   IconPhone,
   IconPrinter,
-  IconRuler,
   IconShare,
+  IconStar,
 } from "@tabler/icons-react";
 import React, { useState } from "react";
+import { useProperty } from "../../hooks";
 import { Listing } from "../../types";
 import { getStatusColor } from "../../utils/helpers";
-import { useProperty } from "../../hooks";
-import { TablerIcon } from "@hive/esm-core-components";
+import { useContactPerson } from "../../hooks";
+import { getHiveFileUrl } from "@hive/esm-core-api";
 
 const HeaderSection = ({ listing }: { listing: Listing }) => {
   const theme = useMantineTheme();
   const colorScheme = useComputedColorScheme();
   const [favorited, setFavorited] = useState(false);
-  const { isLoading, property } = useProperty(listing.propertyId);
+  const { property } = useProperty(listing.propertyId);
+  const contactPersonAsync = useContactPerson(listing.contactPersonId);
   const isDark = colorScheme === "dark";
   const primaryColor = theme.colors[theme.primaryColor];
   const gradientFrom = primaryColor[6];
@@ -210,82 +209,130 @@ const HeaderSection = ({ listing }: { listing: Listing }) => {
                 />
               </Title>
 
-              {listing.saleDetails && (
-                <Group justify="space-between">
-                  <Text size="sm">Est. Monthly Payment</Text>
+              {listing.additionalCharges?.map((charge) => (
+                <Group justify="space-between" key={charge.id}>
+                  <Text size="sm" style={{ textTransform: "capitalize" }}>
+                    {charge.name}(
+                    {charge.frequency.replace("_", " ").toLowerCase()})
+                  </Text>
                   <Text fw={500}>
                     <NumberFormatter
-                      value={"listing.saleDetails.monthlyMortgage"}
-                      prefix="$"
+                      value={charge.amount}
+                      prefix="Ksh."
                       thousandSeparator
                     />
                   </Text>
                 </Group>
-              )}
+              ))}
 
               <Divider />
 
               {/* Agent Info */}
-              <Group gap="md">
-                <Avatar src={"mockListing.contactPerson.avatar"} size="md" />
-                <div style={{ flex: 1 }}>
-                  <Text size="sm" fw={500}>
-                    {"mockListing.contactPerson.name"}
-                  </Text>
-                  <Text size="xs" c="dimmed">
-                    {"mockListing.contactPerson.title"}
-                  </Text>
-                  <Group gap="xs" mt="xs">
-                    <Rating
-                      value={3}
-                      //   value={"mockListing.contactPerson.rating"}
-                      fractions={2}
-                      readOnly
-                      size="xs"
-                    />
-                    <Text size="xs" c="dimmed">
-                      ({"mockListing.contactPerson.rating"})
-                    </Text>
-                  </Group>
-                </div>
-              </Group>
+              <When
+                asyncState={{
+                  ...contactPersonAsync,
+                  data: contactPersonAsync.contactPerson,
+                }}
+                success={(contact) => (
+                  <>
+                    <Group gap="md">
+                      <Avatar
+                        src={
+                          contact.person.avatarUrl
+                            ? getHiveFileUrl(contact.person.avatarUrl)
+                            : undefined
+                        }
+                        size="md"
+                      />
+                      <div style={{ flex: 1 }}>
+                        <Text size="sm" fw={500}>
+                          {contact.person.name ?? contact?.person?.email}
+                        </Text>
+                        <Text size="xs" c="dimmed">
+                          {contact.person.phoneNumber}
+                        </Text>
+                        <Group gap="xs" mt="xs">
+                          <Rating
+                            value={3}
+                            //   value={"mockListing.contactPerson.rating"}
+                            fractions={2}
+                            readOnly
+                            size="xs"
+                          />
+                          <Text size="xs" c="dimmed">
+                            (3)
+                          </Text>
+                        </Group>
+                      </div>
+                    </Group>
 
-              <Stack gap="xs">
-                <Button
-                  fullWidth
-                  variant="gradient"
-                  gradient={{ from: gradientFrom, to: gradientTo }}
-                  leftSection={<IconPhone size={16} />}
-                >
-                  Call Agent
-                </Button>
-                <Button
-                  fullWidth
-                  variant="outline"
-                  color={theme.primaryColor}
-                  leftSection={<IconMessage size={16} />}
-                >
-                  Send Message
-                </Button>
-                <Group grow>
-                  <Button
-                    variant="outline"
-                    color="green"
-                    leftSection={<IconBrandWhatsapp size={16} />}
-                    size="sm"
-                  >
-                    WhatsApp
-                  </Button>
-                  <Button
-                    variant="outline"
-                    color={theme.primaryColor}
-                    leftSection={<IconCalculator size={16} />}
-                    size="sm"
-                  >
-                    Calculator
-                  </Button>
-                </Group>
-              </Stack>
+                    <Stack gap="xs">
+                      <Button
+                        fullWidth
+                        variant="gradient"
+                        gradient={{ from: gradientFrom, to: gradientTo }}
+                        leftSection={<IconPhone size={16} />}
+                      >
+                        Call Agent
+                      </Button>
+                      <Button
+                        fullWidth
+                        variant="outline"
+                        color={theme.primaryColor}
+                        leftSection={<IconMessage size={16} />}
+                      >
+                        Send Message
+                      </Button>
+                      <Group grow>
+                        <Button
+                          variant="outline"
+                          color="green"
+                          leftSection={<IconBrandWhatsapp size={16} />}
+                          size="sm"
+                        >
+                          WhatsApp
+                        </Button>
+                        <Button
+                          variant="outline"
+                          color={theme.primaryColor}
+                          leftSection={<IconCalculator size={16} />}
+                          size="sm"
+                        >
+                          Calculator
+                        </Button>
+                      </Group>
+                    </Stack>
+                  </>
+                )}
+                loading={() => (
+                  <>
+                    <Group gap="md">
+                      <Skeleton height={50} circle mb="xl" />
+
+                      <div style={{ flex: 1 }}>
+                        <Skeleton height={10} radius="xl" />
+
+                        <Skeleton height={8} radius="xl" />
+
+                        <Group gap="xs" mt="xs">
+                          <Skeleton height={10} radius="xl" w={"70"} />
+                          <Skeleton height={10} radius="xl" w={"20"} />
+                        </Group>
+                      </div>
+                    </Group>
+
+                    <Stack gap="xs">
+                      <Skeleton height={40} radius="sm" w={"100%"} />
+                      <Skeleton height={40} radius="sm" w={"100%"} />
+
+                      <Group grow>
+                        <Skeleton height={40} radius="sm" w={"100%"} />
+                        <Skeleton height={40} radius="sm" w={"100%"} />
+                      </Group>
+                    </Stack>
+                  </>
+                )}
+              />
             </Stack>
           </Paper>
         </Grid.Col>
