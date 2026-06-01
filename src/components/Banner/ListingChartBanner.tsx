@@ -1,4 +1,4 @@
-import { ContextualBanner, TablerIcon } from "@hive/esm-core-components";
+import { ContextualBanner, TablerIcon } from "@havena/esm-core-components";
 import { Badge, useComputedColorScheme, Text, Title } from "@mantine/core";
 import React from "react";
 import { useListing } from "../../hooks";

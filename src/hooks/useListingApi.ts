@@ -1,4 +1,4 @@
-import { apiFetch, constructUrl, mutate } from "@hive/esm-core-api";
+import { apiFetch, constructUrl, mutate } from "@havena/esm-core-api";
 import {
   Listing,
   ListingFormData,

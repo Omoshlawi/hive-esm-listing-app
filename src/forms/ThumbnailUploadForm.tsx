@@ -1,4 +1,4 @@
-import { cleanFiles, handleApiErrors, uploadFiles } from "@hive/esm-core-api";
+import { cleanFiles, handleApiErrors, uploadFiles } from "@havena/esm-core-api";
 import { Button, Group, Image, SimpleGrid, Stack, Text } from "@mantine/core";
 import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import { showNotification } from "@mantine/notifications";

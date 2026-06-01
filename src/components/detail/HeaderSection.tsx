@@ -1,4 +1,4 @@
-import { TablerIcon, When } from "@hive/esm-core-components";
+import { TablerIcon, When } from "@havena/esm-core-components";
 import {
   ActionIcon,
   Avatar,
@@ -38,7 +38,7 @@ import { useProperty } from "../../hooks";
 import { Listing } from "../../types";
 import { getStatusColor } from "../../utils/helpers";
 import { useContactPerson } from "../../hooks";
-import { getHiveFileUrl } from "@hive/esm-core-api";
+import { getHiveFileUrl } from "@havena/esm-core-api";
 
 const HeaderSection = ({ listing }: { listing: Listing }) => {
   const theme = useMantineTheme();

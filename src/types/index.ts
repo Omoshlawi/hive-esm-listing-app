@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { ListingMediaSchema, ListingSchema } from "../utils/validation";
-import { PiletApi } from "@hive/esm-shell-app";
+import { PiletApi } from "@havena/esm-shell-app";
 
 export interface Listing {
   id: string;

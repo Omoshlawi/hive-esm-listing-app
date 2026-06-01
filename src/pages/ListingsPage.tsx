@@ -3,8 +3,8 @@ import {
   DataTableColumnHeader,
   StateFullDataTable,
   TablerIcon,
-} from "@hive/esm-core-components";
-import { PiletApi } from "@hive/esm-shell-app";
+} from "@havena/esm-core-components";
+import { PiletApi } from "@havena/esm-shell-app";
 import {
   ActionIcon,
   Badge,

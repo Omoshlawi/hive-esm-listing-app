@@ -25,7 +25,7 @@ import {
 import React, { FC, useMemo } from "react";
 import { Listing } from "../../types";
 import { openModal } from "@mantine/modals";
-import { TablerIcon, TablerIconName } from "@hive/esm-core-components";
+import { TablerIcon, TablerIconName } from "@havena/esm-core-components";
 import { useProperty } from "../../hooks";
 
 type Props = {

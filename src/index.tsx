@@ -1,5 +1,5 @@
 import * as React from "react";
-import type { PiletApi } from "@hive/esm-shell-app";
+import type { PiletApi } from "@havena/esm-shell-app";
 import {
   ListingAnalytics,
   ListingDetail,
@@ -9,7 +9,7 @@ import {
   PublicListings,
   PropertyListings,
 } from "./pages";
-import { HeaderLink } from "@hive/esm-core-components";
+import { HeaderLink } from "@havena/esm-core-components";
 import ListingChartLayout from "./layout/ListingChart";
 import { useListingChartListing, usePropertyChartProperty } from "./hooks";
 import { ListingChartBanner } from "./components/Banner";

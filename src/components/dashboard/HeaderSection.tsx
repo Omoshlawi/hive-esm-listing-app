@@ -20,7 +20,7 @@ import {
 } from "@mantine/core";
 import { getStatusColor } from "../../utils/helpers";
 import { Listing } from "../../types";
-import { TablerIcon } from "@hive/esm-core-components";
+import { TablerIcon } from "@havena/esm-core-components";
 import { closeModal, openModal } from "@mantine/modals";
 
 const HeaderSection: FC<{ listing: Listing }> = ({ listing }) => {

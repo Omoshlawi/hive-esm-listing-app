@@ -1,4 +1,4 @@
-import { cleanFiles, handleApiErrors, uploadFiles } from "@hive/esm-core-api";
+import { cleanFiles, handleApiErrors, uploadFiles } from "@havena/esm-core-api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Accordion,

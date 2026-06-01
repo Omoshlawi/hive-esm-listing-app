@@ -1,4 +1,4 @@
-import { APIFetchResponse, constructUrl, User } from "@hive/esm-core-api";
+import { APIFetchResponse, constructUrl, User } from "@havena/esm-core-api";
 import { useDebouncedValue } from "@mantine/hooks";
 import { useState } from "react";
 import useSWR from "swr";

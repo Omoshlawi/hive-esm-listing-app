@@ -1,5 +1,5 @@
-import { getHiveFileUrl } from "@hive/esm-core-api";
-import { TablerIcon } from "@hive/esm-core-components";
+import { getHiveFileUrl } from "@havena/esm-core-api";
+import { TablerIcon } from "@havena/esm-core-components";
 import {
   ActionIcon,
   Badge,

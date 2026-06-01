@@ -1,5 +1,5 @@
-import { handleApiErrors } from "@hive/esm-core-api";
-import { InputSkeleton, TablerIcon } from "@hive/esm-core-components";
+import { handleApiErrors } from "@havena/esm-core-api";
+import { InputSkeleton, TablerIcon } from "@havena/esm-core-components";
 import {
   Alert,
   Button,

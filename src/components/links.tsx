@@ -1,4 +1,4 @@
-import { HeaderLink, withUserAccess } from "@hive/esm-core-components";
+import { HeaderLink, withUserAccess } from "@havena/esm-core-components";
 import React from "react";
 
 export const OrganizationContextHeaderLink = withUserAccess(HeaderLink, {

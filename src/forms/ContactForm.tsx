@@ -1,4 +1,4 @@
-import { getHiveFileUrl, User } from "@hive/esm-core-api";
+import { getHiveFileUrl, User } from "@havena/esm-core-api";
 import {
   Stack,
   Group,

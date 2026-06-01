@@ -1,4 +1,4 @@
-import { getHiveFileUrl } from "@hive/esm-core-api";
+import { getHiveFileUrl } from "@havena/esm-core-api";
 import {
   ActionIcon,
   Badge,

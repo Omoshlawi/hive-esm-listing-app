@@ -1,9 +1,9 @@
-import { getHiveFileUrl } from "@hive/esm-core-api";
+import { getHiveFileUrl } from "@havena/esm-core-api";
 import {
   DataTableColumnHeader,
   StateFullDataTable,
   TablerIcon,
-} from "@hive/esm-core-components";
+} from "@havena/esm-core-components";
 import {
   ActionIcon,
   Avatar,

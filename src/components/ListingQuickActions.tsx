@@ -1,5 +1,5 @@
-import { handleApiErrors } from "@hive/esm-core-api";
-import { PiletApi } from "@hive/esm-shell-app";
+import { handleApiErrors } from "@havena/esm-core-api";
+import { PiletApi } from "@havena/esm-shell-app";
 import { Alert, Menu, Skeleton, Stack } from "@mantine/core";
 import { closeModal, openModal } from "@mantine/modals";
 import { showNotification, updateNotification } from "@mantine/notifications";

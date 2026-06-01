@@ -1,4 +1,4 @@
-import { searchParamUtils, useTypedSearchParams } from "@hive/esm-core-api";
+import { searchParamUtils, useTypedSearchParams } from "@havena/esm-core-api";
 import { ListingFilterParams } from "../types";
 
 export const useListingFilterParams = () => {

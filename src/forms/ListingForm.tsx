@@ -1,4 +1,4 @@
-import { handleApiErrors } from "@hive/esm-core-api";
+import { handleApiErrors } from "@havena/esm-core-api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Paper, Tabs } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";

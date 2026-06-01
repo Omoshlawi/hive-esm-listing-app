@@ -17,7 +17,7 @@ import { useContactPerson, useSearchUser } from "../../hooks/useUsers";
 import { Listing, ListingFormData } from "../../types";
 import { INPUT_ORDER } from "../../utils/constants";
 import ListingAdditionalCharges from "../ListingAdditionalCharges";
-import { getHiveFileUrl } from "@hive/esm-core-api";
+import { getHiveFileUrl } from "@havena/esm-core-api";
 type Props = {
   onPrev?: () => void;
   listing?: Listing;

@@ -1,4 +1,4 @@
-import { withUserAccess } from "@hive/esm-core-components";
+import { withUserAccess } from "@havena/esm-core-components";
 import ListingsPage from "./ListingsPage";
 import ListingDetailPage from "./ListingDetailPage";
 import PropertyListingsPage from "./PropertyListingsPage";

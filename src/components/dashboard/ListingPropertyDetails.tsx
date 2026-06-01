@@ -16,7 +16,7 @@ import {
 } from "@mantine/core";
 import { getListingTypeColor, getStatusColor } from "../../utils/helpers";
 import dayjs from "dayjs";
-import { TablerIcon, When } from "@hive/esm-core-components";
+import { TablerIcon, When } from "@havena/esm-core-components";
 import { useProperty, useSearchProperties } from "../../hooks";
 
 type Props = {

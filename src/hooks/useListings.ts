@@ -3,7 +3,7 @@ import {
   APIListResponse,
   constructUrl,
   useSession,
-} from "@hive/esm-core-api";
+} from "@havena/esm-core-api";
 import { Listing, ListingMedia } from "../types";
 import useSWR from "swr";
 import { useDebouncedValue } from "@mantine/hooks";

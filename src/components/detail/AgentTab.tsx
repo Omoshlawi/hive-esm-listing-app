@@ -22,7 +22,7 @@ import {
   IconSend,
 } from "@tabler/icons-react";
 import { useContactPerson } from "../../hooks/useUsers";
-import { getHiveFileUrl } from "@hive/esm-core-api";
+import { getHiveFileUrl } from "@havena/esm-core-api";
 import { openModal } from "@mantine/modals";
 import ContactForm from "../../forms/ContactForm";
 

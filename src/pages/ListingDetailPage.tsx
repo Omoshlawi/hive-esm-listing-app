@@ -1,4 +1,4 @@
-import { PiletApi } from "@hive/esm-shell-app";
+import { PiletApi } from "@havena/esm-shell-app";
 import React, { FC } from "react";
 import { useParams } from "react-router-dom";
 import { useListing } from "../hooks";

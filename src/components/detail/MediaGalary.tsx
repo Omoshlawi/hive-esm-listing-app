@@ -21,7 +21,7 @@ import {
   IconChevronRight,
 } from "@tabler/icons-react";
 import { useListingMedia } from "../../hooks";
-import { getHiveFileUrl } from "@hive/esm-core-api";
+import { getHiveFileUrl } from "@havena/esm-core-api";
 
 type Props = {
   listing: Listing;
